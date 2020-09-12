@@ -1,7 +1,12 @@
 import React from 'react';
 import './jumbotron-narrow.css'
 //import './bootstrap.css'
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 class App extends React.Component {
   constructor(props) {
     super(props);
