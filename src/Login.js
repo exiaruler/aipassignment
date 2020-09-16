@@ -1,37 +1,72 @@
 import React from 'react';
+import SignUp from './SignUp';
 
-function Login(){
-    return(
-        <div class="container">
-        <div class="inner">
-            <div class="left">
-                <h1>Logo</h1>
-                
-                <div class="content">
-                    <h1>Login</h1>
-                    <p>Please fill in details to login.</p>
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+} from "react-router-dom";
 
-                    <div class="userName"><input type="text" name="userName" id = "userName" placeholder="Username"/>
-                    </div>
-                    <div class="password"><input type="text" name="password" id = "password" placeholder="Password"/>
-                    </div>
 
-                    <button>Login</button>
-                    
-                </div>
-            </div>
-            <div class="right">
-                <h1>Login</h1>
 
-                <p>Don't have an account? Press the button below to sign up.</p>
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
 
-                <button>Sign up</button>
-                
-            </div>
+    }
 
-        </div>
-    </div>
-    )
 
+    render() {
+
+        return (
+            <html lang="en">
+                <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+                </head>
+
+                <body>
+                    <Router>
+                        <div class="container">
+                            <div class="inner">
+                                <div class="left">
+                                    <h1>Logo</h1>
+
+                                    <div class="content">
+                                        <h1>Login</h1>
+                                        <p>Please fill in details to login.</p>
+
+                                        <div class="userName"><input type="text" name="userName" id="userName" placeholder="Username" />
+                                        </div>
+                                        <div class="password"><input type="text" name="password" id="password" placeholder="Password" />
+                                        </div>
+
+                                        <button>Login</button>
+
+                                    </div>
+                                </div>
+
+                                <div class="right">
+                                    <h1>Login</h1>
+
+                                    <p>Don't have an account? Press the button below to sign up.</p>
+                                    <Link to="/signup">
+                                        <button type="button">Sign up</button>
+                                    </Link>
+                                </div>
+
+                                <Route path="/signup"component={SignUp}/>
+
+                            </div>
+                        </div >
+
+                    </Router>
+                </body>
+            </html >
+        );
+
+    }
 }
 export default Login;
