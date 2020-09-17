@@ -20,14 +20,14 @@ const UserData = sequelize.define('user_data', {
     },
     fullName: Sequelize.TEXT,
     userName: Sequelize.TEXT,
-    password: Sequelize.TEXT,
+    password: Sequelize.TEXT, 
     email: Sequelize.TEXT,
     role: Sequelize.TEXT
 });
 
 async function initialize() {
     // Create the database tables (force them to be created from scratch)
-    await sequelize.sync({force: true});
+    // await sequelize.sync({force: true});
 }
 
 initialize().then(() =>
