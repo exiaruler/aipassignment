@@ -1,5 +1,6 @@
 import React from 'react';
 import ViewRequestFavours from './ViewRequestFavours';
+import './bootstrap.css';
 
 import {
     BrowserRouter as Router,
