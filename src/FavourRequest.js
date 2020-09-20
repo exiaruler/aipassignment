@@ -8,34 +8,34 @@ class FavourRequest extends React.Component {
        
         
     }
-
-
-
-
     render() {
         return (
-            <div>
-               <h2>Favour Request</h2>
-<div>
-<form>
-    <p>
-<label>Favour title</label>
-<input type="text"></input>
-</p>
-<p>
-<label>Description</label>
-<input type="text"></input>
-</p>
-<p>
-<label>reward</label>
-<input type="text"></input>
-</p>
-<input type="submit"></input>
+            <html lang="en">
+            <body>
+                <div>
+                <h2>Favour Request</h2>
+                    <div>
+                    <form>
+                        <p>
+                    <label>Favour title</label>
+                    <input type="text"></input>
+                    </p>
+                    <p>
+                    <label>Description</label>
+                    <input type="text"></input>
+                    </p>
+                    <p>
+                    <label>Reward</label>
+                    <input type="text"></input>
+                    </p>
+                    <input type="submit"></input>
 
-</form>
+                    </form>
 
-</div>
-            </div>
+                    </div>
+                </div>
+            </body>
+            </html>
         );
     }
 }
