@@ -6,7 +6,7 @@ class ManageFavour extends React.Component {
         return(
         <html lang="en">
         <div>
-            <h2>Manage Favours Requests</h2>
+            <h1>Manage Favour Requests</h1>
         </div>
 
         <table>
