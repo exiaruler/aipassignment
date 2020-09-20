@@ -1,55 +1,48 @@
 const express = require('express');
 const app = express();
+const cors=require("cors");
+const pool=require("./db");
+//middleware
+app.use(cors());
+app.use(express.json());
 
-// ------------------------------------------------
-// Set up Object-Relational Mapping
-// ------------------------------------------------
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
-    'aipassignmentdata',  // Database name
-    'newuser',        // Username
-    'password',        // Password
-    {dialect: 'postgres', host: 'localhost'}
-);
+//routes
 
-const UserData = sequelize.define('user_data', {
-    userID: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    fullName: Sequelize.TEXT,
-    userName: Sequelize.TEXT,
-    password: Sequelize.TEXT, 
-    email: Sequelize.TEXT,
-    role: Sequelize.TEXT
-});
+//owefavours
+//add owefavour
+app.post("/owefavour",async(req,res)=>{
+try{
+    //test post with postman
+    //console.log(req.body);
 
-const owefavour=sequelize.define('owe_favour_data',{
-    favourID:{
-        type:Sequelize.INTEGER,
-        autoIncrement:true,
-        primaryKey:true
-    },
-    userID:Sequelize.INTEGER,
-    username:Sequelize.TEXT,
-    title:Sequelize.TEXT,
-    favourdescription:Sequelize.TEXT,
-    reward:Sequelize.TEXT,
-    recievinguserID:Sequelize.INTEGER,
-    recievingusername:Sequelize.TEXT,
-    completed:Sequelize.BOOLEAN,
-    image:Sequelize.BYTEA
-    
+const{favourdescription}=req.body;
+const newOweFavour=await pool.query("INSERT INTO owefavour(title)VALUES($1)",
+[favourdescription]);
 
-
-});
-
-async function initialize() {
-    // Create the database tables (force them to be created from scratch)
-    // await sequelize.sync({force: true});
+res.json(newOweFavour);
+}catch(err){
+    console.error(err.message);
 }
+});
 
-initialize().then(() =>
-    app.listen(3000, () => console.log('Running on http://localhost:3000/'))
+
+//insert query to test your database connection using postman using sample table with no primary keys 
+
+app.post("/todos", async (req, res) => {
+    try {
+      const { description } = req.body;
+      const newTodo = await pool.query(
+        "INSERT INTO todo (description) VALUES($1) RETURNING *",
+        [description]
+      );
+  
+      res.json(newTodo.rows[0]);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
+
+app.listen(5000,()=>{
+    console.log("server has started on port 5000");
+}
 );
