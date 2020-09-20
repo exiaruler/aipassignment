@@ -25,6 +25,26 @@ const UserData = sequelize.define('user_data', {
     role: Sequelize.TEXT
 });
 
+const owefavour=sequelize.define('owe_favour_data',{
+    favourID:{
+        type:Sequelize.INTEGER,
+        autoIncrement:true,
+        primaryKey:true
+    },
+    userID:Sequelize.INTEGER,
+    username:Sequelize.TEXT,
+    title:Sequelize.TEXT,
+    favourdescription:Sequelize.TEXT,
+    reward:Sequelize.TEXT,
+    recievinguserID:Sequelize.INTEGER,
+    recievingusername:Sequelize.TEXT,
+    completed:Sequelize.BOOLEAN,
+    image:Sequelize.BYTEA
+    
+
+
+});
+
 async function initialize() {
     // Create the database tables (force them to be created from scratch)
     // await sequelize.sync({force: true});
