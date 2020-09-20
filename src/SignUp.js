@@ -1,5 +1,6 @@
 import React from 'react';
-import './bootstrap.css'
+import './bootstrap.css';
+import './jumbotron-narrow.css';
 
 import {
     BrowserRouter as Router,
@@ -23,10 +24,9 @@ class SignUp extends React.Component {
                 <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-
                 </head>
 
-                <body>
+                <body>       
                     <form className="d-flex mt-5">
 
                         <div class="container">
@@ -58,7 +58,7 @@ class SignUp extends React.Component {
 
                                     <p>Already have an account? Press the button below to login.</p>
                                     <Link to="/login">
-                                    <button >lOgin</button>
+                                    <button >Login</button>
                                     </Link>
                                 </div>
                                 <Route path="/login" component={Login} />
