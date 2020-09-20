@@ -23,15 +23,18 @@ class SelectForm extends React.Component {
             form = <OweRequest/>;
 
         return (
-            <div>
-           
-                <h1>Select Favour</h1>
-                <div>
-                    <button onClick={() => this.setState({show: REQUEST})}>{REQUEST}</button>
-                    <button onClick={() => this.setState({show: OWE})}>{OWE}</button>
-                </div>
-                { form }
-            </div>
+            <html lang="en">
+                <body>
+                    <div>
+                    <h1>Select Favour</h1>
+                        <div>
+                            <button onClick={() => this.setState({show: REQUEST})}>{REQUEST}</button>
+                            <button onClick={() => this.setState({show: OWE})}>{OWE}</button>
+                        </div>
+                        { form }
+                    </div>
+                </body>
+            </html>
         );
     }
 }
