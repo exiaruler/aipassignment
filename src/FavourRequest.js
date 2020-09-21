@@ -28,6 +28,10 @@ class FavourRequest extends React.Component {
                     <label>Reward</label>
                     <input type="text"></input>
                     </p>
+                    <p>
+    <label>Image</label>
+    <input type="file" accept="image"></input>
+</p>
                     <input type="submit"></input>
 
                     </form>

@@ -31,8 +31,12 @@ class OweRequest extends React.Component {
 <input type="text"></input>
 </p>
 <p>
-<label>Exchange</label>
+<label>Reward</label>
 <input type="text"></input>
+</p>
+<p>
+    <label>Image</label>
+    <input type="file" accept="image"></input>
 </p>
 <input type="submit"></input>
 

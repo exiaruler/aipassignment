@@ -1,5 +1,8 @@
+CREATE DATABASE aipassingmentdata;
+
+
 CREATE TABLE owefavour (
-favourID INT ,
+PRIMARY KEY  favourID INT ,
 userID INT ,
 username VARCHAR,
 title VARCHAR,
@@ -9,7 +12,7 @@ recievinguserID  INT ,
 recievingusername VARCHAR,
 complete Boolean,
 favourimage Bytea,
-PRIMARY KEY (favourID)
+
 /*
 FOREIGN KEY (userID)
 FOREIGN KEY (recievinguserID)
@@ -17,8 +20,6 @@ REFERENCES user (userID)
 */
 ); 
 
-
-CREATE DATABASE perntodo;
 
 CREATE TABLE todo(
   todo_id SERIAL PRIMARY KEY,
