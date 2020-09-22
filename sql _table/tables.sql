@@ -20,6 +20,10 @@ REFERENCES user (userID)
 */
 ); 
 
+INSERT INTO  owefavour (favourID,userID,username,title,favourdescription,rewards,recievinguserID,recievingusername,complete,favourimage) VALUES
+(1,1,'jesus','coffee owe','brought a coffee','coffee',2,'michael',false,'null');
+
+
 
 CREATE TABLE todo(
   todo_id SERIAL PRIMARY KEY,

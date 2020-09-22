@@ -10,19 +10,27 @@ app.use(express.json());
 
 //owefavours
 //add owefavour
+
 app.post("/owefavour",async(req,res)=>{
 try{
+const {recievinguser}=req.body;
+const {username}=req.params;
+const {title}=req.body;
+const {description}=req.body;
+const {reward}=req.body;
+const {image}=req.body;
+const fillInComplete=false; 
+//search up existing owed user 
 
-
-const{favourdescription}=req.body;
 const newOweFavour=await pool.query("INSERT INTO owefavour(title)VALUES($1)",
-[favourdescription]);
+[username,title,description,reward,recievinguser,image,fillInComplete]);
 
 res.json(newOweFavour);
 }catch(err){
     console.error(err.message);
 }
 });
+
 
 //get all owefavours
 app.get("/owefavour",async(req,res)=>{
@@ -70,11 +78,12 @@ app.get("/owefavour/:id",async(req,res)=>{
   try{
     const {id}=req.params;
     //create a querry that finds if the data contains an image
-    const checkImage=await pool.query("SELECT * FROM owefavour where favourID=$1",[id]);
-    
+    const checkImage=await pool.query("SELECT favourimage FROM owefavour where userID=$1",[id]);
+    if(checkImage.contains('null')){
     const deleteOweFavour= await pool.query("DELETE FROM owefavour WHERE favourID=$1",
       [id]);
       res.json("favour deleted");
+    }
   }catch(err){
     console.error(err.message);
   }
