@@ -1,4 +1,4 @@
-CREATE DATABASE aipassingmentdata;
+CREATE DATABASE aipassignmentdata;
 
 
 CREATE TABLE owefavour (
