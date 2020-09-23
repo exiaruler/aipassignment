@@ -35,6 +35,7 @@ CREATE TABLE userData(
   user_fullName VARCHAR(255) not null,
   user_name VARCHAR(255) not null,
   user_password VARCHAR(255) not null,
-  user_email VARCHAR(255) not null
+  user_email VARCHAR(255) not null,
+  user_role VARCHAR(255) not null,
   PRIMARY KEY (user_ID)
 )
