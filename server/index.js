@@ -190,7 +190,7 @@ app.get("/editaccount", async (req, res) => {
       "UPDATE userData SET user_fullname =$1, user_name=$3, user_password=$4,  user_email =$2 WHERE user_id =$5",
       [fullName, email, userName, new_password, id]
     );
-    res.json("Todo was updated!");
+    res.json("Account was updated!");
   } catch (err) {
     console.error(err.message);
   }
