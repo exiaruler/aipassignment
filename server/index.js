@@ -169,10 +169,11 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/editaccount", async (req, res) => {
+app.get("/editaccount/:id", async (req, res) => {
   // lily
   console.log(req.body); // just for testing
-  const { id } = req.params;
+  //const { id } = req.params; // need to connect id with jwt token
+  //console.log(id);
   const { fullName, email, userName, old_password, new_password } = req.body;
 
   // need old password to change details
