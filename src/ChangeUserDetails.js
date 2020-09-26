@@ -1,80 +1,125 @@
-import React from 'react';
-import ViewRequestFavours from './ViewRequestFavours';
-import './bootstrap.css';
+import React, { useState } from "react";
+import ViewRequestFavours from "./ViewRequestFavours";
+import "./bootstrap.css";
 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
-import Login from './Login';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Login from "./Login";
 
+const ChangeUserDetail = () => {
+  const [inputs, setInputs] = useState({
+    fullName: "",
+    email: "",
+    userName: "",
+    oldPassword: "",
+    newPassword: "",
+  });
 
+  const { fullName, email, userName, oldPassword, newPassword } = inputs;
 
-class ChangeUserDetail extends React.Component {
-    constructor(props) {
-        super(props);
+  const onChange = (e) =>
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
 
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { fullName, email, userName, oldPassword, newPassword };
+      const response = await fetch("http://localhost:5000/editaccount", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (err) {
+      console.error(err.message);
     }
+  };
+  return (
+    <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
 
-    render() {
-        return (
-            <html lang="en">
-                <head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <body>
+        <div class="container">
+          <div class="inner">
+            <div class="content">
+              <h1>Change details</h1>
+              <p>Please fill in to change details.</p>
 
+              <form onSubmit={onSubmitForm}>
+                <div class="fullName">
+                  <label>Full name</label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    id="fullName"
+                    placeholder="Full name"
+                    value={fullName}
+                    onChange={(e) => onChange(e)}
+                  />
+                </div>
+                <div class="email">
+                  <label>Email </label>
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => onChange(e)}
+                  />
+                </div>
 
-                </head>
+                <div class="userName">
+                  <label>User name</label>
+                  <input
+                    type="text"
+                    name="userName"
+                    id="userName"
+                    placeholder="Username"
+                    value={userName}
+                    onChange={(e) => onChange(e)}
+                  />
+                </div>
+                <div class="New password">
+                  <label>New Password</label>
+                  <input
+                    type="newPassword"
+                    name="newPassword"
+                    id="newPassword"
+                    placeholder="New Password"
+                    value={newPassword}
+                    onChange={(e) => onChange(e)}
+                  />
+                </div>
+                <div class="Old password">
+                  <label>Old Password</label>
+                  <input
+                    type="text"
+                    name="oldPassword"
+                    id="oldPassword"
+                    placeholder="Old Password"
+                    value={oldPassword}
+                    onChange={(e) => onChange(e)}
+                  />
+                </div>
+                <label></label>
+                <button>Save changes</button>
+              </form>
+              <div class="cancel">
+                <label> </label>
+                <Link to="/viewrequestfavours">
+                  <button>Cancel</button>
+                </Link>
+              </div>
+            </div>
+            <Route path="/viewrequestfavours" component={ViewRequestFavours} />
+          </div>
+        </div>
+      </body>
+    </html>
+  );
+};
 
-                <body>
-                    <form className="d-flex mt-5">
-                        <div class="container">
-                            <div class="inner">
-
-                                <div class="content">
-                                    <h1>Change details</h1>
-                                    <p>Please fill in to change details.</p>
-
-
-                                    <div class="fullName">
-                                        <label>Full name</label>
-                                        <input type="text" name="fullName" id="fullName" placeholder="Full name" />
-                                    </div>
-                                    <div class="email">
-                                        <label>Email      </label>
-                                        <input type="text" name="email" id="email" placeholder="Email" />
-                                    </div>
-
-                                    <div class="userName">
-                                        <label>User name</label>
-                                        <input type="text" name="userName" id="userName" placeholder="Username" />
-                                    </div>
-                                    <div class="New password">
-                                        <label>New Password</label>
-                                        <input type="text" name="password" id="password" placeholder="Password" />
-                                    </div>
-                                    <div class="Old password">
-                                        <label>Old Password</label>
-                                        <input type="text" name="password" id="password" placeholder="Password" />
-                                    </div>
-                                    <label></label>
-                                    <button>Save changes</button>
-                                    <div class="cancel">
-                                        <label> </label>
-                                        <Link to="/viewrequestfavours">
-                                        <button>Cancel</button>
-                                        </Link>
-                                    </div>
-                                </div>
-                                <Route path="/viewrequestfavours" component={ViewRequestFavours} />
-                            </div>
-
-                        </div>
-                    </form>
-                </body>
-            </html >
-        );
-    }
-}
-export default ChangeUserDetail; 
+export default ChangeUserDetail;
