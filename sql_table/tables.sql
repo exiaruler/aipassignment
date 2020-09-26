@@ -2,26 +2,25 @@ CREATE DATABASE aipassignmentdata;
 
 
 CREATE TABLE owefavour (
-PRIMARY KEY  favourID INT ,
-userID INT ,
-username VARCHAR,
-title VARCHAR,
-favourdescription VARCHAR,
-rewards VARCHAR,
-recievinguserID  INT ,
-recievingusername VARCHAR,
-complete Boolean,
-favourimage Bytea,
+favour_ID INT ,
+user_ID INT ,
+user_name VARCHAR(255) ,
+title VARCHAR(255) ,
+favour_description VARCHAR(255) ,
+rewards VARCHAR(255) ,
+recieving_userID  INT ,
+recieving_username VARCHAR(255) ,
+favour_image Bytea,
+complete_image Bytea
+CONSTRAINT fk_user
+PRIMARY KEY (favourID)
+FOREIGN KEY (user_ID)
+REFERENCES userData(user_ID)
 
-/*
-FOREIGN KEY (userID)
-FOREIGN KEY (recievinguserID)
-REFERENCES user (userID)
-*/
 ); 
 
 INSERT INTO  owefavour (favourID,userID,username,title,favourdescription,rewards,recievinguserID,recievingusername,complete,favourimage) VALUES
-(1,1,'jesus','coffee owe','brought a coffee','coffee',2,'michael',false,'null');
+(1,1,'jesus','coffee owe','brought a coffee','coffee',2,'michael','null','null');
 
 
 

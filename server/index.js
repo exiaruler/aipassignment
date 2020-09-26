@@ -9,9 +9,9 @@ app.use(express.json());
 //routes
 
 //owefavours
-//add owefavour
+//add owefavour-Samuel
 
-app.post("/owefavour", async (req, res) => {
+app.post("/addOweFavour", async (req, res) => {
   try {
     const { recievinguser } = req.body;
     const { username } = req.params;
@@ -19,33 +19,29 @@ app.post("/owefavour", async (req, res) => {
     const { description } = req.body;
     const { reward } = req.body;
     const { image } = req.body;
-    const fillInComplete = false;
     //search up existing owed user
-
-    const newOweFavour = await pool.query(
-      "INSERT INTO owefavour(title)VALUES($1)",
-      [
-        username,
-        title,
-        description,
-        reward,
-        recievinguser,
-        image,
-        fillInComplete,
-      ]
+    const recieveUser = await pool.query(
+      "SELECT * FROM userData WHERE user_name = $1",
+      [recievinguser]
     );
-
-    res.json(newOweFavour);
+    if (recieveUser.rows.length > 0) {
+      const newOweFavour = await pool.query(
+        "INSERT INTO owefavour(title)VALUES($1)",
+        [username, title, description, reward, recievinguser, image]
+      );
+      res.json(newOweFavour);
+    }
+    console.log("user recieving does not exist");
   } catch (err) {
     console.error(err.message);
   }
 });
 
-//get all owefavours
-app.get("/owefavour", async (req, res) => {
+//get all owefavours-Vivian
+app.get("/getAllOweFavour", async (req, res) => {
   try {
     const allOweFavours = await pool.query(
-      "SELECT title,favourdescription,rewards,recievingusername,complete,favourimage  from owefavour ;"
+      "SELECT title,favour_description,rewards,recieving_username,complete,favour_image  from owefavour ;"
     );
     res.json(allOweFavours.rows);
   } catch (err) {
@@ -53,8 +49,8 @@ app.get("/owefavour", async (req, res) => {
   }
 });
 
-//get a owefavour
-app.get("/owefavour/:title", async (req, res) => {
+//get a owefavour-Vivian
+app.get("/getOweFavour/:title", async (req, res) => {
   try {
     const { title } = req.params;
     const owefav = await pool.query("SELECT * FROM owefavour where title=$1", [
@@ -66,8 +62,8 @@ app.get("/owefavour/:title", async (req, res) => {
   }
 });
 
-//update owefavour
-app.get("/owefavour/:id", async (req, res) => {
+//update owefavour-Vivian
+app.get("/updateOweFavour/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { favourtitle } = req.body;
@@ -75,7 +71,7 @@ app.get("/owefavour/:id", async (req, res) => {
     const { reward } = req.body;
     const { image } = req.body;
     const updateOweFavour = await pool.query(
-      "UPDATE owefavour SET title,favourdescription,reward,image =$1 WHERE favourID =$2",
+      "UPDATE owefavour SET title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
       [id, favourtitle, description, reward, image]
     );
     res.json("favour updated");
@@ -84,22 +80,37 @@ app.get("/owefavour/:id", async (req, res) => {
   }
 });
 
-//delete owefavour
-app.get("/owefavour/:id", async (req, res) => {
+//delete owefavour-Samuel
+app.get("/deleteOweFavour/:id", async (req, res) => {
   try {
     const { id } = req.params;
     //create a querry that finds if the data contains an image
     const checkImage = await pool.query(
-      "SELECT favourimage FROM owefavour where userID=$1",
+      "SELECT favourimage FROM owefavour where user_ID=$1",
       [id]
     );
     if (checkImage.contains("null")) {
       const deleteOweFavour = await pool.query(
-        "DELETE FROM owefavour WHERE favourID=$1",
+        "DELETE FROM owefavour WHERE favour_ID=$1",
         [id]
       );
       res.json("favour deleted");
     }
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//complete favour
+app.get("/completeFavourOwe/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { imageComplete } = req.body;
+    const updateOweFavour = await pool.query(
+      "UPDATE owefavour SET complete_image =$1 WHERE favour_ID =$2",
+      [id, imageComplete]
+    );
+    res.json("favour completed");
   } catch (err) {
     console.error(err.message);
   }
