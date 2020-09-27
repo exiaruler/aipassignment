@@ -67,7 +67,7 @@ app.get("/owefavour/:title", async (req, res) => {
 });
 
 //update owefavour
-app.get("/owefavour/:id", async (req, res) => {
+app.put("/owefavour/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { favourtitle } = req.body;
