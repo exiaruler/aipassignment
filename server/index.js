@@ -2,65 +2,153 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+
 //middleware
 app.use(cors());
 app.use(express.json());
 
 //routes
 
-//owefavours
-//add owefavour
+//OWEFAVOURS
+//add owefavour-Samuel
+app.post("/addOweFavour",async(req,res)=>{
+try{
+  //fields
+const {username,title,description,reward,recievinguser,image}=req.body;
 
-app.post("/owefavour", async (req, res) => {
+//search up existing owed user 
+const checkUser = await pool.query("SELECT user_name,user_id from userdata where user_name=$1",
+[recievinguser]
+);
+
+//check user if they exist from query
+if(checkUser.rows.length>0){
+const newOweFavour=await pool.query("INSERT INTO owefavour(user_name,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6) RETURNING * ",
+[username,title,description,reward,recievinguser,image]);
+console.log("owe favour added");
+res.json(newOweFavour);
+}else
+console.log("user recieving does not exist");
+}catch(err){
+    console.error(err.message);
+  }
+});
+
+
+//get all owefavours-Vivian
+app.get("/getAllOweFavour",async(req,res)=>{
+  try{
+    const allOweFavours=await pool.query("SELECT title,favour_description,rewards,recieving_username,complete,favour_image  from owefavour ;");
+    res.json(allOweFavours.rows); 
+  } catch(err){
+    console.error(err.message);
+  }
+});
+
+//get a owefavour-Vivian
+app.get("/getOweFavour/:title",async(req,res)=>{
+ try{
+   const {title}=req.params;
+   const owefav=await pool.query("SELECT * FROM owefavour where title=$1",[title]);
+   res.json(owefav.rows[0]);
+ }catch(err){
+  console.error(err.message);
+ }
+}
+);
+
+//update owefavour-Vivian
+app.get("/updateOweFavour/:id",async(req,res)=>{
+  try{
+    const {id}=req.params;
+    const {favourtitle}=req.body;
+    const {description}=req.body;
+    const {reward}=req.body;
+    const {image}=req.body;
+    const updateOweFavour= await pool.query("UPDATE owefavour SET title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
+      [id,favourtitle,description,reward,image]);
+      res.json("favour updated");
+  }catch(err){
+    console.error(err.message);
+  }
+});
+
+//delete owefavour-Samuel 
+app.get("/deleteOweFavour/:id",async(req,res)=>{
+  try{
+    const {id}=req.params;
+    //create a querry that finds if the data contains an image
+    const checkImage=await pool.query("SELECT favourimage FROM owefavour where user_ID=$1",[id]);
+    if(checkImage.contains('null')){
+    const deleteOweFavour= await pool.query("DELETE FROM owefavour WHERE favour_ID=$1",
+      [id]);
+      res.json("favour deleted");
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+);
+
+//complete favour
+app.get("/completeFavourOwe/:id", async (req, res) => {
   try {
-    const { recievinguser } = req.body;
-    const { username } = req.params;
+    const { id } = req.params;
+    const { imageComplete } = req.body;
+    const updateOweFavour = await pool.query(
+      "UPDATE owefavour SET complete_image =$1 WHERE favour_ID =$2",
+      [id, imageComplete]
+    );
+    res.json("favour completed");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//REQUESTFAVOURS
+// add favourRequest
+app.post("/addFavourRequest", async (req, res) => {
+  try {
+    const { completinguser } = req.body;
+    const { completingusername } = req.params;
     const { title } = req.body;
     const { description } = req.body;
     const { reward } = req.body;
     const { image } = req.body;
-    const fillInComplete = false;
-    //search up existing owed user
-
-    const newOweFavour = await pool.query(
-      "INSERT INTO owefavour(title)VALUES($1)",
-      [
-        username,
-        title,
-        description,
-        reward,
-        recievinguser,
-        image,
-        fillInComplete,
-      ]
+    //Search up an existing completing user
+    const completeUser = await pool.query(
+      "SELECT * FROM userData WHERE user_name = $1",
+      [completinguser]
     );
-
-    res.json(newOweFavour);
+    if (completeUser.rows.length > 0) {
+      const newFavourRequest = await pool.query(
+        "INSERT INTO favourRequest(title) VALUES($1)",
+        [completinguser, completingusername, title, description, reward, image]
+      );
+      res.json(newFavourRequest);
+    }
+    console.log("User completing does not exist");
   } catch (err) {
     console.error(err.message);
   }
 });
-
-//get all owefavours
-app.get("/owefavour", async (req, res) => {
+// get ALL favourRequests
+app.get("/getAllFavourRequests", async (req, res) => {
   try {
-    const allOweFavours = await pool.query(
-      "SELECT title,favourdescription,rewards,recievingusername,complete,favourimage  from owefavour ;"
-    );
-    res.json(allOweFavours.rows);
+    const allFavourRequests = await pool.query(
+      "SELECT title, favour_description, rewards, completing_Username,complete, favour_image FROM favourRequest;");
+    res.json(allFavourRequests.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
-
-//get a owefavour
-app.get("/owefavour/:title", async (req, res) => {
+// get A favourRequest
+app.get("/getFavourRequest/:title", async (req, res) => {
   try {
     const { title } = req.params;
-    const owefav = await pool.query("SELECT * FROM owefavour where title=$1", [
-      title,
-    ]);
-    res.json(owefav.rows[0]);
+    const favReq = await pool.query(
+      "SELECT * FROM favourRequest WHERE title = $1", [title]);
+    res.json(favReq.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
@@ -74,36 +162,38 @@ app.put("/owefavour/:id", async (req, res) => {
     const { description } = req.body;
     const { reward } = req.body;
     const { image } = req.body;
-    const updateOweFavour = await pool.query(
-      "UPDATE owefavour SET title,favourdescription,reward,image =$1 WHERE favourID =$2",
+    const updateFavourRequest = await pool.query(
+      "UPDATE favourRequest SET title, favour_description, reward, favour_image = $1 WHERE favour_ID =$2",
       [id, favourtitle, description, reward, image]
     );
-    res.json("favour updated");
+    res.json("Favour updated");
   } catch (err) {
     console.error(err.message);
   }
 });
-
-//delete owefavour
-app.get("/owefavour/:id", async (req, res) => {
+// Delete favourRequest
+app.get("/deleteFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    //create a querry that finds if the data contains an image
+    // Create query that finds if the data contains an image
     const checkImage = await pool.query(
-      "SELECT favourimage FROM owefavour where userID=$1",
+      "SELECT favourimage FROM favourRequest where user_ID=$1",
       [id]
     );
     if (checkImage.contains("null")) {
       const deleteOweFavour = await pool.query(
-        "DELETE FROM owefavour WHERE favourID=$1",
+        "DELETE FROM favourRequest WHERE favour_ID=$1",
         [id]
       );
-      res.json("favour deleted");
+      res.json("Favour deleted");
     }
   } catch (err) {
     console.error(err.message);
   }
 });
+
+
+
 
 //insert query to test your database connection using postman using sample table with no primary keys
 
