@@ -149,8 +149,8 @@ app.get("/getFavourRequest/:title", async (req, res) => {
     console.error(err.message);
   }
 });
-//update owefavour
-app.put("/owefavour/:id", async (req, res) => {
+// update favourRequest
+app.put("/favourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { favourtitle, description, reward, image } = req.body;
@@ -163,7 +163,7 @@ app.put("/owefavour/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-// Delete favourRequest
+// delete favourRequest
 app.get("/deleteFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
