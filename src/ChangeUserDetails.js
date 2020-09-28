@@ -9,12 +9,11 @@ const ChangeUserDetail = () => {
   const [inputs, setInputs] = useState({
     fullName: "",
     email: "",
-    userName: "",
     oldPassword: "",
     newPassword: "",
   });
 
-  const { fullName, email, userName, oldPassword, newPassword } = inputs;
+  const { fullName, email, oldPassword, newPassword } = inputs;
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -22,7 +21,7 @@ const ChangeUserDetail = () => {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { fullName, email, userName, oldPassword, newPassword };
+      const body = { fullName, email, oldPassword, newPassword };
       const response = await fetch("http://localhost:5000/auth/editaccount", {
         method: "POST",
         headers: {
@@ -67,18 +66,6 @@ const ChangeUserDetail = () => {
                     id="email"
                     placeholder="Email"
                     value={email}
-                    onChange={(e) => onChange(e)}
-                  />
-                </div>
-
-                <div class="userName">
-                  <label>User name</label>
-                  <input
-                    type="text"
-                    name="userName"
-                    id="userName"
-                    placeholder="Username"
-                    value={userName}
                     onChange={(e) => onChange(e)}
                   />
                 </div>
