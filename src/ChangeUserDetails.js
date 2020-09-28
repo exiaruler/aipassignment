@@ -23,7 +23,7 @@ const ChangeUserDetail = () => {
     e.preventDefault();
     try {
       const body = { fullName, email, userName, oldPassword, newPassword };
-      const response = await fetch("http://localhost:5000/editaccount", {
+      const response = await fetch("http://localhost:5000/auth/editaccount", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
