@@ -72,10 +72,7 @@ app.get("/getOweFavour/:title", async (req, res) => {
 app.get("/updateOweFavour/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { favourtitle } = req.body;
-    const { description } = req.body;
-    const { reward } = req.body;
-    const { image } = req.body;
+    const { favourtitle, description, reward, image } = req.body;
     const updateOweFavour = await pool.query(
       "UPDATE owefavour SET title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
       [id, favourtitle, description, reward, image]
