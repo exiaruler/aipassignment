@@ -37,10 +37,7 @@ CREATE TABLE favourRequest (
   REFERENCES userData(user_ID)
 );
 
-CREATE TABLE todo(
-  todo_id SERIAL PRIMARY KEY,
-  description VARCHAR(255)
-);
+
 
 CREATE TABLE userData(
   user_ID SERIAL,

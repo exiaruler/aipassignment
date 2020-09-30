@@ -15,14 +15,18 @@ app.post("/addOweFavour",async(req,res)=>{
 try{
   //fields
 const {username,title,description,reward,recievinguser,image}=req.body;
-
 //search up existing owed user 
-const checkUser = await pool.query("SELECT user_name,user_id from userdata where user_name=$1",
+const checkUser = await pool.query("SELECT user_id,user_name from userdata where user_name=$1",
 [recievinguser]
 );
 
+
 //check user if they exist from query
 if(checkUser.rows.length>0){
+  const getID = await pool.query("SELECT user_id from userdata where user_name=$1",
+[recievinguser]
+);
+
 const newOweFavour=await pool.query("INSERT INTO owefavour(user_name,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6) RETURNING * ",
 [username,title,description,reward,recievinguser,image]);
 console.log("owe favour added");
@@ -192,23 +196,6 @@ app.get("/deleteFavourRequest/:id", async (req, res) => {
 });
 
 
-
-
-//insert query to test your database connection using postman using sample table with no primary keys
-
-app.post("/todos", async (req, res) => {
-  try {
-    const { description } = req.body;
-    const newTodo = await pool.query(
-      "INSERT INTO todo (description) VALUES($1) RETURNING *",
-      [description]
-    );
-
-    res.json(newTodo.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
 
 app.post("/signup", async (req, res) => {
   // lily
