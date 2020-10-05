@@ -16,6 +16,6 @@ module.exports = function (req, res, next) {
       return res.json("Missing Credentials");
     }
   }
-
+  
   next();
 };

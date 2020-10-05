@@ -9,7 +9,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setAuth }) => {
   const [inputs, setInputs] = useState({
     userName: "",
     password: "",
@@ -31,6 +31,14 @@ const Login = () => {
         },
         body: JSON.stringify(body),
       });
+      const parseRes = await response.json();
+
+      if (parseRes.jwtToken) {
+        localStorage.setItem("jwtToken", parseRes.jwtToken);
+        setAuth(true);
+      } else {
+        setAuth(false);
+      }
     } catch (err) {
       console.error(err.message);
     }
