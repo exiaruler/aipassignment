@@ -5,13 +5,13 @@ import "./jumbotron-narrow.css";
 const OweRequest = () => {
   const [inputs, setInputs] = useState({
     title: "",
-    recieveusername: "",
+    recievinguser: "",
     description: "",
     reward: "",
     image: "",
   });
 
-  const { title, recieveusername, description, reward, image } = inputs;
+  const { title, recievinguser, description, reward, image } = inputs;
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -19,8 +19,8 @@ const OweRequest = () => {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { title, recieveusername, description, reward, image };
-      const response = await fetch("http://localhost:5000/addOweFavour", {
+      const body = { title, recievinguser, description, reward, image };
+      const response = await fetch("http://localhost:5000/addowefavour", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -47,28 +47,55 @@ const OweRequest = () => {
             <p>
               <label>Favour title</label>
               <input
+                id="title"
+                name="title"
                 type="text"
                 value={title}
                 onChange={(e) => onChange(e)}
-              ></input>
+              />
             </p>
             <p>
               <label>Friend Username</label>
-              <input type="text"></input>
+              <input
+                id="recievinguser"
+                name="recievinguser"
+                type="text"
+                value={recievinguser}
+                onChange={(e) => onChange(e)}
+              />
             </p>
             <p>
               <label>Description</label>
-              <input type="text"></input>
+              <input
+                type="text"
+                value={description}
+                id="description"
+                name="description"
+                onChange={(e) => onChange(e)}
+              />
             </p>
             <p>
               <label>Reward</label>
-              <input type="text"></input>
+              <input
+                type="text"
+                id="reward"
+                name="reward"
+                onChange={(e) => onChange(e)}
+                value={reward}
+              />
             </p>
             <p>
               <label>Image</label>
-              <input type="file" accept="image"></input>
+              <input
+                type="file"
+                accept="image"
+                id="image"
+                name="image"
+                onChange={(e) => onChange(e)}
+                value={image}
+              />
             </p>
-            <input type="submit"></input>
+            <input type="submit" name="Submit" />
           </form>
         </div>
       </body>

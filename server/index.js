@@ -11,22 +11,16 @@ app.use(express.json());
 
 //OWEFAVOURS
 //add owefavour-Samuel
-app.post("/addOweFavour",async(req,res)=>{
+app.post("/addowefavour",async(req,res)=>{
 try{
   //fields
 const {username,title,description,reward,recievinguser,image}=req.body;
 //search up existing owed user 
-const checkUser = await pool.query("SELECT user_id,user_name from userdata where user_name=$1",
+const checkUser = await pool.query("SELECT * FROM userData WHERE user_name=$1",
 [recievinguser]
 );
-
-
 //check user if they exist from query
 if(checkUser.rows.length>0){
-  const getID = await pool.query("SELECT user_id from userdata where user_name=$1",
-[recievinguser]
-);
-
 const newOweFavour=await pool.query("INSERT INTO owefavour(user_name,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6) RETURNING * ",
 [username,title,description,reward,recievinguser,image]);
 console.log("owe favour added");
@@ -118,23 +112,15 @@ app.get("/completeFavourOwe/:id", async (req, res) => {
 // add favourRequest
 app.post("/addFavourRequest", async (req, res) => {
   try {
-    const { completinguser, title, description, reward, image } = req.body;
-    const { completingusername } = req.params;
-    // Search up an existing completing user
-    const completeUser = await pool.query(
-      "SELECT * FROM userData WHERE user_name = $1",
-      [completinguser]
-    );
-    if (completeUser.rows.length > 0) {
-      const newFavourRequest = await pool.query(
-        "INSERT INTO favourRequest(title) VALUES($1)",
-        [completinguser, completingusername, title, description, reward, image]
+    const {username, title, favour_description, rewards, image} = req.body;
+    const newFavourRequest = await pool.query(
+      "INSERT INTO favourRequest(title, favour_description, rewards, image) VALUES($1, $2, $3, $4) RETURNING *",
+      [title, favour_description, rewards, image]
       );
       res.json(newFavourRequest);
-    }
-    console.log("User completing does not exist");
+    //console.log("User completing does not exist");
   } catch (err) {
-    console.error(err.message);
+      console.error(err.message);
   }
 });
 // get ALL favourRequests
@@ -220,3 +206,19 @@ app.listen(5000, () => {
 
 //test post with postman
 //console.log(req.body);
+
+
+// DB TESTING pls ignore - Rey
+app.post("/practice", async (req, res) => {
+  try {
+    const {description} = req.body;
+    const newPrac = await pool.query(
+      "INSERT INTO prac (description) VALUES($1)",
+      [description]
+    );
+    res.json(newPrac);    
+  }
+  catch (err) {
+    console.error(err.message)
+    }
+});
