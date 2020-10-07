@@ -10,8 +10,8 @@ favour_description VARCHAR(255) ,
 rewards VARCHAR(255) ,
 recieving_userID  INT ,
 recieving_username VARCHAR(255) ,
-favour_image Bytea,
-complete_image Bytea,
+favour_image VARCHAR,
+complete_image VARCHAR,
 	PRIMARY KEY (favour_ID),
 CONSTRAINT fk_user
 FOREIGN KEY (user_ID)
