@@ -2,19 +2,36 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+const fs = require('fs');
+const multer=require('multer');
+const path =require('path');
+const { query } = require("./db");
+
+//Storage engine 
+const storage = multer.diskStorage({
+  destination: "./uploads/",
+  filename: function(req, file, cb){
+     cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+  }
+});
+
+
+//init upload
+var upload = multer({ dest: './uploads/' })
 
 //middleware
 app.use(cors());
 app.use(express.json());
-
 //routes
 
 //OWEFAVOURS
 //add owefavour-Samuel
-app.post("/addowefavour",async(req,res)=>{
+app.post("/addowefavour",upload.single('image'),async(req,res)=>{
 try{
   //fields
-const {username,title,description,reward,recievinguser,image}=req.body;
+const {username,title,description,reward,recievinguser}=req.body;
+const image=req.file.path;
+
 //search up existing owed user 
 const checkUser = await pool.query("SELECT * FROM userData WHERE user_name=$1",
 [recievinguser]
@@ -33,10 +50,10 @@ console.log("user recieving does not exist");
 });
 
 //get all owefavours-Vivian
-app.get("/getAllOweFavour", async (req, res) => {
+app.get("/getallowefavour", async (req, res) => {
   try {
     const allOweFavours = await pool.query(
-      "SELECT title,favour_description,rewards,recieving_username,complete,favour_image  from owefavour ;"
+      "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image  from owefavour ;"
     );
     res.json(allOweFavours.rows);
   } catch (err) {
@@ -45,7 +62,7 @@ app.get("/getAllOweFavour", async (req, res) => {
 });
 
 //get a owefavour-Vivian
-app.get("/getOweFavour/:title", async (req, res) => {
+app.get("/getowefavour/:title", async (req, res) => {
   try {
     const { title } = req.params;
     const owefav = await pool.query("SELECT * FROM owefavour where title=$1", [
@@ -63,7 +80,7 @@ app.get("/updateOweFavour/:id", async (req, res) => {
     const { id } = req.params;
     const { favourtitle, description, reward, image } = req.body;
     const updateOweFavour = await pool.query(
-      "UPDATE owefavour SET title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
+      "UPDATE owefavour SET favour_id,title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
       [id, favourtitle, description, reward, image]
     );
     res.json("favour updated");
@@ -73,21 +90,24 @@ app.get("/updateOweFavour/:id", async (req, res) => {
 });
 
 //delete owefavour-Samuel
-app.get("/deleteOweFavour/:id", async (req, res) => {
+app.delete("/deleteowefavour/:id", async (req, res) => {
   try {
+    //parameter of deleting favour by id 
     const { id } = req.params;
     //create a querry that finds if the data contains an image
     const checkImage = await pool.query(
-      "SELECT favourimage FROM owefavour where user_ID=$1",
+      "SELECT favour_image FROM owefavour where favour_id=$1",
       [id]
     );
-    if (checkImage.contains("null")) {
+    console.log(checkImage.rows);
+    //checks if there a pathway 
+    //if (checkImage.rows==null) {
       const deleteOweFavour = await pool.query(
-        "DELETE FROM owefavour WHERE favour_ID=$1",
+        "DELETE FROM owefavour WHERE favour_id=$1",
         [id]
       );
       res.json("favour deleted");
-    }
+   // }
   } catch (err) {
     console.error(err.message);
   }
@@ -107,6 +127,7 @@ app.get("/completeFavourOwe/:id", async (req, res) => {
     console.error(err.message);
   }
 });
+
 
 //REQUESTFAVOURS
 // add favourRequest
