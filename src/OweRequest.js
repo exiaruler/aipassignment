@@ -32,9 +32,9 @@ const OweRequest = () => {
           formData.append('description',description);
           formData.append('reward',reward);
           formData.append('image',image);
-          const response = await fetch("http://localhost:5000/addowefavour", {
+          const response = await fetch("http://localhost:5000/owe/addowefavour", {
             method: "POST",
-            body:formData
+            body:formData,
           });
           
         } catch (err) {

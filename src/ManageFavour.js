@@ -5,9 +5,9 @@ const ManageFavour  = () =>  {
     //display favours
     const getAllOweFavour = async () => {
         try {
-          const response = await fetch("http://localhost:5000/getallowefavour");
+          const response = await fetch("http://localhost:5000/owe/getallowefavour");
           const jsonData = await response.json();
-    
+         
           setAllOweFavour(jsonData);
         } catch (err) {
           console.error(err.message);
@@ -16,7 +16,7 @@ const ManageFavour  = () =>  {
 
       const deleteFavour= async id =>{
         try {
-            const deleteFavour = await fetch(`http://localhost:5000/deleteowefavour/${id}`, {
+            const deleteFavour = await fetch(`http://localhost:5000/owe/deleteowefavour/${id}`, {
               method: "DELETE"
             });
       
@@ -26,6 +26,7 @@ const ManageFavour  = () =>  {
            
           }
       };
+     
     
       useEffect(() => {
         getAllOweFavour();
@@ -51,6 +52,8 @@ const ManageFavour  = () =>  {
          
            
                {getallowefavour.map(owe => (
+                 
+                  
             <tr key={owe.favour_id}>
               <td>
                 {owe.title}
