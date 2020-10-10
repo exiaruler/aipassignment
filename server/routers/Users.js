@@ -73,32 +73,35 @@ router.post("/login", verify, async (req, res) => {
 ////////////////////////////////////////////////// edit account route
 router.post("/editaccount", auth, verifyNewUserEdit, async (req, res) => {
   // lily
-  const { fullName, email, old_password, new_password } = req.body;
-
+  const { fullName, email, oldPassword, newPassword } = req.body;
+  //console.log(req.body);
   // need old password to change details
   try {
     const userPassword = await pool.query(
       "SELECT * FROM userData WHERE user_id = $1",
       [req.user.id]
     );
+    console.log("fffff");
+
     const validPassword = await bcrypt.compare(
-      old_password,
+      oldPassword,
       userPassword.rows[0].user_password
     );
-
+    console.log("wwwwww");
     if (!validPassword) {
       return res.status(401).json("Invalid Password"); // if old password matches with database
     }
-
+    console.log("userPassword");
     const salt = await bcrypt.genSalt(8); // how crypted the passwords is
-    const secretPassword = await bcrypt.hash(new_password, salt); // hiding password
+    const secretPassword = await bcrypt.hash(newPassword, salt); // hiding password
 
     // if not null then update
     const editUserAccount = await pool.query(
-      "UPDATE userData SET user_fullname =$1, user_password=$3,  user_email =$2 WHERE user_id =$4",
-      [fullName, email, secretPassword, req.user.id]
+      "UPDATE userData SET user_fullname =$1, user_password=$2,  user_email =$3 WHERE user_id =$4",
+      [fullName, secretPassword, email, req.user.id]
     );
-    res.json("Account was updated!");
+    const jwtToken = createJWT(userPassword.rows[0].user_id);
+    return res.json({ jwtToken });
   } catch (err) {
     console.error(err.message);
   }
