@@ -41,10 +41,10 @@ app.post("/addFavourRequest", async (req, res) => {
   }
 });
 // get ALL favourRequests
-app.get("/getAllFavourRequests", async (req, res) => {
+app.get("/getAllFavourRequest", async (req, res) => {
   try {
     const allFavourRequests = await pool.query(
-      "SELECT title, favour_description, rewards, completing_Username,complete, favour_image FROM favourRequest;"
+      "SELECT favour_id, title, favour_description, rewards, completing_username, complete, image FROM favourRequest;"
     );
     res.json(allFavourRequests.rows);
   } catch (err) {
@@ -70,7 +70,7 @@ app.put("/favourRequest/:id", async (req, res) => {
     const { id } = req.params;
     const { favourtitle, description, reward, image } = req.body;
     const updateFavourRequest = await pool.query(
-      "UPDATE favourRequest SET title, favour_description, reward, favour_image = $1 WHERE favour_ID =$2",
+      "UPDATE favourRequest SET (title, favour_description, rewards, image) = ($1, $2, $3, $4) WHERE favour_id = $5",
       [id, favourtitle, description, reward, image]
     );
     res.json("Favour updated");
@@ -82,18 +82,9 @@ app.put("/favourRequest/:id", async (req, res) => {
 app.get("/deleteFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    // Create query that finds if the data contains an image
-    const checkImage = await pool.query(
-      "SELECT favourimage FROM favourRequest where user_ID=$1",
-      [id]
-    );
-    if (checkImage.contains("null")) {
-      const deleteOweFavour = await pool.query(
-        "DELETE FROM favourRequest WHERE favour_ID=$1",
-        [id]
-      );
-      res.json("Favour deleted");
-    }
+    const deleteFavourRequest = await pool.query(
+      "DELETE FROM favourRequest WHERE favour_id = $1", [id]);
+      res.json("Favour request deleted");
   } catch (err) {
     console.error(err.message);
   }
