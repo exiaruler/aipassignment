@@ -3,19 +3,8 @@ const ManageFavour  = () =>  {
     const [getallowefavour, setAllOweFavour] = useState([]);
    
     //display favours
-    const getAllOweFavour = async () => {
-        try {
-          const response = await fetch("http://localhost:5000/owe/getallowefavour");
-          const jsonData = await response.json();
-     
-        
-          setAllOweFavour(jsonData);
-        } catch (err) {
-          console.error(err.message);
-        }
-      };
 
-      const withtoken = async (e) => {
+      const getAllFavours = async (e) => {
         //e.preventDefault();
         try {
           const response = await fetch("http://localhost:5000/owe/getallowefavour", {
@@ -49,7 +38,7 @@ const ManageFavour  = () =>  {
      
     
       useEffect(() => {
-        withtoken();
+        getAllFavours();
       }, []);
     
    
@@ -86,7 +75,7 @@ const ManageFavour  = () =>  {
                 {owe.recieving_username}
               </td>
               <td>
-                <img src={owe.favour_image } alt="favour image" />
+                <img src={owe.favour_image  } alt="favour image" />
               </td>
               <td>
                 <button

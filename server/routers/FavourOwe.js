@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const pool = require("../db");
+const fs = require('fs');
 const multer=require('multer');
 const auth = require("../middleware/authoriseUser"); //jwt token for user access 
 //creates destination for image files and gives them a unique ID 
@@ -59,6 +60,12 @@ router.post("/addowefavour",auth,upload.single('image'),async(req,res)=>{
       const allOweFavours = await pool.query(
         "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image from owefavour WHERE user_name=$1 ;",[username.rows[0].user_name]
       );
+      const getImage = await pool.query(
+        "SELECT favour_image from owefavour WHERE user_name=$1 ;",[username.rows[0].user_name]
+      );
+   //allOweFavours.rows[0].favour_image+".jpg";
+       // console.log(allOweFavours.rows[0].favour_image);
+    
       res.json(allOweFavours.rows);
     } catch (err) {
       console.error(err.message);
@@ -112,7 +119,8 @@ router.post("/addowefavour",auth,upload.single('image'),async(req,res)=>{
           [id]
         );
         res.json("favour deleted");
-     }
+     }else
+     {res.json("Cannot delete as image is present");}
     } catch (err) {
       console.error(err.message);
     }
