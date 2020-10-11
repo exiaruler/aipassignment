@@ -1,18 +1,38 @@
 import React, {  useEffect, useState } from "react";
 const ManageFavour  = () =>  {
     const [getallowefavour, setAllOweFavour] = useState([]);
-
+   
     //display favours
     const getAllOweFavour = async () => {
         try {
           const response = await fetch("http://localhost:5000/owe/getallowefavour");
           const jsonData = await response.json();
-         
+     
+        
           setAllOweFavour(jsonData);
         } catch (err) {
           console.error(err.message);
         }
       };
+
+      const withtoken = async (e) => {
+        //e.preventDefault();
+        try {
+          const response = await fetch("http://localhost:5000/owe/getallowefavour", {
+            method: "GET",
+            headers: {
+              jwtToken: localStorage.jwtToken,
+            },
+            
+          });
+          const jsonData = await response.json();
+          setAllOweFavour(jsonData);
+        } catch (err) {
+          console.error(err.message);
+        }
+      };
+
+
 
       const deleteFavour= async id =>{
         try {
@@ -29,7 +49,7 @@ const ManageFavour  = () =>  {
      
     
       useEffect(() => {
-        getAllOweFavour();
+        withtoken();
       }, []);
     
    
@@ -70,7 +90,7 @@ const ManageFavour  = () =>  {
               </td>
               <td>
                 <button
-                  className="btn btn-danger"
+                  
                   onClick={() => deleteFavour(owe.favour_id)}
                 >
                   Delete
