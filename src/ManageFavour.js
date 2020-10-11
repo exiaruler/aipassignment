@@ -1,18 +1,27 @@
 import React, {  useEffect, useState } from "react";
 const ManageFavour  = () =>  {
     const [getallowefavour, setAllOweFavour] = useState([]);
-
+   
     //display favours
-    const getAllOweFavour = async () => {
+
+      const getAllFavours = async (e) => {
+        //e.preventDefault();
         try {
-          const response = await fetch("http://localhost:5000/owe/getallowefavour");
+          const response = await fetch("http://localhost:5000/owe/getallowefavour", {
+            method: "GET",
+            headers: {
+              jwtToken: localStorage.jwtToken,
+            },
+            
+          });
           const jsonData = await response.json();
-         
           setAllOweFavour(jsonData);
         } catch (err) {
           console.error(err.message);
         }
       };
+
+
 
       const deleteFavour= async id =>{
         try {
@@ -29,7 +38,7 @@ const ManageFavour  = () =>  {
      
     
       useEffect(() => {
-        getAllOweFavour();
+        getAllFavours();
       }, []);
     
    
@@ -66,11 +75,11 @@ const ManageFavour  = () =>  {
                 {owe.recieving_username}
               </td>
               <td>
-                <img src={owe.favour_image } alt="favour image" />
+                <img src={owe.favour_image  } alt="favour image" />
               </td>
               <td>
                 <button
-                  className="btn btn-danger"
+                  
                   onClick={() => deleteFavour(owe.favour_id)}
                 >
                   Delete

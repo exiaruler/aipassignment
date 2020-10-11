@@ -34,6 +34,9 @@ const OweRequest = () => {
           formData.append('image',image);
           const response = await fetch("http://localhost:5000/owe/addowefavour", {
             method: "POST",
+            headers: {
+              jwtToken: localStorage.jwtToken,
+            },
             body:formData,
           });
           

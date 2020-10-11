@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const pool = require("../db");
+const fs = require('fs');
 const multer=require('multer');
+const auth = require("../middleware/authoriseUser"); //jwt token for user access 
 //creates destination for image files and gives them a unique ID 
 const storage = multer.diskStorage({
   destination: './uploads/',
@@ -14,14 +16,20 @@ const storage = multer.diskStorage({
 //init upload
 var upload = multer({ dest: './uploads/' })
 
+
+
 //OWEFAVOURS
 //add owefavour-Samuel
-router.post("/addowefavour",upload.single('image'),async(req,res)=>{
+router.post("/addowefavour",auth,upload.single('image'),async(req,res)=>{
   try{
     //fields
-  const {username,title,description,reward,recievinguser}=req.body;
-  const image=req.file.path;
-  
+    const {title,description,reward,recievinguser,image}=req.body;
+    //const image=req.file.path;
+    //use jwt token to get user
+  const username = await pool.query(
+    "SELECT * FROM userData WHERE user_id = $1",
+    [req.user.id]
+  );
   //search up existing owed user 
   const checkUser = await pool.query("SELECT * FROM userData WHERE user_name=$1",
   [recievinguser]
@@ -29,8 +37,8 @@ router.post("/addowefavour",upload.single('image'),async(req,res)=>{
  
   //check user if they exist from query
   if(checkUser.rows.length>0){
-  const newOweFavour=await pool.query("INSERT INTO owefavour(user_name,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6) RETURNING * ",
-  [username,title,description,reward,recievinguser,image]);
+  const newOweFavour=await pool.query("INSERT INTO owefavour(user_name,user_id,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING * ",
+  [username.rows[0].user_name,username.rows[0].user_id,title,description,reward,recievinguser,image]);
   console.log("owe favour added");
   res.json(newOweFavour);
   }else
@@ -41,16 +49,29 @@ router.post("/addowefavour",upload.single('image'),async(req,res)=>{
   });
   
   //get all owefavours-Vivian
-  router.get("/getallowefavour", async (req, res) => {
+  router.get("/getallowefavour",auth,async (req, res) => {
     try {
-      const allOweFavours = await pool.query(
-        "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image  from owefavour ;"
+
+      const username = await pool.query(
+        "SELECT user_name FROM userData WHERE user_id = $1",
+        [req.user.id]
       );
+ 
+      const allOweFavours = await pool.query(
+        "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image from owefavour WHERE user_name=$1 ;",[username.rows[0].user_name]
+      );
+      const getImage = await pool.query(
+        "SELECT favour_image from owefavour WHERE user_name=$1 ;",[username.rows[0].user_name]
+      );
+   //allOweFavours.rows[0].favour_image+".jpg";
+       // console.log(allOweFavours.rows[0].favour_image);
+    
       res.json(allOweFavours.rows);
     } catch (err) {
       console.error(err.message);
     }
   });
+
   
   //get a owefavour-Vivian
   router.get("/getowefavour/:title", async (req, res) => {
@@ -86,22 +107,20 @@ router.post("/addowefavour",upload.single('image'),async(req,res)=>{
       //parameter of deleting favour by id 
       const { id } = req.params;
       //create a querry that finds if the data contains an image
-      let checkImage = await pool.query(
-        "SELECT favour_image FROM owefavour where favour_id=$1",
+      const checkImage = await pool.query(
+        "SELECT * FROM owefavour where favour_id=$1",
         [id]
       );
       
-      //const test=JSON.parse(this.checkImage);
-      console.log(checkImage.rows.favour_image);
-     
-      //checks if there a pathway 
-      if (checkImage.rows!={favour_image: null}) {
+      //checks if there a pathway in favour_image
+      if (checkImage.rows[0].favour_image==0) {
         const deleteOweFavour = await pool.query(
           "DELETE FROM owefavour WHERE favour_id=$1",
           [id]
         );
         res.json("favour deleted");
-     }
+     }else
+     {res.json("Cannot delete as image is present");}
     } catch (err) {
       console.error(err.message);
     }

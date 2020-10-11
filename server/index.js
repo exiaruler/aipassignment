@@ -8,16 +8,6 @@ const path =require('path');
 const { query } = require("./db");
 const querystring = require('querystring');
 
-//Storage engine 
-const storage = multer.diskStorage({
-  destination: './uploads/',
-  filename: function(req, file, cb){
-    cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
-
-//init upload
-var upload = multer({ dest: './uploads/' })
 
 //middleware
 app.use(cors());
