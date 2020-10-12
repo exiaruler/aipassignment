@@ -2,32 +2,30 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
-const fs = require('fs');
-const multer=require('multer');
-const path =require('path');
+const fs = require("fs");
+const multer = require("multer");
+const path = require("path");
 const { query } = require("./db");
-const querystring = require('querystring');
-
+const querystring = require("querystring");
 
 //middleware
 app.use(cors());
 app.use(express.json());
 //routes
 
-
 //REQUESTFAVOURS
 // add favourRequest
 app.post("/addFavourRequest", async (req, res) => {
   try {
-    const {username, title, favour_description, rewards, image} = req.body;
+    const { username, title, favour_description, rewards, image } = req.body;
     const newFavourRequest = await pool.query(
       "INSERT INTO favourRequest(title, favour_description, rewards, image) VALUES($1, $2, $3, $4) RETURNING *",
       [title, favour_description, rewards, image]
-      );
-      res.json(newFavourRequest);
+    );
+    res.json(newFavourRequest);
     //console.log("User completing does not exist");
   } catch (err) {
-      console.error(err.message);
+    console.error(err.message);
   }
 });
 // get ALL favourRequests
@@ -73,8 +71,10 @@ app.get("/deleteFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteFavourRequest = await pool.query(
-      "DELETE FROM favourRequest WHERE favour_id = $1", [id]);
-      res.json("Favour request deleted");
+      "DELETE FROM favourRequest WHERE favour_id = $1",
+      [id]
+    );
+    res.json("Favour request deleted");
   } catch (err) {
     console.error(err.message);
   }
@@ -105,24 +105,19 @@ app.listen(5000, () => {
 ////////////////////////////////////////////////// owefavour route
 app.use("/owe", require("./routers/FavourOwe")); //login, sign up, edit account
 
-
-
-
 //test post with postman
 //console.log(req.body);
-
 
 // DB TESTING pls ignore - Rey
 app.post("/practice", async (req, res) => {
   try {
-    const {description} = req.body;
+    const { description } = req.body;
     const newPrac = await pool.query(
       "INSERT INTO prac (description) VALUES($1)",
       [description]
     );
-    res.json(newPrac);    
+    res.json(newPrac);
+  } catch (err) {
+    console.error(err.message);
   }
-  catch (err) {
-    console.error(err.message)
-    }
 });

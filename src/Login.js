@@ -54,8 +54,6 @@ const Login = ({ setAuth }) => {
         <div class="container">
           <div class="inner">
             <div class="left">
-              <h1>Logo</h1>
-
               <div class="content">
                 <h1>Login</h1>
                 <p>Please fill in details to login.</p>
@@ -87,7 +85,7 @@ const Login = ({ setAuth }) => {
             </div>
 
             <div class="right">
-              <h1>Login</h1>
+              <h1>Sign up</h1>
 
               <p>Don't have an account? Press the button below to sign up.</p>
               <Link to="/signup">

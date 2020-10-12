@@ -20,14 +20,14 @@ import {
 } from "react-router-dom";
 
 function App() {
-  useEffect(() => {
-    checkAuthenticated();
-  }, []);
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [istrue, setIstrue] = useState(true);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
+  };
+  const setTrue = (boolean) => {
+    setIstrue(boolean);
   };
 
   const checkAuthenticated = async () => {
@@ -46,28 +46,60 @@ function App() {
   };
 
   const logout = async (e) => {
-    e.preventDefault();
     try {
+      //window.location.reload();
       localStorage.removeItem("jwtToken");
       setAuth(false);
       document.getElementById("edit").children[2].style.display = "block";
       document.getElementById("edit").children[1].style.display = "block";
+      document.getElementById("edit").children[6].style.display = "none";
+      document.getElementById("edit").children[5].style.display = "none";
+      document.getElementById("edit").children[4].style.display = "none";
+      document.getElementById("edit").children[3].style.display = "none";
     } catch (err) {
       console.error(err.message);
     }
   };
 
   function handleClick() {
+    //window.location.reload();\
     if (isAuthenticated) {
       document.getElementById("edit").children[2].style.display = "none";
       document.getElementById("edit").children[1].style.display = "none";
+      document.getElementById("edit").children[6].style.display = "block";
+      document.getElementById("edit").children[5].style.display = "block";
+      document.getElementById("edit").children[4].style.display = "block";
+      document.getElementById("edit").children[3].style.display = "block";
     }
 
     if (!isAuthenticated) {
       document.getElementById("edit").children[2].style.display = "block";
       document.getElementById("edit").children[1].style.display = "block";
+      document.getElementById("edit").children[6].style.display = "none";
     }
-  } //onClick={handleClick}
+  } //onClick={handleClick} {...onlyShow()}
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
+  window.onload = function () {
+    // loading the screen
+    if (isAuthenticated) {
+      setAuth(true);
+    }
+    if (isAuthenticated) {
+      document.getElementById("edit").children[6].style.display = "block";
+      document.getElementById("edit").children[5].style.display = "none";
+      document.getElementById("edit").children[4].style.display = "none";
+      document.getElementById("edit").children[3].style.display = "none";
+      //document.getElementById("edit").children[2].style.display = "none";
+      //document.getElementById("edit").children[1].style.display = "block";
+    } else {
+      document.getElementById("edit").children[6].style.display = "none";
+      document.getElementById("edit").children[5].style.display = "none";
+      document.getElementById("edit").children[4].style.display = "none";
+      document.getElementById("edit").children[3].style.display = "none";
+    }
+  };
 
   return (
     <html lang="en">
@@ -87,7 +119,7 @@ function App() {
                     <Link to="/viewrequestfavours">Home</Link>
                   </li>
                   <li>
-                    <Link to="/signup">Sign Up</Link>
+                    <Link to="/signup">Sign up</Link>
                   </li>
 
                   <li>
@@ -102,6 +134,14 @@ function App() {
                   <li>
                     <Link to="/manageaccount">Manage Account</Link>
                   </li>
+                  <li>
+                    <button
+                      onClick={(e) => logout(e)}
+                      className="btn btn-primary"
+                    >
+                      Logout
+                    </button>
+                  </li>
                   <Switch>
                     <Route
                       exact
@@ -115,10 +155,41 @@ function App() {
                       path="/viewrequestfavours"
                       component={ViewRequestFavours}
                     />
-                    <Route path="/managefavours" component={ManageFavours} />
-                    <Route path="/editaccount" component={EditAccount} />
-                    <Route path="/favourhistory" component={FavourHistory} />
-                    <Route path="/createfavour" component={SelectForm} />
+                    <Route
+                      path="/managefavours"
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <ManageFavours {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      }
+                      //component={ManageFavours}
+                    />
+                    <Route
+                      path="/editaccount"
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <EditAccount {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      } //component={EditAccount}
+                    />
+                    <Route
+                      path="/favourhistory"
+                      component={FavourHistory} // cant make this logout into login
+                    />
+                    <Route
+                      path="/createfavour"
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <SelectForm {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      } //component={SelectForm} />
+                    />
                     <Route
                       path="/login"
                       render={(props) =>
@@ -142,14 +213,17 @@ function App() {
                         )
                       }
                     />
-                    <Route path="/leaderboard" component={Leaderboard} />
-                    <Route path="/manageaccount" component={ManageAccount} />
+                    <Route
+                      path="/leaderboard"
+                      component={Leaderboard} // cant make this logout into login
+                    />
+                    <Route
+                      path="/manageaccount"
+                      component={ManageAccount} // cant make this logout into login
+                    />
                   </Switch>
                 </ul>
               </nav>
-              <button onClick={(e) => logout(e)} className="btn btn-primary">
-                Logout
-              </button>
             </div>
             <footer class="footer">
               <p>&copy; Adv Internet Programing</p>

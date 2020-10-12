@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ViewRequestFavours from "./ViewRequestFavours";
 import "./bootstrap.css";
 
@@ -6,6 +6,26 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Login";
 
 const ChangeUserDetail = ({ setAuth }) => {
+  const [name, setName] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+
+  const getProfile = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/auth/editaccount2", {
+        method: "POST",
+        headers: { jwtToken: localStorage.jwtToken },
+      });
+
+      const parseData = await res.json();
+      setName(parseData.user_fullname);
+      setEmail(parseData.user_email);
+      setUserName(parseData.user_name);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   const [inputs, setInputs] = useState({
     fullName: "",
     email: "",
@@ -19,7 +39,7 @@ const ChangeUserDetail = ({ setAuth }) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const onSubmitForm = async (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     try {
       const body = { fullName, email, oldPassword, newPassword };
       const response = await fetch("http://localhost:5000/auth/editaccount", {
@@ -30,14 +50,22 @@ const ChangeUserDetail = ({ setAuth }) => {
         },
         body: JSON.stringify(body),
       });
-      //const parseRes = await response.json();
-      // if (parseRes.jwtToken) {
-      //   localStorage.setItem("jwtToken", parseRes.jwtToken);
-      // }
+      const parseRes = await response.json();
+
+      if (parseRes.jwtToken) {
+        localStorage.setItem("jwtToken", parseRes.jwtToken);
+        setAuth(true);
+      } else {
+        setAuth(false);
+      }
     } catch (err) {
       console.error(err.message);
     }
   };
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -48,6 +76,10 @@ const ChangeUserDetail = ({ setAuth }) => {
         <div class="container">
           <div class="inner">
             <div class="content">
+              <h1>Account information:</h1>
+              <p>UserName: {userName}</p>
+              <p>Name: {name}</p>
+              <p>Email: {userEmail}</p>
               <h1>Change details</h1>
               <p>Please fill in to change details.</p>
 
