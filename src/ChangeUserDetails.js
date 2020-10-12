@@ -5,7 +5,7 @@ import "./bootstrap.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Login";
 
-const ChangeUserDetail = () => {
+const ChangeUserDetail = ({ setAuth }) => {
   const [inputs, setInputs] = useState({
     fullName: "",
     email: "",
@@ -25,10 +25,15 @@ const ChangeUserDetail = () => {
       const response = await fetch("http://localhost:5000/auth/editaccount", {
         method: "POST",
         headers: {
+          jwtToken: localStorage.jwtToken,
           "Content-type": "application/json",
         },
         body: JSON.stringify(body),
       });
+      //const parseRes = await response.json();
+      // if (parseRes.jwtToken) {
+      //   localStorage.setItem("jwtToken", parseRes.jwtToken);
+      // }
     } catch (err) {
       console.error(err.message);
     }

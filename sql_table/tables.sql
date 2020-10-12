@@ -10,8 +10,8 @@ favour_description VARCHAR(255) ,
 rewards VARCHAR(255) ,
 recieving_userID  INT ,
 recieving_username VARCHAR(255) ,
-favour_image Bytea,
-complete_image Bytea,
+favour_image VARCHAR,
+complete_image VARCHAR,
 	PRIMARY KEY (favour_ID),
 CONSTRAINT fk_user
 FOREIGN KEY (user_ID)
@@ -21,15 +21,16 @@ REFERENCES userData(user_ID)
 
 
 CREATE TABLE favourRequest (
-  favourID INT,
+  favour_id SERIAL,
   user_ID INT,
   user_name VARCHAR(255),
   title VARCHAR(255),
   favour_description VARCHAR(255),
   rewards VARCHAR(255),
-  completing_UserID INT,
-  completing_Username VARCHAR,
-  favour_image Bytea,
+  completing_userid INT,
+  completing_username VARCHAR,
+  complete BOOLEAN,
+  image Bytea,
   complete_image Bytea,
   CONSTRAINT fk_user
   PRIMARY KEY (favourID),

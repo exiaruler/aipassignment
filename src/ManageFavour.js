@@ -1,16 +1,20 @@
-import './jumbotron-narrow.css'
-import './bootstrap.css'
-
 import React, {  useEffect, useState } from "react";
 const ManageFavour  = () =>  {
     const [getallowefavour, setAllOweFavour] = useState([]);
-
+   
     //display favours
-    const getAllOweFavour = async () => {
+
+      const getAllFavours = async (e) => {
+        //e.preventDefault();
         try {
-          const response = await fetch("http://localhost:5000/getallowefavour");
+          const response = await fetch("http://localhost:5000/owe/getallowefavour", {
+            method: "GET",
+            headers: {
+              jwtToken: localStorage.jwtToken,
+            },
+            
+          });
           const jsonData = await response.json();
-    
           setAllOweFavour(jsonData);
         } catch (err) {
           console.error(err.message);
@@ -22,11 +26,9 @@ const ManageFavour  = () =>  {
         const []
       }
 
-
-      // delete favours
       const deleteFavour= async id =>{
         try {
-            const deleteFavour = await fetch(`http://localhost:5000/deleteowefavour/${id}`, {
+            const deleteFavour = await fetch(`http://localhost:5000/owe/deleteowefavour/${id}`, {
               method: "DELETE"
             });
       
@@ -36,9 +38,10 @@ const ManageFavour  = () =>  {
            
           }
       };
+     
     
       useEffect(() => {
-        getAllOweFavour();
+        getAllFavours();
       }, []);
     
    
@@ -64,6 +67,8 @@ const ManageFavour  = () =>  {
 
           <tbody>
                {getallowefavour.map(owe => (
+                 
+                  
             <tr key={owe.favour_id}>
               <td>
                 {owe.title}
@@ -76,7 +81,7 @@ const ManageFavour  = () =>  {
                 {owe.recieving_username}
               </td>
               <td>
-                  {owe.favour_image }
+                <img src={owe.favour_image  } alt="favour image" />
               </td>
               <td>
                 <button
