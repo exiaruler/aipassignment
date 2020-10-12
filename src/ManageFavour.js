@@ -23,9 +23,22 @@ const ManageFavour  = () =>  {
     
       // update favours
       const updateFavour = ({ getallowefavour }) => {
-        const []
+        //const [description, setDescription] = useState(getallowefavour.description);
+
+      const updateDescription = async e => {
+        e.preventDefault();
+        try{
+          //const favourDescription = {description};
+          const response = await fetch(`http://localhost:5000/owe/updatefavourdescription/${e}`)
+          
+        } catch (err) {
+          console.error(err.message);
+        }
+      };
+        
       }
 
+      // delete favours
       const deleteFavour= async id =>{
         try {
             const deleteFavour = await fetch(`http://localhost:5000/owe/deleteowefavour/${id}`, {
