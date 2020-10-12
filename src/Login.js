@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SignUp from "./SignUp";
+import { toast } from "react-toastify";
 
 import {
   BrowserRouter as Router,
@@ -36,8 +37,10 @@ const Login = ({ setAuth }) => {
       if (parseRes.jwtToken) {
         localStorage.setItem("jwtToken", parseRes.jwtToken);
         setAuth(true);
+        toast.success("Logged in Successfully!");
       } else {
         setAuth(false);
+        toast.error(parseRes);
       }
     } catch (err) {
       console.error(err.message);

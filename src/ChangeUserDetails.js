@@ -4,6 +4,7 @@ import "./bootstrap.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Login";
+import { toast } from "react-toastify";
 
 const ChangeUserDetail = ({ setAuth }) => {
   const [name, setName] = useState("");
@@ -11,6 +12,7 @@ const ChangeUserDetail = ({ setAuth }) => {
   const [userName, setUserName] = useState("");
 
   const getProfile = async () => {
+    // get user information from database
     try {
       const res = await fetch("http://localhost:5000/auth/editaccount2", {
         method: "POST",
@@ -39,7 +41,7 @@ const ChangeUserDetail = ({ setAuth }) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const onSubmitForm = async (e) => {
-    //e.preventDefault();
+    e.preventDefault();
     try {
       const body = { fullName, email, oldPassword, newPassword };
       const response = await fetch("http://localhost:5000/auth/editaccount", {
@@ -55,8 +57,10 @@ const ChangeUserDetail = ({ setAuth }) => {
       if (parseRes.jwtToken) {
         localStorage.setItem("jwtToken", parseRes.jwtToken);
         setAuth(true);
+        toast.success("Edit Successfully!");
       } else {
-        setAuth(false);
+        //setAuth(false); not needed
+        toast.error(parseRes);
       }
     } catch (err) {
       console.error(err.message);

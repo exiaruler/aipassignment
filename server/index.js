@@ -12,6 +12,9 @@ const querystring = require("querystring");
 app.use(cors());
 app.use(express.json());
 //routes
+app.get("/", function (req, res) {
+  res.sendFile(__basedir + "/react/index.html");
+});
 
 //REQUESTFAVOURS
 // add favourRequest

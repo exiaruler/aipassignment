@@ -7,11 +7,10 @@ module.exports = function (req, res, next) {
 
   if (req.path === "/editaccount") {
     if (![fullName, email, oldPassword, newPassword].every(Boolean)) {
-      return res.status(401).json("Missing Credentials");
+      return res.status(401).json("Missing Credentials!");
     } else if (!validEmail(email)) {
-      return res.status(401).json("Invalid Email");
+      return res.status(401).json("Invalid Email!");
     }
   }
-  console.log("appl");
   next();
 };

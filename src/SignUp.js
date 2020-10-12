@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./bootstrap.css";
 import "./jumbotron-narrow.css";
+import { toast } from "react-toastify";
 
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import Login from "./Login";
@@ -34,8 +35,10 @@ const SignUp = ({ setAuth }) => {
       if (parseRes.jwtToken) {
         localStorage.setItem("jwtToken", parseRes.jwtToken);
         setAuth(true);
+        toast.success("Register Successfully!");
       } else {
         setAuth(false);
+        toast.error(parseRes);
       }
     } catch (err) {
       console.error(err.message);

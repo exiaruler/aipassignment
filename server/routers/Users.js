@@ -36,7 +36,7 @@ router.post("/signup", verify, async (req, res) => {
     return res.json({ jwtToken }); // return token to client side
   } catch (err) {
     console.error(err.message); // error
-    res.status(500).send("Server error");
+    res.status(500).send("Server error!");
   }
 });
 ////////////////////////////////////////////////// Login route
@@ -51,14 +51,14 @@ router.post("/login", verify, async (req, res) => {
     );
 
     if (user.rows.length === 0) {
-      return res.status(401).json("Invalid Credential");
+      return res.status(401).json("Invalid Credential!");
     }
     const validPassword = await bcrypt.compare(
       password,
       user.rows[0].user_password
     );
     if (!validPassword) {
-      return res.status(401).json("Invalid Credential");
+      return res.status(401).json("Invalid Credential!");
     }
     const jwtToken = createJWT(user.rows[0].user_id);
     return res.json({ jwtToken });
@@ -66,7 +66,7 @@ router.post("/login", verify, async (req, res) => {
     // need a password bycryt
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error!");
   }
 });
 
@@ -89,7 +89,7 @@ router.post("/editaccount", auth, verifyNewUserEdit, async (req, res) => {
     );
     console.log("wwwwww");
     if (!validPassword) {
-      return res.status(401).json("Invalid Password"); // if old password matches with database
+      return res.status(401).json("Invalid Password!"); // if old password matches with database
     }
     console.log("userPassword");
     const salt = await bcrypt.genSalt(8); // how crypted the passwords is
@@ -112,7 +112,7 @@ router.post("/verify", auth, (req, res) => {
     res.json(true);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error!");
   }
 });
 ////////////////////////////////////////////////// get user data for edit user details
@@ -125,7 +125,7 @@ router.post("/editaccount2", auth, async (req, res) => {
     res.json(user.rows[0]);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error!");
   }
 });
 

@@ -11,6 +11,9 @@ import FavourHistory from "./FavourHistory";
 import Leaderboard from "./Leaderboard";
 import ManageAccount from "./ManageAccount";
 
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,17 +22,34 @@ import {
   Redirect,
 } from "react-router-dom";
 
+toast.configure();
+
 function App() {
+  window.onload = loadMenu;
+
+  function loadMenu() {
+    // works only with nav-links that have been 'render' below
+    // loading the screen
+    console.log(istrue);
+    if (istrue) {
+      document.getElementById("edit").children[6].style.display = "none";
+      document.getElementById("edit").children[5].style.display = "none";
+      document.getElementById("edit").children[4].style.display = "none";
+      document.getElementById("edit").children[3].style.display = "none";
+      //document.getElementById("edit").children[2].style.display = "none";
+      //document.getElementById("edit").children[1].style.display = "block";
+    }
+  }
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [istrue, setIstrue] = useState(true);
-
+  console.log(isAuthenticated);
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
   const setTrue = (boolean) => {
     setIstrue(boolean);
   };
-
+  console.log(isAuthenticated);
   const checkAuthenticated = async () => {
     try {
       const res = await fetch("http://localhost:5000/auth/verify", {
@@ -38,11 +58,12 @@ function App() {
       });
 
       const parseRes = await res.json();
-
       parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
+      setTrue(false);
     } catch (err) {
       console.error(err.message);
     }
+    setTrue(false);
   };
 
   const logout = async (e) => {
@@ -50,12 +71,14 @@ function App() {
       //window.location.reload();
       localStorage.removeItem("jwtToken");
       setAuth(false);
+      setTrue(true);
       document.getElementById("edit").children[2].style.display = "block";
       document.getElementById("edit").children[1].style.display = "block";
       document.getElementById("edit").children[6].style.display = "none";
       document.getElementById("edit").children[5].style.display = "none";
       document.getElementById("edit").children[4].style.display = "none";
       document.getElementById("edit").children[3].style.display = "none";
+      toast.success("Logout Successfully!");
     } catch (err) {
       console.error(err.message);
     }
@@ -74,32 +97,13 @@ function App() {
 
     if (!isAuthenticated) {
       document.getElementById("edit").children[2].style.display = "block";
-      document.getElementById("edit").children[1].style.display = "block";
+      //document.getElementById("edit").children[1].style.display = "block";
       document.getElementById("edit").children[6].style.display = "none";
     }
   } //onClick={handleClick} {...onlyShow()}
   useEffect(() => {
     checkAuthenticated();
   }, []);
-  window.onload = function () {
-    // loading the screen
-    if (isAuthenticated) {
-      setAuth(true);
-    }
-    if (isAuthenticated) {
-      document.getElementById("edit").children[6].style.display = "block";
-      document.getElementById("edit").children[5].style.display = "none";
-      document.getElementById("edit").children[4].style.display = "none";
-      document.getElementById("edit").children[3].style.display = "none";
-      //document.getElementById("edit").children[2].style.display = "none";
-      //document.getElementById("edit").children[1].style.display = "block";
-    } else {
-      document.getElementById("edit").children[6].style.display = "none";
-      document.getElementById("edit").children[5].style.display = "none";
-      document.getElementById("edit").children[4].style.display = "none";
-      document.getElementById("edit").children[3].style.display = "none";
-    }
-  };
 
   return (
     <html lang="en">
@@ -199,6 +203,7 @@ function App() {
                           <Redirect
                             to="/viewrequestfavours"
                             {...handleClick()}
+                            setTrue={false}
                           />
                         )
                       }

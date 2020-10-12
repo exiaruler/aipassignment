@@ -21,7 +21,7 @@ const ManageFavour = ({ setAuth }) => {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
       } else {
-        setAuth(false);
+        //setAuth(false);
       }
 
       // update favours
