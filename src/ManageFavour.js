@@ -22,24 +22,24 @@ const ManageFavour = ({ setAuth }) => {
         setAuth(true);
       } else {
         setAuth(false);
-      };
-    
+      }
+
       // update favours
       const updateFavour = ({ getallowefavour }) => {
         //const [description, setDescription] = useState(getallowefavour.description);
 
-      const updateDescription = async e => {
-        e.preventDefault();
-        try{
-          //const favourDescription = {description};
-          const response = await fetch(`http://localhost:5000/owe/updatefavourdescription/${e}`)
-          
-        } catch (err) {
-          console.error(err.message);
-        }
+        const updateDescription = async (e) => {
+          e.preventDefault();
+          try {
+            //const favourDescription = {description};
+            const response = await fetch(
+              `http://localhost:5000/owe/updatefavourdescription/${e}`
+            );
+          } catch (err) {
+            console.error(err.message);
+          }
+        };
       };
-        
-      }
       setAllOweFavour(jsonData);
     } catch (err) {
       console.error(err.message);
@@ -68,31 +68,31 @@ const ManageFavour = ({ setAuth }) => {
   useEffect(() => {
     getAllFavours();
   }, []);
-      // delete favours
-      const deleteFavour= async id =>{
-        try {
-            const deleteFavour = await fetch(`http://localhost:5000/owe/deleteowefavour/${id}`, {
-              method: "DELETE"
-            });
-      
-            setAllOweFavour(getallowefavour.filter(fav => fav.favour_id !== id));
-          } catch (err) {
-            console.error(err.message);
-           
-          }
-      };
-     
-    
-      useEffect(() => {
-        getAllFavours();
-      }, []);
-    
-   
-        return(
+  // delete favours
+  const deleteFavour = async (id) => {
+    try {
+      const deleteFavour = await fetch(
+        `http://localhost:5000/owe/deleteowefavour/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllFavours();
+  }, []);
+
+  /*   return(
         <html lang="en">
         <div>
             <h1>Manage Favour Requests</h1>
-        </div>
+        </div>*/
 
   return (
     <html lang="en">
