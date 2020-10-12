@@ -51,7 +51,7 @@ const ManageFavour = ({ setAuth }) => {
   //  const []
   //}
 
-  const deleteFavour = async (id) => {
+  /*const deleteFavour = async (id) => {
     try {
       const deleteFavour = await fetch(
         `http://localhost:5000/owe/deleteowefavour/${id}`,
@@ -63,8 +63,7 @@ const ManageFavour = ({ setAuth }) => {
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
     } catch (err) {
       console.error(err.message);
-    }
-  };
+    }*/
 
   useEffect(() => {
     getAllFavours();
