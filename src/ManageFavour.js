@@ -1,3 +1,5 @@
+import './jumbotron-narrow.css'
+import './bootstrap.css'
 
 import React, {  useEffect, useState } from "react";
 const ManageFavour  = () =>  {
@@ -14,7 +16,14 @@ const ManageFavour  = () =>  {
           console.error(err.message);
         }
       };
+    
+      // update favours
+      const updateFavour = ({ getallowefavour }) => {
+        const []
+      }
 
+
+      // delete favours
       const deleteFavour= async id =>{
         try {
             const deleteFavour = await fetch(`http://localhost:5000/deleteowefavour/${id}`, {
@@ -39,18 +48,21 @@ const ManageFavour  = () =>  {
             <h1>Manage Favour Requests</h1>
         </div>
 
-        <table>
+        <body>
+        <table class="table table-striped">
+          <thead>
             <tr>
-               
                 <th>Favour Title</th>
                 <th>Favour Description</th>
                 <th>Reward</th>
                 <th>Favour To Who</th>
                 <th>Image</th>
+                <th>Update</th>
                 <th>Delete</th>
             </tr>
-         
-           
+          </thead>
+
+          <tbody>
                {getallowefavour.map(owe => (
             <tr key={owe.favour_id}>
               <td>
@@ -68,6 +80,13 @@ const ManageFavour  = () =>  {
               </td>
               <td>
                 <button
+                className="btn btn-primary"
+                onClick={() => updateFavour(owe.favour_id)}>
+                  Update
+                </button>
+              </td>
+              <td>
+                <button
                   className="btn btn-danger"
                   onClick={() => deleteFavour(owe.favour_id)}
                 >
@@ -75,11 +94,12 @@ const ManageFavour  = () =>  {
                 </button>
               </td>
             </tr>
+            
           ))}
-      
+        </tbody>
               
         </table>
-        
+        </body>
         </html>
             );
     };
