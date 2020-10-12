@@ -21,12 +21,15 @@ const storage = multer.diskStorage({
 var upload = multer({ dest: "./uploads/" });
 
 //OWEFAVOURS
-//add owefavour-Samuel
+//add owefavour with image-Samuel
 router.post("/addowefavour", auth, upload.single("image"), async (req, res) => {
   try {
-    //fields
-    const { title, description, reward, recievinguser, image } = req.body;
-    //const image=req.file.path;
+    var date= new Date;
+    const { title, description, reward, recievinguser } = req.body;
+    const image=req.file.path;
+    //get current date 
+    const favourDate=date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+ 
     //use jwt token to get user
     const username = await pool.query(
       "SELECT * FROM userData WHERE user_id = $1",
@@ -41,7 +44,7 @@ router.post("/addowefavour", auth, upload.single("image"), async (req, res) => {
     //check user if they exist from query
     if (checkUser.rows.length > 0) {
       const newOweFavour = await pool.query(
-        "INSERT INTO owefavour(user_name,user_id,title,favour_description,rewards,recieving_username,favour_image)VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING * ",
+        "INSERT INTO owefavour(user_name,user_id,title,favour_description,rewards,recieving_username,favour_image,favour_date,recieving_userid)VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING * ",
         [
           username.rows[0].user_name,
           username.rows[0].user_id,
@@ -50,6 +53,50 @@ router.post("/addowefavour", auth, upload.single("image"), async (req, res) => {
           reward,
           recievinguser,
           image,
+          favourDate,
+          checkUser.rows[0].user_id,
+        ]
+      );
+      console.log("owe favour added");
+      res.json(newOweFavour);
+    } else console.log("user recieving does not exist");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+//add favour containing no image file upload
+router.post("/addowefavournoimage", auth, async (req, res) => {
+  try {
+    var date= new Date;
+    const { title, description, reward, recievinguser,image } = req.body;
+    //get current date 
+    const favourDate=date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+ 
+    //use jwt token to get user
+    const username = await pool.query(
+      "SELECT * FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+    //search up existing owed user
+    const checkUser = await pool.query(
+      "SELECT * FROM userData WHERE user_name=$1",
+      [recievinguser]
+    );
+
+    //check user if they exist from query
+    if (checkUser.rows.length > 0) {
+      const newOweFavour = await pool.query(
+        "INSERT INTO owefavour(user_name,user_id,title,favour_description,rewards,recieving_username,favour_image,favour_date,recieving_userid)VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING * ",
+        [
+          username.rows[0].user_name,
+          username.rows[0].user_id,
+          title,
+          description,
+          reward,
+          recievinguser,
+          image,
+          favourDate,
+          checkUser.rows[0].user_id,
         ]
       );
       console.log("owe favour added");
@@ -77,7 +124,28 @@ router.get("/getallowefavour", auth, async (req, res) => {
       [username.rows[0].user_name]
     );
     //allOweFavours.rows[0].favour_image+".jpg";
-    // console.log(allOweFavours.rows[0].favour_image);
+    
+    const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    res.json(allOweFavours.rows, { jwtToken });
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//gets all owed favours from the user 
+router.get("/getallowedfavour", auth, async (req, res) => {
+  try {
+    const username = await pool.query(
+      "SELECT user_name FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+
+    const allOweFavours = await pool.query(
+      "SELECT * from owefavour WHERE complete_image IS NULL AND recieving_username=$1 ;",
+      [username.rows[0].user_name]
+    );
+  
+    
     const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
     res.json(allOweFavours.rows, { jwtToken });
   } catch (err) {
@@ -118,32 +186,42 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
   try {
     //parameter of deleting favour by id
     const { id } = req.params;
-    //create a querry that finds if the data contains an image
-    const checkImage = await pool.query(
+    //Find if the owed user has a favour connection to the favour that is about to be deleted
+    //find user 
+    const user = await pool.query(
       "SELECT * FROM owefavour where favour_id=$1",
       [id]
     );
+    console.log("user favour row "+ ""+user.rows );
+    //find opposing user 
+    const opposingUser = await pool.query(
+      "SELECT * FROM owefavour where favour_id=$1",
+      [user.rows[0].recieving_username]
+    );
+    console.log("opposing user favour row "+ ""+opposingUser.rows );
+  //if(user.rows[0].user_name==opposingUser.rows[0].recieving_username)
 
     //checks if there a pathway in favour_image
-    if (checkImage.rows[0].favour_image == 0) {
+    
       const deleteOweFavour = await pool.query(
         "DELETE FROM owefavour WHERE favour_id=$1",
         [id]
       );
+      
       res.json("favour deleted");
-    } else {
+  
       res.json("Cannot delete as image is present");
-    }
+    
   } catch (err) {
     console.error(err.message);
   }
 });
 
 //complete favour
-router.get("/completeFavourOwe/:id", async (req, res) => {
+router.get("/completeFavourOwe/:id",upload.single("image"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { imageComplete } = req.body;
+    const { imageComplete } = req.file.path;
     const updateOweFavour = await pool.query(
       "UPDATE owefavour SET complete_image =$1 WHERE favour_ID =$2",
       [id, imageComplete]

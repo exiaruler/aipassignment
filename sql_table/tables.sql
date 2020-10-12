@@ -13,6 +13,7 @@ recieving_userID  INT ,
 recieving_username VARCHAR(255) ,
 favour_image VARCHAR,
 complete_image VARCHAR,
+favour_date date,
 	PRIMARY KEY (favour_ID),
 CONSTRAINT fk_user
 FOREIGN KEY (user_ID)

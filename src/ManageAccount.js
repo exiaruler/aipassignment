@@ -4,7 +4,7 @@ import './bootstrap.css';
 import EditAccount from './ChangeUserDetails';
 import ManageFavours from './ManageFavour';
 import FavourHistory from './FavourHistory';
-
+import ExistingFavours from './ExistingFavours';
 import {
     BrowserRouter as Router,
     Switch,
@@ -33,11 +33,15 @@ class ManageAccount extends React.Component {
                     <a href="#" class="list-group-item list-group-item-action">
                     <Link to="/editaccount">Edit Account Details</Link>
                     </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                    <Link to="/existingfavours">View Existing Favours</Link>
+                    </a>
                     
                 </div>
                 <Route path="/managefavours" component={ManageFavours} />
                 <Route path="/editaccount" component={EditAccount} />
                 <Route path="/favourhistory" component={FavourHistory} />
+                <Route path="/existingfavours" component={ExistingFavours} />
             </body>
         </html>
         );

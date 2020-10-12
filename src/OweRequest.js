@@ -84,7 +84,7 @@ name="recievinguser"
 </p>
 <p>
   <label>Select Favour</label>
-<select name="favour_type" id="favour_type" value={favour_type} onChange={(e)=>onChange(e)} >
+<select name="favour_type" id="favour_type" value={favour_type.value} onChange={(e)=>onChange(e)} >
   <option name="favour_type" id="favour_type" value="Owe a drink" onChange={(e)=>onChange(e)} >Owe a drink</option>
   <option>Owe lunch</option>
   <option>Owe dinner</option>
