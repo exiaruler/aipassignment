@@ -7,6 +7,7 @@ const OweRequest = () => {
   const [inputs, setInputs] = useState({
     title: "",
     recievinguser: "",
+    favour_type:"",
     description: "",
     reward: "",
     image:"",
@@ -14,7 +15,7 @@ const OweRequest = () => {
   });
  
   
-    const { title, recievinguser, description, reward,image } = inputs;
+    const { title, recievinguser,favour_type ,description, reward,image } = inputs;
   
   
     const onChange = (e) =>
@@ -25,10 +26,11 @@ const OweRequest = () => {
       const onSubmitForm = async (e) => {
         e.preventDefault();
         try {
-          const body = { title,recievinguser, description, reward,image};
+          const body = { title,recievinguser,favour_type, description, reward,image};
           const formData = new FormData()
           formData.append('title', title);
           formData.append('recievinguser',recievinguser);
+          formData.append('favour_type',favour_type);
           formData.append('description',description);
           formData.append('reward',reward);
           formData.append('image',image);
@@ -79,6 +81,16 @@ name="recievinguser"
  value={recievinguser}
  onChange={(e) => onChange(e)}
 />
+</p>
+<p>
+  <label>Select Favour</label>
+<select name="favour_type" id="favour_type" value={favour_type} onChange={(e)=>onChange(e)} >
+  <option name="favour_type" id="favour_type" value="Owe a drink" onChange={(e)=>onChange(e)} >Owe a drink</option>
+  <option>Owe lunch</option>
+  <option>Owe dinner</option>
+  <option>Owe snack</option>
+  <option>Custom</option>
+</select>
 </p>
 <p>
 <label>Description</label>

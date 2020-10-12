@@ -65,9 +65,7 @@ const ManageFavour = ({ setAuth }) => {
       console.error(err.message);
     }*/
 
-  useEffect(() => {
-    getAllFavours();
-  }, []);
+
   // delete favours
   const deleteFavour = async (id) => {
     try {
