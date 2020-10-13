@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+
+import UpdateFavour from "./UpdateFavour";
+
 const ManageFavour = ({ setAuth }) => {
   const [getallowefavour, setAllOweFavour] = useState([]);
 
@@ -23,33 +26,12 @@ const ManageFavour = ({ setAuth }) => {
       } else {
         //setAuth(false);
       }
-
-      // update favours
-      const updateFavour = ({ getallowefavour }) => {
-        //const [description, setDescription] = useState(getallowefavour.description);
-
-        const updateDescription = async (e) => {
-          e.preventDefault();
-          try {
-            //const favourDescription = {description};
-            const response = await fetch(
-              `http://localhost:5000/owe/updatefavourdescription/${e}`
-            );
-          } catch (err) {
-            console.error(err.message);
-          }
-        };
-      };
       setAllOweFavour(jsonData);
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  // update favours
-  //const updateFavour = ({ getallowefavour }) => {
-  //  const []
-  //}
 
   /*const deleteFavour = async (id) => {
     try {
@@ -123,12 +105,7 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owe.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <button
-                    className="btn btn-primary"
-                    //onClick={() => updateFavour(owe.favour_id)}>
-                  >
-                    Update
-                  </button>
+                  <UpdateFavour owe={owe}/>
                 </td>
                 <td>
                   <button
