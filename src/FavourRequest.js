@@ -28,7 +28,7 @@ import React, { useState } from "react";
               formData.append('description', description);
               formData.append('reward', reward);
               formData.append('image', image);
-              const response = await fetch("http://localhost:5000/addFavourRequest", {
+              const response = await fetch("http://localhost:5000/request/addFavourRequest", {
                 method: "POST",
                 body:formData,
               });
