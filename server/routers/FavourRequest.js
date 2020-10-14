@@ -25,12 +25,18 @@ var upload = multer({ dest: "./uploads/" });
 // add favourRequest
 router.post("/addFavourRequest", auth, async (req, res) => {
   try {
-    const { username, title, favour_description, rewards, image } = req.body;
-    const newFavourRequest = await pool.query(
-      "INSERT INTO favourRequest(title, favour_description, rewards, image) VALUES($1, $2, $3, $4) RETURNING *",
-      [title, favour_description, rewards, image]
+    const {title, favour_description, rewards} = req.body;
+    console.log(title);
+    const username = await pool.query(
+      "SELECT * FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+    const newFavourRequest = await pool.query( 
+      "INSERT INTO favourRequest(title, username, favour_description, rewards) VALUES($1, $2, $3,$4) RETURNING *",
+      [title, username.rows[0].user_name, favour_description, rewards]
     );
     res.json(newFavourRequest);
+    console.log("Favour added");
   } catch (err) {
     console.error(err.message);
   }
@@ -39,7 +45,7 @@ router.post("/addFavourRequest", auth, async (req, res) => {
 router.get("/getAllFavourRequest", auth, async (req, res) => {
   try {
     const allFavourRequests = await pool.query(
-      "SELECT favour_id, title, favour_description, rewards, completing_username, complete, image FROM favourRequest;"
+      "SELECT title, username, favour_description, rewards FROM favourRequest;"
     );
     res.json(allFavourRequests.rows);
   } catch (err) {

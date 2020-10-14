@@ -18,7 +18,6 @@ favour_date date,
 CONSTRAINT fk_user
 FOREIGN KEY (user_ID)
 REFERENCES userData(user_ID)
-
 ); 
 
 
@@ -29,11 +28,6 @@ CREATE TABLE favourRequest (
   title VARCHAR(255),
   favour_description VARCHAR(255),
   rewards VARCHAR(255),
-  completing_userid INT,
-  completing_username VARCHAR,
-  complete BOOLEAN,
-  image Bytea,
-  complete_image Bytea,
   CONSTRAINT fk_user
   PRIMARY KEY (favourID),
   FOREIGN KEY (user_ID)

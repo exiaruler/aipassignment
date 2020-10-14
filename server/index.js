@@ -12,9 +12,9 @@ const querystring = require("querystring");
 app.use(cors());
 app.use(express.json());
 //routes
-app.get("/", function (req, res) {
+/*app.get("/", function (req, res) {
   res.sendFile(__basedir + "/react/index.html");
-});
+});*/
 
 //insert query to test your database connection using postman using sample table with no primary keys
 app.post("/todos", async (req, res) => {
