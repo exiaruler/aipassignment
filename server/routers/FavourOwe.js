@@ -6,6 +6,7 @@ const fs = require("fs");
 const multer = require("multer");
 const createJWT = require("../functions/createJWT"); // lily
 const auth = require("../middleware/authoriseUser"); //jwt token for user access
+const { Console } = require("console");
 //creates destination for image files and gives them a unique ID
 const storage = multer.diskStorage({
   destination: "./uploads/",
@@ -125,8 +126,9 @@ router.get("/getallowefavour", auth, async (req, res) => {
     );
     //allOweFavours.rows[0].favour_image+".jpg";
     
-    const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-    res.json(allOweFavours.rows, { jwtToken });
+    //const jwtToken = createJWT(username.rows[0].user_id); // lily add, to verify the user on client side
+    //res.json(allOweFavours.rows, { jwtToken });
+    res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -146,8 +148,9 @@ router.get("/getallowedfavour", auth, async (req, res) => {
     );
   
     
-    const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    const jwtToken = createJWT(username.rows[0].user_id); // lily add, to verify the user on client side
     res.json(allOweFavours.rows, { jwtToken });
+    //res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -192,24 +195,23 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
       "SELECT * FROM owefavour where favour_id=$1",
       [id]
     );
-    console.log("user favour row "+ ""+user.rows );
+    console.log("user favour row "+ ""+user.rows[0].recieving_username );
+
     //find opposing user 
     const opposingUser = await pool.query(
-      "SELECT * FROM owefavour where favour_id=$1",
+      "SELECT * FROM owefavour where recieving_username=$1",
       [user.rows[0].recieving_username]
     );
-    console.log("opposing user favour row "+ ""+opposingUser.rows );
-  //if(user.rows[0].user_name==opposingUser.rows[0].recieving_username)
-
-    //checks if there a pathway in favour_image
-    
+    console.log("opposing user favour row "+ ""+opposingUser.rows[0].recieving_username );
+    //checks if user and opposing user favour entry matches by the same user in owing and recieving,favour type and date
+  if(user.rows[0].user_name&user.rows[0].favour_date&user.rows[0].favour_type===opposingUser.rows[0].recieving_username&opposingUser.rows[0].favour_date&opposingUser.rows[0].favour_type){
+    console.log("Check complete");
       const deleteOweFavour = await pool.query(
         "DELETE FROM owefavour WHERE favour_id=$1",
         [id]
       );
-      
       res.json("favour deleted");
-  
+      }
       res.json("Cannot delete as image is present");
     
   } catch (err) {
@@ -218,13 +220,13 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
 });
 
 //complete favour
-router.get("/completeFavourOwe/:id",upload.single("image"), async (req, res) => {
+router.get("/completeFavourOwe",upload.single("image"),auth, async (req, res) => {
   try {
-    const { id } = req.params;
-    const { imageComplete } = req.file.path;
+
+    const { image } = req.file.path;
     const updateOweFavour = await pool.query(
       "UPDATE owefavour SET complete_image =$1 WHERE favour_ID =$2",
-      [id, imageComplete]
+      [image]
     );
     res.json("favour completed");
   } catch (err) {
