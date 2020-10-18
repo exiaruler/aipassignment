@@ -10,8 +10,7 @@ const UpdateFavour = ({ favour }) => {
     const [description, setDescription] = useState(favour.favour_description);
     const [rewards, setRewards] = useState(favour.rewards);
 
-
-    const updateTitle = async e => {
+    /*const updateTitle = async e => {
         e.preventDefault();
         try {
             // send request to update title
@@ -59,7 +58,47 @@ const UpdateFavour = ({ favour }) => {
         } catch (error) {
             console.error(error.message);
         }
-    }
+    }*/
+
+
+    // get local item form ManageFavours from samuel
+    // change naming convention to apple
+
+    // method: "GET"
+    // get owe favours from favour_id through local storage
+    
+    
+
+    const onSubmitForm = async (e) => { // update
+        e.preventDefault();
+        try {
+          const body = { title, description, rewards };// add local storage "apple = localstorage."
+          const response = await fetch("http://localhost:5000/owe/updateOweFavour", {
+            method: "POST",
+            headers: {
+              jwtToken: localStorage.jwtToken,
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify(body),
+          });
+          const parseRes = await response.json();
+    
+          if (parseRes.jwtToken) {
+            localStorage.setItem("jwtToken", parseRes.jwtToken);
+            setAuth(true);
+            toast.success("Edit Successfully!");
+          } else {
+            //setAuth(false); not needed
+            toast.error(parseRes);
+          }
+        } catch (err) {
+          console.error(err.message);
+        }
+      };
+      useEffect(() => {
+        getAllFavours();
+      }, []); // localStorage.setItem("favour_ID", id); --> call like thid "localStorage.favour_ID"
+
 
     return (
         <html lang="en">
