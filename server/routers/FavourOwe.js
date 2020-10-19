@@ -235,15 +235,17 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
 });
 
 //complete favour
-router.get("/completefavourowe/:id", upload.single("imageComplete"), async (req, res) => {
+router.post("/completefavourowe/:id",auth ,upload.single("completeImage"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { imageComplete } = req.file.path;
+    const { completeImage } = req.file.path;
+    console.log("id",id,"image",completeImage)
     const updateOweFavour = await pool.query(
-      "UPDATE owefavour SET complete_image =$1 WHERE favour_ID =$2",
-      [id, imageComplete]
+      "UPDATE owefavour SET complete_image =$1 WHERE favour_id =$2",
+      [completeImage,id]
     );
-    res.json("favour update completed");
+    res.json("favour completed");
+    console.log("favour complete");
   } catch (err) {
     console.error(err.message);
   }

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "./bootstrap.css";
 import "./jumbotron-narrow.css";
-import Select from 'react-select'
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 const OweRequest = () => {
   const [inputs, setInputs] = useState({
     title: "",
@@ -17,7 +21,7 @@ const OweRequest = () => {
 
   const { title, recievinguser, favourtype, description, reward, image } = inputs;
 
-  console.log(favourtype);
+ 
   const onChange = (e) =>
     setInputs({
       ...inputs, [e.target.name]: e.target.files ? e.target.files[0] : e.target.value
@@ -64,7 +68,7 @@ const OweRequest = () => {
         </div>
         <div>
 
-          <form onSubmit={onSubmitForm} enctype="multipart/form-data" method="post" >
+          <form onSubmit={onSubmitForm} enctype="multipart/form-data" method="POST" action="/managefavours" >
             <p>
               <label>Favour title</label>
               <input
@@ -89,12 +93,12 @@ const OweRequest = () => {
             <p>
               <label>Select Favour</label>
               <select name="favourtype" id="favourtype" value={favourtype.value} onChange={(e) => onChange(e)} >
-                <option></option>
+                <option>Select Options</option>
                 <option name="favourtype" id="favourtype" value="Owe a drink" onChange={(e) => onChange(e)} >Owe a drink</option>
-                <option>Owe lunch</option>
-                <option>Owe dinner</option>
-                <option>Owe snack</option>
-                <option>Custom</option>
+                <option name="favourtype" id="favourtype" value="Owe lunch" onChange={(e) => onChange(e)}>Owe lunch</option>
+                <option name="favourtype" id="favourtype" value="Owe dinner" onChange={(e) => onChange(e)}>Owe dinner</option>
+                <option name="favourtype" id="favourtype" value="Owe snack" onChange={(e) => onChange(e)}>Owe snack</option>
+                <option name="favourtype" id="favourtype" value="custom" onChange={(e) => onChange(e)}>Custom</option>
               </select>
             </p>
             <p>
@@ -125,8 +129,9 @@ const OweRequest = () => {
 
               />
             </p>
+           
             <input type="submit" name="Submit" />
-
+           
           </form>
 
         </div>
