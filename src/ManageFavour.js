@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import UpdateFavour from "./UpdateFavour";
+import UpdateOweFavour from "./UpdateOweFavour";
 
 const ManageFavour = ({ setAuth }) => {
   const [getallowefavour, setAllOweFavour] = useState([]);
@@ -105,7 +105,7 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owe.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <UpdateFavour owe={owe}/>
+                  <UpdateOweFavour owe={owe}/>
                 </td>
                 <td>
                   <button
