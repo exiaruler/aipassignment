@@ -120,18 +120,7 @@ router.get("/getallowefavour", auth, async (req, res) => {
       "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image from owefavour WHERE user_name=$1 ;",
       [username.rows[0].user_name]
     );
-    const getImage = await pool.query(
-      "SELECT favour_image from owefavour WHERE user_name=$1 ;",
-      [username.rows[0].user_name]
-    );
-    //allOweFavours.rows[0].favour_image+".jpg";
-    
-<<<<<<< HEAD
-    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-=======
-    //const jwtToken = createJWT(username.rows[0].user_id); // lily add, to verify the user on client side
-    //res.json(allOweFavours.rows, { jwtToken });
->>>>>>> d8388fdc06b1bc35819af838b50395f9a42125a7
+
     res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
@@ -152,14 +141,9 @@ router.get("/getallowedfavour", auth, async (req, res) => {
     );
   
     
-<<<<<<< HEAD
-    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-    res.json(allOweFavours.rows);
-=======
     const jwtToken = createJWT(username.rows[0].user_id); // lily add, to verify the user on client side
     res.json(allOweFavours.rows, { jwtToken });
     //res.json(allOweFavours.rows);
->>>>>>> d8388fdc06b1bc35819af838b50395f9a42125a7
   } catch (err) {
     console.error(err.message);
   }

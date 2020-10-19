@@ -7,6 +7,7 @@ const ManageFavour = ({ setAuth }) => {
 
   //display favours
 
+  
   const getAllFavours = async (e) => {
     //e.preventDefault();
     try {
@@ -23,29 +24,39 @@ const ManageFavour = ({ setAuth }) => {
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
+       
+        
       } else {
         //setAuth(false);
       }
       setAllOweFavour(jsonData);
+    
     } catch (err) {
       console.error(err.message);
     }
   };
+  
+  //original code 
+ /*
+ const getAllFavours = async (e) => {
+  //e.preventDefault();
+  try {
+    const response = await fetch("http://localhost:5000/owe/getallowefavour", {
+      method: "GET",
+      headers: {
+        jwtToken: localStorage.jwtToken,
+      },
+      
+    });
+    const jsonData = await response.json();
+    setAllOweFavour(jsonData);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+*/
 
 
-  /*const deleteFavour = async (id) => {
-    try {
-      const deleteFavour = await fetch(
-        `http://localhost:5000/owe/deleteowefavour/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
-    } catch (err) {
-      console.error(err.message);
-    }*/
 
 
   // delete favours
@@ -68,12 +79,6 @@ const ManageFavour = ({ setAuth }) => {
     getAllFavours();
   }, []);
 
-  /*   return(
-        <html lang="en">
-        <div>
-            <h1>Manage Favour Requests</h1>
-        </div>*/
-
   return (
     <html lang="en">
         <br></br>
@@ -84,6 +89,7 @@ const ManageFavour = ({ setAuth }) => {
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Date</th>
               <th>Favour Title</th>
               <th>Favour Description</th>
               <th>Reward</th>
