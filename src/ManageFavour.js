@@ -76,9 +76,9 @@ const ManageFavour = ({ setAuth }) => {
 
   return (
     <html lang="en">
-      <div>
+        <br></br>
+        <br></br>
         <h1>Manage Favour Requests</h1>
-      </div>
 
       <body>
         <table class="table table-striped">

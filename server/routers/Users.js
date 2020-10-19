@@ -121,8 +121,21 @@ router.post("/editaccount2", auth, async (req, res) => {
     const user = await pool.query("SELECT * FROM userData WHERE user_id = $1", [
       req.user.id,
     ]);
-
+    //console.log(user);
     res.json(user.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error!");
+  }
+});
+////////////////////////////////////////////////// get user data for edit user details
+router.post("/leaderboard", auth, async (req, res) => {
+  try {
+    const user = await pool.query(
+      "SELECT RANK() OVER (ORDER BY COUNT(recieving_username) DESC)AS Rank, recieving_username, COUNT(recieving_username) AS Favours FROM owefavour WHERE complete_image IS NULL GROUP BY recieving_username ORDER BY Favours DESC LIMIT 10"
+    );
+    //console.log(user);
+    res.json(user.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error!");
