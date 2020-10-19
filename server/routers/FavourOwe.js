@@ -125,8 +125,8 @@ router.get("/getallowefavour", auth, async (req, res) => {
     );
     //allOweFavours.rows[0].favour_image+".jpg";
     
-    const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-    res.json(allOweFavours.rows, { jwtToken });
+    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -146,8 +146,8 @@ router.get("/getallowedfavour", auth, async (req, res) => {
     );
   
     
-    const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-    res.json(allOweFavours.rows, { jwtToken });
+    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
   }
