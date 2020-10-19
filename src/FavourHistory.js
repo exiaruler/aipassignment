@@ -5,8 +5,6 @@ class FavourHistory extends React.Component {
     render() {
         return(
         <html lang="en">
-        <br></br>
-        <br></br>
         <div>
             <h1>Manage Favour History</h1>
         </div>

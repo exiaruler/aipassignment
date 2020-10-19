@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-import UpdateFavour from "./UpdateFavour";
+import {
+  BrowserRouter
+    as Router, Switch, Route, Link, useParams, BrowserRouter
+} from "react-router-dom";
 
 const ManageFavour = ({ setAuth }) => {
   const [getallowefavour, setAllOweFavour] = useState([]);
-
+  const [getallowefavourowe, setAllOweFavourOwed] = useState([]);
   //display favours
-
-  
   const getAllFavours = async (e) => {
     //e.preventDefault();
     try {
@@ -24,39 +25,45 @@ const ManageFavour = ({ setAuth }) => {
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
-       
-        
+
+
       } else {
         //setAuth(false);
       }
       setAllOweFavour(jsonData);
-    
+
     } catch (err) {
       console.error(err.message);
     }
   };
-  
-  //original code 
- /*
- const getAllFavours = async (e) => {
-  //e.preventDefault();
-  try {
-    const response = await fetch("http://localhost:5000/owe/getallowefavour", {
-      method: "GET",
-      headers: {
-        jwtToken: localStorage.jwtToken,
-      },
-      
-    });
-    const jsonData = await response.json();
-    setAllOweFavour(jsonData);
-  } catch (err) {
-    console.error(err.message);
-  }
-};
-*/
+
+  const getAllFavoursOwed = async (e) => {
+    //e.preventDefault();
+    try {
+      const response = await fetch(
+        "http://localhost:5000/owe/getallowedfavour",
+        {
+          method: "GET",
+          headers: {
+            jwtToken: localStorage.jwtToken,
+          },
+        }
+      );
+      const jsonData = await response.json();
+      if (jsonData.jwtToken) {
+        localStorage.setItem("jwtToken", jsonData.jwtToken);
+        setAuth(true);
 
 
+      } else {
+        //setAuth(false);
+      }
+      setAllOweFavourOwed(jsonData);
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
 
   // delete favours
@@ -79,11 +86,17 @@ const ManageFavour = ({ setAuth }) => {
     getAllFavours();
   }, []);
 
+  useEffect(() => {
+    getAllFavoursOwed();
+  }, []);
+
+
+
   return (
     <html lang="en">
-        <br></br>
-        <br></br>
+      <div>
         <h1>Manage Favour Requests</h1>
+      </div>
 
       <body>
         <table class="table table-striped">
@@ -103,6 +116,7 @@ const ManageFavour = ({ setAuth }) => {
           <tbody>
             {getallowefavour.map((owe) => (
               <tr key={owe.favour_id}>
+                <td>{owe.favour_date}</td>
                 <td>{owe.title}</td>
                 <td>{owe.favour_description}</td>
                 <td>{owe.rewards}</td>
@@ -111,7 +125,12 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owe.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <UpdateFavour owe={owe}/>
+                  <button
+                    className="btn btn-primary"
+                  //onClick={() => updateFavour(owe.favour_id)}>
+                  >
+                    Update
+                  </button>
                 </td>
                 <td>
                   <button
@@ -125,9 +144,51 @@ const ManageFavour = ({ setAuth }) => {
             ))}
           </tbody>
         </table>
+
+        <h2>Current favours owed</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Favour Title</th>
+              <th>Favour Description</th>
+              <th>Reward</th>
+              <th>Favour To Who</th>
+              <th>Image</th>
+              <th>Complete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {getallowefavourowe.map((owed) => (
+
+              <tr key={owed.favour_id}>
+                <td>{owed.title}</td>
+                <td>{owed.favour_description}</td>
+                <td>{owed.rewards}</td>
+                <td>{owed.recieving_username}</td>
+                <td>
+                  <img src={owed.favour_image} alt="favour image" />
+                </td>
+                <td>
+                  <div >
+                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div>
+
+
+        </div>
       </body>
+
+
     </html>
+
   );
+
 };
 
 export default ManageFavour;

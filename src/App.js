@@ -10,7 +10,7 @@ import ManageFavours from "./ManageFavour";
 import FavourHistory from "./FavourHistory";
 import Leaderboard from "./Leaderboard";
 import ManageAccount from "./ManageAccount";
-
+import CompleteFavour from "./CompleteFavour";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -171,6 +171,16 @@ function App() {
                       //component={ManageFavours}
                     />
                     <Route
+                    path="/completefavour/:id" component={CompleteFavour}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                    <Route
                       path="/editaccount"
                       render={(props) =>
                         isAuthenticated ? (
@@ -220,13 +230,7 @@ function App() {
                     />
                     <Route
                       path="/leaderboard"
-                      render={(props) =>
-                        isAuthenticated ? (
-                          <Leaderboard {...props} setAuth={setAuth} />
-                        ) : (
-                          <Redirect to="/login" />
-                        )
-                      } //component={Leaderboard} // cant make this logout into login
+                      component={Leaderboard} // cant make this logout into login
                     />
                     <Route
                       path="/manageaccount"

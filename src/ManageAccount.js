@@ -21,8 +21,6 @@ class ManageAccount extends React.Component {
     render() {
         return (
         <html lang="en">
-          <br></br>
-          <br></br>
           <h1>Manage your account</h1>
             <body>
                 <div class="list-group">
@@ -42,9 +40,8 @@ class ManageAccount extends React.Component {
                 </div>
                 <Route path="/managefavours" component={ManageFavours} />
                 <Route path="/editaccount" component={EditAccount} />
-                <Route path="/existingfavours" component={ExistingFavours} />
                 <Route path="/favourhistory" component={FavourHistory} />
-                
+                <Route path="/existingfavours" component={ExistingFavours} />
             </body>
         </html>
         );

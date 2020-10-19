@@ -75,20 +75,16 @@ const ChangeUserDetail = ({ setAuth }) => {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-    <br></br>
-    <br></br>
-    <h1>Account information:</h1>
+
       <body>
         <div class="container">
           <div class="inner">
             <div class="content">
-
+              <h1>Account information:</h1>
               <p>UserName: {userName}</p>
               <p>Name: {name}</p>
               <p>Email: {userEmail}</p>
-            <div>
-              <h2>Change details</h2>   
-            </div>   
+              <h1>Change details</h1>
               <p>Please fill in to change details.</p>
 
               <form onSubmit={onSubmitForm}>

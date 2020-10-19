@@ -1,74 +1,53 @@
-import React, { useEffect, useState } from "react";
-import "./jumbotron-narrow.css";
-import "./bootstrap.css";
+import React from 'react';
+import './jumbotron-narrow.css';
+import './bootstrap.css';
 
-const Leaderboard = ({ setAuth }) => {
-  const [board, setBoard] = useState([]);
-  const getLeaderboard = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/auth/leaderboard", {
-        method: "POST",
-        headers: { jwtToken: localStorage.jwtToken },
-      });
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
 
-      const parseData = await res.json();
-      setBoard(parseData);
-    } catch (err) {
-      console.error(err.message);
+
+class Leaderboard extends React.Component {
+    constructor(props) {
+        super(props);
     }
-  };
-  const checkAuthenticated = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/auth/verify", {
-        method: "POST",
-        headers: { jwtToken: localStorage.jwtToken },
-      });
 
-      const parseRes = await res.json();
-      if (parseRes) {
-        setAuth(true);
-      } else {
-        setAuth(false);
-      }
-    } catch (err) {
-      console.error(err.message);
+    render() {
+        return (
+        <html lang="en">
+          <h1>Leaderboard</h1>
+          <body>
+          <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" 
+              aria-haspopup="true" aria-expanded="false">Dropdown button
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+              </div>
+          </div>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Favours Completed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Kevin</td>
+                    <td>999</td>
+                  </tr>
+                </tbody>
+              </table>
+            </body>
+        </html>
+        );
     }
-  };
-  useEffect(() => {
-    checkAuthenticated();
-  }, []);
-
-  useEffect(() => {
-    getLeaderboard();
-  }, []);
-
-  return (
-    <html lang="en">
-      <br></br>
-      <br></br>
-      <h1>Top 10 Leaderboard – Uncompleted Favour Owe</h1>
-      <body>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Ranking</th>
-              <th scope="col">Username's</th>
-              <th scope="col">Favours Uncompleted</th>
-            </tr>
-          </thead>
-          <tbody>
-            {board.map((el) => (
-              <tr>
-                <td>{el.rank}</td>
-                <td>{el.recieving_username}</td>
-                <td>{el.favours}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </body>
-    </html>
-  );
-};
+}
 
 export default Leaderboard;
