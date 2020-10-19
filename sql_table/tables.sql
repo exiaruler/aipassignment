@@ -28,9 +28,9 @@ CREATE TABLE favourRequest (
   title VARCHAR(255),
   favour_description VARCHAR(255),
   rewards VARCHAR(255),
-  date DATE
+  favourRequest_date DATE,
+  PRIMARY KEY (favour_id),
   CONSTRAINT fk_user
-  PRIMARY KEY (favourID),
   FOREIGN KEY (user_ID)
   REFERENCES userData(user_ID)
 );
