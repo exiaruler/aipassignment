@@ -105,6 +105,7 @@ const ManageFavour = ({ setAuth }) => {
             <tr>
               <th>Date</th>
               <th>Favour Title</th>
+              <th>Favour Type</th>
               <th>Favour Description</th>
               <th>Reward</th>
               <th>Favour To Who</th>
@@ -119,6 +120,7 @@ const ManageFavour = ({ setAuth }) => {
               <tr key={owe.favour_id}>
                 <td>{owe.favour_date}</td>
                 <td>{owe.title}</td>
+                <td>{owe.favour_type}</td>
                 <td>{owe.favour_description}</td>
                 <td>{owe.rewards}</td>
                 <td>{owe.recieving_username}</td>
@@ -150,7 +152,9 @@ const ManageFavour = ({ setAuth }) => {
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Date</th>
               <th>Favour Title</th>
+              <th>Favour Type</th>
               <th>Favour Description</th>
               <th>Reward</th>
               <th>Favour To Who</th>
@@ -163,7 +167,9 @@ const ManageFavour = ({ setAuth }) => {
             {getallowefavourowe.map((owed) => (
 
               <tr key={owed.favour_id}>
+                <td>{owed.favour_date}</td>
                 <td>{owed.title}</td>
+                <td>{owed.favour_type}</td>
                 <td>{owed.favour_description}</td>
                 <td>{owed.rewards}</td>
                 <td>{owed.recieving_username}</td>
@@ -172,7 +178,9 @@ const ManageFavour = ({ setAuth }) => {
                 </td>
                 <td>
                   <div >
+                    <button>
                     <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
+                    </button>
                   </div>
                 </td>
               </tr>
