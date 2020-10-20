@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./bootstrap.css";
 
-const CompleteFavour = ({ setAuth, ...props }) => {
+const ViewOweFavour = ({ setAuth, ...props }) => {
   //set for text 
   const [id, setID] = useState("");
   const [title, setTitle] = useState("");
@@ -14,41 +14,9 @@ const CompleteFavour = ({ setAuth, ...props }) => {
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
 
-  //input for image
-  const [inputs, setInputs] = useState({
-    completeImage: "",
-  });
 
-  const { completeImage } = inputs;
 
-  const onChange = (e) =>
-    setInputs({
-      ...inputs, [e.target.name]: e.target.files ? e.target.files[0] : e.target.value
-    });
-
-  console.log(completeImage);
-
-  const onSubmitForm = async (e) => {
-    e.preventDefault();
-    try {
-      const body = { completeImage };
-      const { id } = props.match.params;
-      console.log(id);
-      const formData = new FormData()
-      formData.append('completeImage', completeImage);
-      console.log(completeImage);
-      const response = await fetch('http://localhost:5000/owe/completefavourowe/' + [id], {
-        method: "PUT",
-        headers: {
-          jwtToken: localStorage.jwtToken,
-        },
-        body: formData,
-      });
-
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+  
 
 
   const getFavour = async (e) => {
@@ -91,10 +59,9 @@ const CompleteFavour = ({ setAuth, ...props }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <h1>Complete Favour</h1>
+        <h1>{title}</h1>
 
         <div >
-          <h2>Title:{title}</h2>
           <p>From:{user}</p>
           <p>Date:{date}</p>
           <p>Favour type:{type}</p>
@@ -105,22 +72,9 @@ const CompleteFavour = ({ setAuth, ...props }) => {
           <img />
         </div>
 
-
-        <div>
-          <h3>Insert image</h3>
-          <form onSubmit={onSubmitForm} enctype="multipart/form-data">
-            <input type="file"
-              accept="completeImage/*"
-              id="completeImage"
-              name="completeImage"
-              onChange={(e) => onChange(e)}
-            />
-            <input type="submit" name="submit" />
-          </form>
-        </div>
       </body>
     </html>
   );
 
 };
-export default CompleteFavour;
+export default ViewOweFavour;

@@ -7,7 +7,8 @@ import {
 
 const ManageFavour = ({ setAuth }) => {
   const [getallowefavour, setAllOweFavour] = useState([]);
-  const [getallowefavourowe, setAllOweFavourOwed] = useState([]);
+  const [getallowefavourlive, setAllOweFavourLive] = useState([]);
+  const [getallowefavourcomplete, setAllOweFavourComplete] = useState([]);
   //display favours
   const getAllFavours = async (e) => {
     //e.preventDefault();
@@ -37,11 +38,11 @@ const ManageFavour = ({ setAuth }) => {
     }
   };
 
-  const getAllFavoursOwed = async (e) => {
+  const getAllFavoursLive = async (e) => {
     //e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:5000/owe/getallowedfavour",
+        "http://localhost:5000/owe/getallliveowefavour",
         {
           method: "GET",
           headers: {
@@ -58,7 +59,35 @@ const ManageFavour = ({ setAuth }) => {
       } else {
         //setAuth(false);
       }
-      setAllOweFavourOwed(jsonData);
+      setAllOweFavourLive(jsonData);
+
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const getAllFavoursComplete = async (e) => {
+    //e.preventDefault();
+    try {
+      const response = await fetch(
+        "http://localhost:5000/owe/getcompleteowedfavour",
+        {
+          method: "GET",
+          headers: {
+            jwtToken: localStorage.jwtToken,
+          },
+        }
+      );
+      const jsonData = await response.json();
+      if (jsonData.jwtToken) {
+        localStorage.setItem("jwtToken", jsonData.jwtToken);
+        setAuth(true);
+
+
+      } else {
+        //setAuth(false);
+      }
+      setAllOweFavourComplete(jsonData);
 
     } catch (err) {
       console.error(err.message);
@@ -77,7 +106,8 @@ const ManageFavour = ({ setAuth }) => {
       );
 
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
-      setAllOweFavourOwed(getallowefavour.filter((fav) => fav.favour_id !== id));
+      setAllOweFavourLive(getallowefavour.filter((fav) => fav.favour_id !== id));
+      setAllOweFavourComplete(getallowefavour.filter((fav) => fav.favour_id !== id));
     } catch (err) {
       console.error(err.message);
     }
@@ -88,17 +118,19 @@ const ManageFavour = ({ setAuth }) => {
   }, []);
 
   useEffect(() => {
-    getAllFavoursOwed();
+    getAllFavoursLive();
+  }, []);
+  useEffect(() => {
+    getAllFavoursComplete();
   }, []);
 
 
 
   return (
     <html lang="en">
-      <div>
-        <h1>Manage Favour Requests</h1>
-      </div>
-
+        <br></br>
+        <br></br>
+        <h1>Favour History</h1>
       <body>
         <table class="table table-striped">
           <thead>
@@ -110,7 +142,6 @@ const ManageFavour = ({ setAuth }) => {
               <th>Reward</th>
               <th>Favour To Who</th>
               <th>Image</th>
-              <th>Update</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -142,12 +173,17 @@ const ManageFavour = ({ setAuth }) => {
                     Delete
                   </button>
                 </td>
+                <td>
+                  <button>
+                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
+                </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <h2>Current favours owed</h2>
+        <h2>Current Favours that are owed</h2>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -158,12 +194,13 @@ const ManageFavour = ({ setAuth }) => {
               <th>Reward</th>
               <th>Favour To Who</th>
               <th>Image</th>
-              <th>Complete</th>
+              <th>Update</th>
+              <th>Delete</th>
             </tr>
           </thead>
 
           <tbody>
-            {getallowefavourowe.map((owed) => (
+            {getallowefavourlive.map((owed) => (
 
               <tr key={owed.favour_id}>
                 <td>{owed.favour_date}</td>
@@ -176,20 +213,76 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owed.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <div >
-                    <button>
-                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-primary"
+                  //onClick={() => updateFavour(owe.favour_id)}>
+                  >
+                    Update
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteFavour(owed.favour_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+                <td>
+                  <button>
+                <Link to={'/viewowefavour/'+owed.favour_id}>View</Link>
+                </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div>
+        <h2>Favours Completed</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Favour Title</th>
+              <th>Favour Type</th>
+              <th>Favour Description</th>
+              <th>Reward</th>
+              <th>Favour To Who</th>
+              <th>Image</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            {getallowefavourcomplete.map((owe) => (
+              <tr key={owe.favour_id}>
+                <td>{owe.favour_date}</td>
+                <td>{owe.title}</td>
+                <td>{owe.favour_type}</td>
+                <td>{owe.favour_description}</td>
+                <td>{owe.rewards}</td>
+                <td>{owe.recieving_username}</td>
+                <td>
+                  <img src={owe.favour_image} alt="favour image" />
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteFavour(owe.favour_id)}
+                  >
+                    Delete
+                  </button>
+                  <td>
+                  <button>
+                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
+                </button>
+                </td>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-        </div>
+       
       </body>
 
 
