@@ -18,6 +18,8 @@ class Leaderboard extends React.Component {
     render() {
         return (
         <html lang="en">
+          <br></br>
+          <br></br>
           <h1>Leaderboard</h1>
           <body>
           <div class="dropdown">

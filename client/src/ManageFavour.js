@@ -128,10 +128,9 @@ const ManageFavour = ({ setAuth }) => {
 
   return (
     <html lang="en">
-      <div>
+        <br></br>
+        <br></br>
         <h1>Favour History</h1>
-      </div>
-
       <body>
         <table class="table table-striped">
           <thead>

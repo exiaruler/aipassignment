@@ -21,6 +21,8 @@ class ManageAccount extends React.Component {
     render() {
         return (
         <html lang="en">
+          <br></br>
+          <br></br>
           <h1>Manage your account</h1>
             <body>
                 <div class="list-group">
