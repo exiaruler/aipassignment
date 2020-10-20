@@ -207,7 +207,7 @@ router.get("/getcompleteowedfavour", auth, async (req, res) => {
 });
 
 //get a owefavour-Vivian
-router.get("/getowefavour/:title", async (req, res) => {
+router.get("/getowefavour/:title", auth, async (req, res) => {
   try {
     const { title } = req.params;
     const owefav = await pool.query("SELECT * FROM owefavour where title=$1", [
@@ -233,13 +233,16 @@ router.get("/getowefavourid/:id", async (req, res) => {
 });
 
 //update owefavour-Vivian
-router.get("/updateOweFavour/:id", async (req, res) => {
+router.put("/updateowefavour/:id", async (req, res) => {
   try {
+    console.log("here");
     const { id } = req.params;
-    const { favourtitle, description, reward, image } = req.body;
+    console.log(req.params);
+    const { title, description, reward } = req.body;
+    console.log(req.body);
     const updateOweFavour = await pool.query(
-      "UPDATE owefavour SET favour_id,title,favour_description,reward,favour_image =$1 WHERE favour_ID =$2",
-      [id, favourtitle, description, reward, image]
+      "UPDATE owefavour SET title=$2, favour_description=$3, rewards=$4 WHERE favour_ID =$1",
+      [id, title, description, reward]
     );
     res.json("favour updated");
   } catch (err) {

@@ -10,7 +10,10 @@ import ManageFavours from "./ManageFavour";
 import FavourHistory from "./FavourHistory";
 import Leaderboard from "./Leaderboard";
 import ManageAccount from "./ManageAccount";
-
+import CompleteFavour from "./CompleteFavour";
+import UpdateOweFavour from "./UpdateOweFavour";
+import ExistingFavours from "./ExistingFavours";
+import ViewOweFavour from "./ViewOweFavour";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -21,6 +24,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import UpdateFavour from "./UpdateFavour";
 
 toast.configure();
 
@@ -171,6 +175,46 @@ function App() {
                       //component={ManageFavours}
                     />
                     <Route
+                      path="/updateowefavour/:id" component={UpdateOweFavour}
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <UpdateOweFavour {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />   
+                        )
+                      }
+                      />
+                    <Route
+                    path="/completefavour/:id" component={CompleteFavour}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                          <Route
+                    path="/viewowefavour/:id" component={ViewOweFavour}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                      <Route
+                    path="/ExistingFavours" component={ExistingFavours}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                    <Route
                       path="/editaccount"
                       render={(props) =>
                         isAuthenticated ? (
@@ -220,13 +264,7 @@ function App() {
                     />
                     <Route
                       path="/leaderboard"
-                      render={(props) =>
-                        isAuthenticated ? (
-                          <Leaderboard {...props} setAuth={setAuth} />
-                        ) : (
-                          <Redirect to="/login" />
-                        )
-                      } //component={Leaderboard} // cant make this logout into login
+                      component={Leaderboard} // cant make this logout into login
                     />
                     <Route
                       path="/manageaccount"
