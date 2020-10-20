@@ -160,13 +160,6 @@ const ManageFavour = ({ setAuth }) => {
                 </td>
                 <td>
                   <button
-                    className="btn btn-primary">
-                    <Link to={'/updateowefavour/' + owe.favour_id}> Update </Link>
-                    
-                  </button>
-                </td>
-                <td>
-                  <button
                     className="btn btn-danger"
                     onClick={() => deleteFavour(owe.favour_id)}
                   >
@@ -213,11 +206,10 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owed.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <button
-                    className="btn btn-primary"
-                  //onClick={() => updateFavour(owe.favour_id)}>
-                  >
-                    Update
+                <button
+                    className="">
+                    <Link to={'/updateowefavour/' + owed.favour_id}> Update </Link>
+                    
                   </button>
                 </td>
                 <td>

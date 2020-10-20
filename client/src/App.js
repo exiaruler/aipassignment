@@ -12,6 +12,8 @@ import Leaderboard from "./Leaderboard";
 import ManageAccount from "./ManageAccount";
 import CompleteFavour from "./CompleteFavour";
 import UpdateOweFavour from "./UpdateOweFavour";
+import ExistingFavours from "./ExistingFavours";
+import ViewOweFavour from "./ViewOweFavour";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -184,6 +186,26 @@ function App() {
                       />
                     <Route
                     path="/completefavour/:id" component={CompleteFavour}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                          <Route
+                    path="/viewowefavour/:id" component={ViewOweFavour}
+                    render={(props) =>
+                      isAuthenticated ? (
+                        <CompleteFavour {...props} setAuth={setAuth} />
+                      ) : (
+                        <Redirect to="/login" />
+                      )
+                    }
+                    />
+                      <Route
+                    path="/ExistingFavours" component={ExistingFavours}
                     render={(props) =>
                       isAuthenticated ? (
                         <CompleteFavour {...props} setAuth={setAuth} />
