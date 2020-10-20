@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import {
   BrowserRouter
@@ -9,6 +10,7 @@ const ManageFavour = ({ setAuth }) => {
   const [getallowefavour, setAllOweFavour] = useState([]);
   const [getallowefavourlive, setAllOweFavourLive] = useState([]);
   const [getallowefavourcomplete, setAllOweFavourComplete] = useState([]);
+  const [favourRequest, setFavourRequest] = useState([]);
   //display favours
   const getAllFavours = async (e) => {
     //e.preventDefault();
@@ -94,23 +96,59 @@ const ManageFavour = ({ setAuth }) => {
     }
   };
 
+  const getFavourRequest = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/request/getAllFavourRequest",
+        {
+          method: "GET",
+          headers: {
+            jwtToken: localStorage.jwtToken,
+          },
+        },
+        
+        );
+      const jsonData = await response.json();
+
+      setFavourRequest(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
 
   // delete favours
   const deleteFavour = async (id) => {
-    try {
+    try { console.log(id)
       const deleteFavour = await fetch(
         `http://localhost:5000/owe/deleteowefavour/${id}`,
         {
           method: "DELETE",
         }
       );
-
+      toast.success("Favour Owed Deleted");
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
       setAllOweFavourLive(getallowefavour.filter((fav) => fav.favour_id !== id));
       setAllOweFavourComplete(getallowefavour.filter((fav) => fav.favour_id !== id));
     } catch (err) {
       console.error(err.message);
     }
+  };
+
+  const deleteFavourRequest = async (id) => {
+    try { console.log(id)
+      const deleteFavourRequest = await fetch(
+        `http://localhost:5000/request/deleteFavourRequest/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      toast.success("Favour Request Deleted");
+      setFavourRequest(favourRequest.filter((favour) => favour.favour_id !== id));
+    } catch (err) {
+      console.error(err.message);
+    }
+    
   };
 
   useEffect(() => {
@@ -124,6 +162,9 @@ const ManageFavour = ({ setAuth }) => {
     getAllFavoursComplete();
   }, []);
 
+  useEffect(() => {
+    getFavourRequest();
+  }, []);
 
 
   return (
@@ -230,6 +271,44 @@ const ManageFavour = ({ setAuth }) => {
             ))}
           </tbody>
         </table>
+
+        <h2>Current Favour Requests</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Favour</th>
+              <th scope="col">Description</th>
+              <th scope="col">Reward</th>
+              <th scope="col">Update</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {favourRequest.map((favourRequests) => (
+              <tr key={favourRequests.favour_id}>
+                <td>{favourRequests.favourrequest_date}</td>
+                <td>{favourRequests.title}</td>
+                <td>{favourRequests.favour_description}</td>
+                <td>{favourRequests.rewards}</td>
+                <td>
+                  <button className="btn" >
+                  <Link to={'/updatefavourrequest/' + favourRequests.favour_id}> Update </Link>                 
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteFavourRequest(favourRequests.favour_id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
         <h2>Favours Completed</h2>
         <table class="table table-striped">
           <thead>

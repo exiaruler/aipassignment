@@ -7,7 +7,13 @@ const ViewRequestFavours = () => {
   const getFavourRequest = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/request/getAllFavourRequest"
+        "http://localhost:5000/request/getAllFavourRequest",
+        {
+          method: "GET",
+          headers: {
+            jwtToken: localStorage.jwtToken,
+          },
+        },
       );
       const jsonData = await response.json();
 
@@ -45,13 +51,13 @@ const ViewRequestFavours = () => {
                     <td>Clean kitchen fridge</td>
                     <td>Coffee</td>
                   </tr>*/}
-            {favourRequest.map((favourRequest) => (
+            {favourRequest.map((favourRequests) => (
               <tr>
-                <td>{favourRequest.favourrequest_date}</td>
-                <td>{favourRequest.user_name}</td>
-                <td>{favourRequest.title}</td>
-                <td>{favourRequest.favour_description}</td>
-                <td>{favourRequest.rewards}</td>
+                <td>{favourRequests.favourrequest_date}</td>
+                <td>{favourRequests.user_name}</td>
+                <td>{favourRequests.title}</td>
+                <td>{favourRequests.favour_description}</td>
+                <td>{favourRequests.rewards}</td>
               </tr>
             ))}
           </tbody>

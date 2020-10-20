@@ -37,10 +37,11 @@ router.post("/addFavourRequest", auth, async (req, res) => {
       [req.user.id]
     );
     const newFavourRequest = await pool.query(
-      "INSERT INTO favourRequest(title, user_name, favour_description, rewards, favourRequest_date) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO favourRequest(title, user_name, user_id, favour_description, rewards, favourRequest_date) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
       [
         title,
         username.rows[0].user_name,
+        username.rows[0].user_id,
         favour_description,
         rewards,
         favourDate,
@@ -53,10 +54,10 @@ router.post("/addFavourRequest", auth, async (req, res) => {
   }
 });
 // get ALL favourRequests
-router.get("/getAllFavourRequest", async (req, res) => {
+router.get("/getAllFavourRequest", auth, async (req, res) => {
   try {
     const allFavourRequests = await pool.query(
-      "SELECT title, user_name, favour_description, rewards, favourrequest_date FROM favourRequest;"
+      "SELECT * FROM favourRequest;"
     );
     res.json(allFavourRequests.rows);
   } catch (err) {
@@ -64,7 +65,7 @@ router.get("/getAllFavourRequest", async (req, res) => {
   }
 });
 // get A favourRequest
-router.get("/getFavourRequest/:id", auth, async (req, res) => {
+router.get("/getFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const favReq = await pool.query(
@@ -76,24 +77,41 @@ router.get("/getFavourRequest/:id", auth, async (req, res) => {
     console.error(err.message);
   }
 });
+router.get("/getallfavourrequests", auth, async (req, res) => {
+  try {
+    const username = await pool.query(
+      "SELECT user_name FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+    const allFavReq = await pool.query(
+      "SELECT title, favour_description, rewards, favourrequest_date FROM favourRequest WHERE user_name=$1 ;",
+      [username.rows[0].user_name]
+    );
+    res.json(allFavReq.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 // update favourRequest
-router.put("/favourRequest/:id", auth, async (req, res) => {
+router.put("/updateFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { favourtitle, description, reward, image } = req.body;
+    const { title, favour_description, rewards } = req.body;
     const updateFavourRequest = await pool.query(
-      "UPDATE favourRequest SET (title, favour_description, rewards, image) = ($1, $2, $3, $4) WHERE favour_id = $5",
-      [id, favourtitle, description, reward, image]
+      "UPDATE favourRequest SET (title, favour_description, rewards) = ($1, $2, $3) WHERE favour_id = $4",
+      [title, favour_description, rewards, id]
     );
     res.json("Favour updated");
   } catch (err) {
     console.error(err.message);
   }
 });
+
 // delete favourRequest
-router.get("/deleteFavourRequest/:id", auth, async (req, res) => {
+router.delete("/deleteFavourRequest/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const deleteFavourRequest = await pool.query(
       "DELETE FROM favourRequest WHERE favour_id = $1",
       [id]
@@ -103,5 +121,7 @@ router.get("/deleteFavourRequest/:id", auth, async (req, res) => {
     console.error(err.message);
   }
 });
+
+
 
 module.exports = router;
