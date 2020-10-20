@@ -242,13 +242,7 @@ function App() {
                     />
                     <Route
                       path="/leaderboard"
-                      render={(props) =>
-                        isAuthenticated ? (
-                          <Leaderboard {...props} setAuth={setAuth} />
-                        ) : (
-                          <Redirect to="/login" />
-                        )
-                      } //component={Leaderboard} // cant make this logout into login
+                      component={Leaderboard} // cant make this logout into login
                     />
                     <Route
                       path="/manageaccount"

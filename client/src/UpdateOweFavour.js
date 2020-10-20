@@ -8,7 +8,7 @@ import './bootstrap.css';
 import ManageFavour from "./ManageFavour";
 
 // update favour
-// favour title, description, rewards, type
+// favour title, description, rewards
 
 const UpdateOweFavour = ({ favour, ...props }) => {
   const [currTitle, setTitle] = useState("");
@@ -64,6 +64,7 @@ const UpdateOweFavour = ({ favour, ...props }) => {
     e.preventDefault();
     try {
       const body = { title, description, reward };
+      //console.log(body);
       const response = await fetch(
         "http://localhost:5000/owe/updateowefavour/" + [id],
         {
