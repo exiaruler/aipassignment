@@ -31,10 +31,11 @@ const [id, setID] = useState("");
         const onSubmitForm = async (e) => {
           e.preventDefault();
           try {
-            const { id } = props.match.params;
             const body = {completeImage};
+            const { id } = props.match.params;
+            console.log(id);
             const formData = new FormData()
-            formData.append('image',completeImage);
+            formData.append('completeImage',completeImage);
             console.log(completeImage);
             const response = await fetch('http://localhost:5000/owe/completefavourowe/'+ [id], {
               method: "POST",

@@ -108,7 +108,8 @@ router.post("/addowefavournoimage", auth, async (req, res) => {
   }
 });
 
-//get all owefavours-Vivian
+//get all owefavours-Vivian 
+//used for history 
 router.get("/getallowefavour", auth, async (req, res) => {
   try {
     const username = await pool.query(
@@ -117,7 +118,7 @@ router.get("/getallowefavour", auth, async (req, res) => {
     );
 
     const allOweFavours = await pool.query(
-      "SELECT favour_id,title,favour_description,rewards,recieving_username,favour_image ,favour_date from owefavour WHERE user_name=$1 ;",
+      "SELECT * from owefavour WHERE user_name=$1 ;",
       [username.rows[0].user_name]
     );
     const getImage = await pool.query(
@@ -134,7 +135,33 @@ router.get("/getallowefavour", auth, async (req, res) => {
   }
 });
 
-//gets all owed favours from the user 
+//get all owed favours that are not complete
+router.get("/getallliveowefavour", auth, async (req, res) => {
+  try {
+    const username = await pool.query(
+      "SELECT user_name FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+
+    const allOweFavours = await pool.query(
+      "SELECT * from owefavour WHERE  complete_image IS NULL AND user_name=$1 ;",
+      [username.rows[0].user_name]
+    );
+    const getImage = await pool.query(
+      "SELECT favour_image from owefavour WHERE user_name=$1 ;",
+      [username.rows[0].user_name]
+    );
+    //allOweFavours.rows[0].favour_image+".jpg";
+
+    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    //res.json(allOweFavours.rows, { jwtToken });
+    res.json(allOweFavours.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//gets all owed favours from the user that are not compeleted
 router.get("/getallowedfavour", auth, async (req, res) => {
   try {
     const username = await pool.query(
@@ -143,7 +170,7 @@ router.get("/getallowedfavour", auth, async (req, res) => {
     );
 
     const allOweFavours = await pool.query(
-      "SELECT * from owefavour WHERE complete_image IS NULL AND user_name=$1 ;",
+      "SELECT * from owefavour WHERE complete_image IS NULL AND recieving_username=$1 ;",
       [username.rows[0].user_name]
     );
 
@@ -202,32 +229,43 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
     const { id } = req.params;
     //Find if the owed user has a favour connection to the favour that is about to be deleted
     //find user 
-    /*
+    
     const user = await pool.query(
       "SELECT * FROM owefavour where favour_id=$1",
       [id]
     );
-    console.log("user favour row "+ ""+user.rows );
+    console.log("user favour user "+ ""+user.rows[0].user_name );
+    console.log("user favour user "+ ""+user.rows[0].recieving_username );
+    const opposing=user.rows[0].recieving_username
+
     //find opposing user 
     const opposingUser = await pool.query(
-      "SELECT * FROM owefavour where favour_id=$1",
-      [user.rows[0].recieving_username]
+      "SELECT * FROM owefavour where recieving_username=$1",
+      [opposing]
     );
-    */
-
-    //console.log("opposing user favour row "+ ""+opposingUser.rows );
-    //if(user.rows[0].user_name==opposingUser.rows[0].recieving_username)
+    console.log("opposing user favour "+ ""+opposingUser.rows[0].user_name );
+    console.log("reciving user favour "+ ""+opposingUser.rows[0].recieving_username );
+        console.log(user.rows[0].user_name+"="+opposingUser.rows[0].user_name);
+//    if(user.rows[0].user_name==opposingUser.rows[0].user_name){
+     // if(opposingUser.rows[0].complete_image!=null){
     const deleteOweFavour = await pool.query(
       "DELETE FROM owefavour WHERE favour_id=$1",
       [id]
     );
-    //checks if there a pathway in favour_image
-
-
-
     res.json("favour deleted");
-
-    // res.json("Cannot delete as image is present");
+    console.log("favour deleted");
+      //}
+      /*
+    }else{
+      const deleteOweFavour = await pool.query(
+        "DELETE FROM owefavour WHERE favour_id=$1",
+        [id]
+      );
+      res.json("favour deleted");
+      console.log("favour deleted");
+    }
+    */
+   
 
   } catch (err) {
     console.error(err.message);
@@ -238,7 +276,7 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
 router.post("/completefavourowe/:id",auth ,upload.single("completeImage"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { completeImage } = req.file.path;
+    const  completeImage  = req.file.path;
     console.log("id",id,"image",completeImage)
     const updateOweFavour = await pool.query(
       "UPDATE owefavour SET complete_image =$1 WHERE favour_id =$2",

@@ -77,6 +77,7 @@ const ManageFavour = ({ setAuth }) => {
       );
 
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
+      setAllOweFavourOwed(getallowefavour.filter((fav) => fav.favour_id !== id));
     } catch (err) {
       console.error(err.message);
     }
