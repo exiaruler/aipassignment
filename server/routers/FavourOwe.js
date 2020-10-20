@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const pool = require("../db");
 const fs = require("fs");
 const multer = require("multer");
+const verifyOwe=require("../middleware/verifyOweFavour");
 const createJWT = require("../functions/createJWT"); // lily
 const auth = require("../middleware/authoriseUser"); //jwt token for user access
 //creates destination for image files and gives them a unique ID
@@ -121,10 +122,12 @@ router.get("/getallowefavour", auth, async (req, res) => {
       "SELECT * from owefavour WHERE user_name=$1 ;",
       [username.rows[0].user_name]
     );
-    const getImage = await pool.query(
-      "SELECT favour_image from owefavour WHERE user_name=$1 ;",
+    /*
+    const allOweFavours = await pool.query(
+      "SELECT * from owefavour WHERE recieving_username=$1 ;",
       [username.rows[0].user_name]
     );
+    */
     //allOweFavours.rows[0].favour_image+".jpg";
 
     //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
@@ -171,6 +174,27 @@ router.get("/getallowedfavour", auth, async (req, res) => {
 
     const allOweFavours = await pool.query(
       "SELECT * from owefavour WHERE complete_image IS NULL AND recieving_username=$1 ;",
+      [username.rows[0].user_name]
+    );
+
+
+    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
+    res.json(allOweFavours.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//get completed favours that the user has completed
+router.get("/getcompleteowedfavour", auth, async (req, res) => {
+  try {
+    const username = await pool.query(
+      "SELECT user_name FROM userData WHERE user_id = $1",
+      [req.user.id]
+    );
+
+    const allOweFavours = await pool.query(
+      "SELECT * from owefavour WHERE complete_image IS NOT NULL AND recieving_username=$1 ;",
       [username.rows[0].user_name]
     );
 
@@ -273,7 +297,7 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
 });
 
 //complete favour
-router.post("/completefavourowe/:id",auth ,upload.single("completeImage"), async (req, res) => {
+router.put("/completefavourowe/:id",auth ,upload.single("completeImage"), async (req, res) => {
   try {
     const { id } = req.params;
     const  completeImage  = req.file.path;

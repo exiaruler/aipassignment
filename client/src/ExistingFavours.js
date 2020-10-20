@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-
 import UpdateOweFavour from "./UpdateOweFavour";
-
+import {
+  BrowserRouter
+    as Router, Switch, Route, Link, useParams, BrowserRouter
+} from "react-router-dom";
 const ExistingFavours = ({ setAuth }) => {
-  const [getallowefavour, setAllOweFavour] = useState([]);
+  const [getallowefavourowe, setAllOweFavour] = useState([]);
 
   //display favours
 
@@ -34,12 +36,7 @@ const ExistingFavours = ({ setAuth }) => {
     }
   };
 
-  const completeFavour= async (e)=>{
-     
-  }
-
- 
-
+  
   useEffect(() => {
     getAllFavours();
   }, []);
@@ -54,7 +51,10 @@ const ExistingFavours = ({ setAuth }) => {
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Date</th>
+              <th>From</th>
               <th>Favour Title</th>
+              <td>Favour Type</td>
               <th>Favour Description</th>
               <th>Reward</th>
               <th>Favour To Who</th>
@@ -64,25 +64,31 @@ const ExistingFavours = ({ setAuth }) => {
           </thead>
 
           <tbody>
-            {getallowefavour.map((owe) => (
-              <tr key={owe.favour_id}>
-                <td>{owe.title}</td>
-                <td>{owe.favour_description}</td>
-                <td>{owe.rewards}</td>
-                <td>{owe.recieving_username}</td>
+            {getallowefavourowe.map((owed) => (
+
+              <tr key={owed.favour_id}>
+               
+                <td>{owed.favour_date}</td>
+            <td>{owed.user_name}</td>
+                <td>{owed.title}</td>
+                <td>{owed.favour_type}</td>
+                <td>{owed.favour_description}</td>
+                <td>{owed.rewards}</td>
+                <td>{owed.recieving_username}</td>
                 <td>
-                  <img src={owe.favour_image} alt="favour image" />
+                  <img src={owed.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <UpdateOweFavour owe={owe}/>
+                  <div >
+                    <button>
+                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
+                    </button>
+                  </div>
                 </td>
                 <td>
-                  <button
-                    className="btn btn-danger"
-                    //onClick={() => deleteFavour(owe.favour_id)}
-                  >
-                    Delete
-                  </button>
+                  <button>
+                <Link to={'/viewowefavour/'+owed.favour_id}>View</Link>
+                </button>
                 </td>
               </tr>
             ))}
