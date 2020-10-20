@@ -1,7 +1,13 @@
 
 import React, { useEffect, useState } from "react";
 import "./bootstrap.css";
-
+import { toast } from "react-toastify";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 const CompleteFavour = ({ setAuth, ...props }) => {
   //set for text 
   const [id, setID] = useState("");
@@ -44,7 +50,8 @@ const CompleteFavour = ({ setAuth, ...props }) => {
         },
         body: formData,
       });
-
+      toast.success("Favour Complete");
+      window.location = "/";
     } catch (err) {
       console.error(err.message);
     }
@@ -117,6 +124,9 @@ const CompleteFavour = ({ setAuth, ...props }) => {
             />
             <input type="submit" name="submit" />
           </form>
+          <button>Back
+          <Link to="/existingfavours"></Link>
+          </button>
         </div>
       </body>
     </html>

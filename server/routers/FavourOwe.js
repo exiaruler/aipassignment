@@ -9,17 +9,19 @@ const createJWT = require("../functions/createJWT"); // lily
 const auth = require("../middleware/authoriseUser"); //jwt token for user access
 //creates destination for image files and gives them a unique ID
 const storage = multer.diskStorage({
-  destination: "./uploads/",
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
   },
+  filename: function (req, file, cb) {
+    //console.log("call",file.mimetype); 
+    cb(null, Date.now() + '.jpg') 
+    
+  }
 });
+ 
 
 //init upload
-var upload = multer({ dest: "./uploads/" });
+const upload = multer({ storage: storage });
 
 //OWEFAVOURS
 //add owefavour with image-Samuel

@@ -109,6 +109,7 @@ const UpdateOweFavour = ({ favour, ...props }) => {
           <div class="title">
             <label>Title: </label>
             <input
+            
               type="text"
               name="title"
               id="newTitle"

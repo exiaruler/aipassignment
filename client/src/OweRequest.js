@@ -5,8 +5,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
+import { toast } from "react-toastify";
 const OweRequest = () => {
   const [inputs, setInputs] = useState({
     title: "",
@@ -47,11 +49,16 @@ const OweRequest = () => {
         },
         body: formData,
       });
-
+        toast.success("favour added")
+        window.location = "/";
     } catch (err) {
       console.error(err.message);
     }
   };
+
+  const redirect = () => {
+      return <Redirect to='/login'  />
+    }
 
 
 
@@ -68,7 +75,7 @@ const OweRequest = () => {
         </div>
         <div>
 
-          <form onSubmit={onSubmitForm} enctype="multipart/form-data" method="POST" action="/managefavours" >
+          <form onSubmit={onSubmitForm} enctype="multipart/form-data" method="POST"  >
             <p>
               <label>Favour title</label>
               <input
@@ -129,8 +136,7 @@ const OweRequest = () => {
 
               />
             </p>
-           
-            <input type="submit" name="Submit" />
+            <input type="submit" name="Submit"  />
            
           </form>
 

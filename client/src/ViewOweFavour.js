@@ -1,6 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import "./bootstrap.css";
+import {
+  BrowserRouter
+    as Router, Switch, Route, Link, useParams, BrowserRouter
+} from "react-router-dom";
 
 const ViewOweFavour = ({ setAuth, ...props }) => {
   //set for text 
@@ -13,7 +17,7 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
   const [recieveUser, setRecieveUser] = useState("");
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
-
+  const [completeimage,setCompleteImage]=useState("");
 
 
   
@@ -41,6 +45,7 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
       setRecieveUser(parseData.recieving_username);
       setImage(parseData.favour_image);
       setDate(parseData.favour_date);
+      setCompleteImage(parseData.complete_image);
     } catch (err) {
       console.error(err.message);
     }
@@ -69,9 +74,13 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
           <p>Reward:{reward}</p>
           <p>Recieving User:{recieveUser}</p>
 
-          <img />
+          <img src={image} alt="favour image"/>
+          <img src={completeimage} alt="proof" />
         </div>
-
+        
+        <button>
+        <Link to="/managefavours">Back</Link>
+                </button>
       </body>
     </html>
   );

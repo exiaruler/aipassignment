@@ -40,11 +40,11 @@ const ManageFavour = ({ setAuth }) => {
     }
   };
 
-  const getAllFavoursOwed = async (e) => {
+  const getAllFavoursLive = async (e) => {
     //e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:5000/owe/getallowedfavour",
+        "http://localhost:5000/owe/getallliveowefavour",
         {
           method: "GET",
           headers: {
@@ -61,33 +61,40 @@ const ManageFavour = ({ setAuth }) => {
       } else {
         //setAuth(false);
       }
-      setAllOweFavourOwed(jsonData);
+      setAllOweFavourLive(jsonData);
 
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  const getFavourRequest = async () => {
+  const getAllFavoursComplete = async (e) => {
+    //e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:5000/request/getAllFavourRequest",
+        "http://localhost:5000/owe/getcompleteowedfavour",
         {
           method: "GET",
           headers: {
             jwtToken: localStorage.jwtToken,
           },
-        },
-        
-        );
+        }
+      );
       const jsonData = await response.json();
+      if (jsonData.jwtToken) {
+        localStorage.setItem("jwtToken", jsonData.jwtToken);
+        setAuth(true);
 
-      setFavourRequest(jsonData);
+
+      } else {
+        //setAuth(false);
+      }
+      setAllOweFavourComplete(jsonData);
+
     } catch (err) {
       console.error(err.message);
     }
   };
-
 
   // delete favours
   const deleteFavour = async (id) => {
@@ -100,7 +107,9 @@ const ManageFavour = ({ setAuth }) => {
       );
       toast.success("Favour Owed Deleted");
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
-      setAllOweFavourOwed(getallowefavour.filter((fav) => fav.favour_id !== id));
+      setAllOweFavourLive(getallowefavourlive.filter((fav) => fav.favour_id !== id));
+      setAllOweFavourComplete(getallowefavourcomplete.filter((fav) => fav.favour_id !== id));
+
     } catch (err) {
       console.error(err.message);
     }
@@ -127,11 +136,11 @@ const ManageFavour = ({ setAuth }) => {
   }, []);
 
   useEffect(() => {
-    getAllFavoursOwed();
+    getAllFavoursLive();
   }, []);
 
   useEffect(() => {
-    getFavourRequest();
+    getAllFavoursComplete();
   }, []);
 
 
@@ -183,6 +192,11 @@ const ManageFavour = ({ setAuth }) => {
                     Delete
                   </button>
                 </td>
+                <td>
+                  <button>
+                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
+                </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -199,12 +213,13 @@ const ManageFavour = ({ setAuth }) => {
               <th>Reward</th>
               <th>Favour To Who</th>
               <th>Image</th>
-              <th>Complete</th>
+              <th>View</th>
+              <th>Edit</th>
             </tr>
           </thead>
 
           <tbody>
-            {getallowefavourowe.map((owed) => (
+            {getallowefavourlive.map((owed) => (
 
               <tr key={owed.favour_id}>
                 <td>{owed.favour_date}</td>
@@ -219,45 +234,15 @@ const ManageFavour = ({ setAuth }) => {
                 <td>
                   <div>
                     <button>
-                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
+                    <Link to={'/ViewOweFavour/' + owed.favour_id}>View</Link>
                     </button>
                   </div>
                 </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <h2>Current Favour Requests</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Favour</th>
-              <th scope="col">Description</th>
-              <th scope="col">Reward</th>
-              <th scope="col">Update</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {favourRequest.map((favourRequests) => (
-              <tr key={favourRequests.favour_id}>
-                <td>{favourRequests.favourrequest_date}</td>
-                <td>{favourRequests.title}</td>
-                <td>{favourRequests.favour_description}</td>
-                <td>{favourRequests.rewards}</td>
-                <td>
-                  <button className="btn" >
-                  <Link to={'/updatefavourrequest/' + favourRequests.favour_id}> Update </Link>                 
-                  </button>
-                </td>
                 <td>
                   <button
-                    className="btn btn-danger"
-                    onClick={() => deleteFavourRequest(favourRequests.favour_id)}
-                  >
-                    Delete
+                    className="btn btn-primary">
+                    <Link to={'/updateowefavour/' + owed.favour_id}> Update </Link>
+                    
                   </button>
                 </td>
               </tr>
@@ -265,6 +250,8 @@ const ManageFavour = ({ setAuth }) => {
           </tbody>
         </table>
 
+        
+      
         <h2>Favours Completed</h2>
         <table class="table table-striped">
           <thead>
@@ -279,7 +266,36 @@ const ManageFavour = ({ setAuth }) => {
               <th>Delete</th>
             </tr>
           </thead>
-          </table>
+
+          <tbody>
+            {getallowefavourcomplete.map((owe) => (
+              <tr key={owe.favour_id}>
+                <td>{owe.favour_date}</td>
+                <td>{owe.title}</td>
+                <td>{owe.favour_type}</td>
+                <td>{owe.favour_description}</td>
+                <td>{owe.rewards}</td>
+                <td>{owe.recieving_username}</td>
+                <td>
+                  <img src={owe.favour_image} alt="favour image" />
+                </td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => deleteFavour(owe.favour_id)}
+                  >
+                    Delete
+                  </button>
+                  <td>
+                  <button>
+                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
+                </button>
+                </td>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </body>
 
 
