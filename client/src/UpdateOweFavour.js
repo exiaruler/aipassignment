@@ -1,140 +1,161 @@
 import React, { useEffect, useState } from "react";
-//import { Json } from "sequelize/types/lib/utils";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 //import { json } from "sequelize/types";
+//import {Modal} from 'react-bootstrap';
+import './App.css';
+import './bootstrap.css';
+import ManageFavour from "./ManageFavour";
 
 // update favour
-// favour title, description, rewards
+// favour title, description, rewards, type
 
-const UpdateFavour = ({ favour }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [rewards, setRewards] = useState("");
-  const [favourID, setFavourID] = useState("");
+const UpdateOweFavour = ({ favour, ...props }) => {
+  const [currTitle, setTitle] = useState("");
+  const [type, setType] = useState("");
+  const [user, setUser] = useState("");
+  const [currDescription, setDescription] = useState("");
+  const [currReward, setReward] = useState("");
+  const [recieveUser, setRecieveUser] = useState("");
+  const [image, setImage] = useState("");
+  const [date, setDate] = useState("");
+  const [id, setID] = useState("");
 
-  // get local item form ManageFavours from samuel
-  // change naming convention to apple
+  const [inputs, setInputs] = useState({
+    title: "",
+    description: "",
+    reward: "",
+  });
+
+  const { title, description, reward } = inputs;
+
+  const onChange = (e) =>
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   // method: "GET"
   // get owe favours from favour_id through local storage
-  const getOweFavours = async (e) => {
+  const getOweFavour = async () => {
     try {
-      const response = await fetch("http://localhost:5000/owe/getowefavour", {
+      const { id } = props.match.params;
+      console.log('fetch', id);
+      const res = await fetch("http://localhost:5000/owe/getowefavourid/" + [id], {
         method: "GET",
-        headers: {
-          jwtToken: localStorage.jwtToken,
-        },
+        headers: { jwtToken: localStorage.jwtToken },
       });
-      const jsonData = await response.json();
-      setFavourID(jsonData.favour_id);
-      if (jsonData.jwtToken) {
-        localStorage.setItem("jwtToken", jsonData.jwtToken);
-      }
+      const parseData = await res.json();
+      setID(parseData.favour_id);
+      setTitle(parseData.title);
+      setType(parseData.favour_type);
+      setUser(parseData.user_name);
+      setDescription(parseData.favour_description);
+      setReward(parseData.rewards);
+      setRecieveUser(parseData.recieving_username);
+      setImage(parseData.favour_image);
+      setDate(parseData.favour_date);
+      //console.log(setID);      
     } catch (error) {
       console.error(error.message);
     }
   };
 
-  // localStorage.setItem("favour_ID", id); --> call like this "localStorage.favour_ID"
-
-  // POST --> update data into database
+  // PUT --> update data into database
   const onSubmitForm = async (e) => {
     // update
     e.preventDefault();
     try {
-      const body = { title, description, rewards }; // add local storage "apple = localstorage."
+      const body = { title, description, reward };
       const response = await fetch(
-        "http://localhost:5000/owe/updateOweFavour",
+        "http://localhost:5000/owe/updateowefavour/" + [id],
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             jwtToken: localStorage.jwtToken,
             "Content-type": "application/json",
           },
           body: JSON.stringify(body),
-        }
-      );
+        });
       const parseRes = await response.json();
-
-      if (parseRes.jwtToken) {
-        localStorage.setItem("jwtToken", parseRes.jwtToken);
-        favour(true);
-        toast.success("Update Successfully!");
-      } else {
-        //setAuth(false); not needed
-        toast.error(parseRes);
-      }
+      toast.success("Update Successfully!");
     } catch (err) {
       console.error(err.message);
     }
   };
 
   useEffect(() => {
-    getOweFavours();
+    getOweFavour();
   }, []);
 
   return (
+
     <html lang="en">
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target={`#id${favourID}`}
-      >
-        Edit
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body>
+        <h1>Edit Owe Favour</h1>
+        <h4>Current Details About Favour:</h4>
+        <div>
+          <p><label>Title:</label> {currTitle}</p>
+          <p><label>Description:</label> {currDescription}</p>
+          <p><label>Rewards:</label> {currReward}</p>
+          <p><label>Date:</label> {date}</p>
+          <p><label>Favour type:</label> {type}</p>
+          <p><label>Recieving User:</label> {recieveUser}</p>
+        </div>
+
+        <h4>Please fill in the following to change details:</h4>
+        <form onSubmit={onSubmitForm}>
+          <div class="title">
+            <label>Title: </label>
+            <input
+              type="text"
+              name="title"
+              id="newTitle"
+              placeholder="New Title"
+              value={title}
+              onChange={(e) => onChange(e)}
+            /></div>
+
+          <div class="description">
+            <label>Description: </label>
+            <input
+              type="text"
+              name="description"
+              id="newDescription"
+              placeholder="New Description"
+              value={description}
+              onChange={(e) => onChange(e)}
+            /></div>
+
+          <div class="reward">
+            <label>Rewards: </label>
+            <input
+              type="text"
+              name="reward"
+              id="newReward"
+              placeholder="New Reward"
+              value={reward}
+              onChange={(e) => onChange(e)}
+            /></div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="editBtn"
+          >
+            Update
       </button>
+        </form>
+        <Link to="/managefavours">
+          <button class="btn btn-primary"> Cancel </button>
+        </Link>
+
+
+        <Route path="/managefavour" component={ManageFavour} />
+      </body>
     </html>
+
   );
 };
 
-export default UpdateFavour;
-
-/*const updateTitle = async e => {
-        e.preventDefault();
-        try {
-            // send request to update title
-            // package data
-            const body = {title};
-            // send response to restful API
-            const response = await fetch (`http://localhost:5000/getallfavour/${favour.favour_id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            });
-
-            window.location = "/";
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
-    const updateDescription = async e => {
-        e.preventDefault();
-        try {
-            // send request to update description
-            const body = {description};
-            const response = await fetch (`http://localhost:5000/getallfavour/${favour.description}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            });
-            window.location = "/";
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
-    const updateRewards = async e => {
-        e.preventDefault();
-        try {
-            const body = {rewards};
-            const response = await fetch (`http://localhost:5000/getallfavour/${favour.rewards}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json"},
-                body: JSON.stringify(body)
-            });
-            window.location = "/";
-        } catch (error) {
-            console.error(error.message);
-        }
-    }*/
+export default UpdateOweFavour;

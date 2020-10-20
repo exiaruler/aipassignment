@@ -11,6 +11,7 @@ import FavourHistory from "./FavourHistory";
 import Leaderboard from "./Leaderboard";
 import ManageAccount from "./ManageAccount";
 import CompleteFavour from "./CompleteFavour";
+import UpdateOweFavour from "./UpdateOweFavour";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -21,6 +22,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import UpdateFavour from "./UpdateFavour";
 
 toast.configure();
 
@@ -170,6 +172,16 @@ function App() {
                       }
                       //component={ManageFavours}
                     />
+                    <Route
+                      path="/updateowefavour/:id" component={UpdateOweFavour}
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <UpdateOweFavour {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />   
+                        )
+                      }
+                      />
                     <Route
                     path="/completefavour/:id" component={CompleteFavour}
                     render={(props) =>

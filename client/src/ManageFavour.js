@@ -129,10 +129,9 @@ const ManageFavour = ({ setAuth }) => {
                 </td>
                 <td>
                   <button
-                    className="btn btn-primary"
-                  //onClick={() => updateFavour(owe.favour_id)}>
-                  >
-                    Update
+                    className="btn btn-primary">
+                    <Link to={'/updateowefavour/' + owe.favour_id}> Update </Link>
+                    
                   </button>
                 </td>
                 <td>
