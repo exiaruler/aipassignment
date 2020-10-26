@@ -54,11 +54,9 @@ router.post("/addFavourRequest", auth, async (req, res) => {
   }
 });
 // get ALL favourRequests
-router.get("/getAllFavourRequest", auth, async (req, res) => {
+router.get("/getAllFavourRequest", async (req, res) => {
   try {
-    const allFavourRequests = await pool.query(
-      "SELECT * FROM favourRequest;"
-    );
+    const allFavourRequests = await pool.query("SELECT * FROM favourRequest;");
     res.json(allFavourRequests.rows);
   } catch (err) {
     console.error(err.message);
@@ -121,7 +119,5 @@ router.delete("/deleteFavourRequest/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-
-
 
 module.exports = router;

@@ -1,47 +1,67 @@
 import React, { useEffect, useState } from "react";
-import "./jumbotron-narrow.css";
-import "./bootstrap.css";
+import "../jumbotron-narrow.css";
+import "../bootstrap.css";
 
 const Leaderboard = ({ setAuth }) => {
+  // ------------------------------------------------
+  // Set up variables for sql table
+  // ------------------------------------------------
   const [board, setBoard] = useState([]);
+  // ------------------------------------------------
+  // Handle useEffect to recieve Leaderboard
+  // ------------------------------------------------
   const getLeaderboard = async () => {
     try {
+      // Send to sever JWT token
       const res = await fetch("http://localhost:5000/auth/leaderboard", {
         method: "POST",
         headers: { jwtToken: localStorage.jwtToken },
       });
 
-      const parseData = await res.json();
-      setBoard(parseData);
+      const parseData = await res.json(); // Recieve back sql Leaderboard table
+      setBoard(parseData); // Assign Leaderboard table to variable
     } catch (err) {
       console.error(err.message);
     }
   };
+  // ------------------------------------------------
+  // Handle useEffect to recieve JWT token
+  // ------------------------------------------------
   const checkAuthenticated = async () => {
     try {
+      // Send to sever JWT token
       const res = await fetch("http://localhost:5000/auth/verify", {
         method: "POST",
         headers: { jwtToken: localStorage.jwtToken },
       });
+      const parseRes = await res.json(); // Recieve back 'true' in header
 
-      const parseRes = await res.json();
-      if (parseRes) {
+      if (parseRes == true) {
+        // Set 'true' if 'true' in header
         setAuth(true);
       } else {
+        // Set 'false' if not 'true' in header
         setAuth(false);
       }
     } catch (err) {
       console.error(err.message);
     }
   };
+  // ------------------------------------------------
+  // Execute 'checkAuthenticated' function
+  // ------------------------------------------------
   useEffect(() => {
     checkAuthenticated();
   }, []);
-
+  // ------------------------------------------------
+  // Execute 'getLeaderboard' function
+  // ------------------------------------------------
   useEffect(() => {
     getLeaderboard();
   }, []);
-
+  // ------------------------------------------------
+  // Display Leaderboard
+  // ------------------------------------------------
   return (
     <html lang="en">
       <br></br>

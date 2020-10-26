@@ -1,23 +1,30 @@
+/***************************************************************************************************************
+ *    Title: pern-jwt-tutorial
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/client/src/App.js
+ *
+ ***************************************************************************************************************/
+
 import React, { useState, useEffect } from "react";
 import "./jumbotron-narrow.css";
 import "./bootstrap.css";
 import SelectForm from "./SelectForm";
-import SignUp from "./SignUp";
-import Login from "./Login";
-import EditAccount from "./ChangeUserDetails";
+import SignUp from "./Components/SignUp";
+import Login from "./Components/Login";
+import EditAccount from "./Components/ChangeUserDetails";
 import ViewRequestFavours from "./ViewRequestFavours";
 import ManageFavours from "./ManageFavour";
 import FavourHistory from "./FavourHistory";
-import Leaderboard from "./Leaderboard";
+import Leaderboard from "./Components/Leaderboard";
 import ManageAccount from "./ManageAccount";
 import CompleteFavour from "./CompleteFavour";
 import UpdateOweFavour from "./UpdateOweFavour";
 import ExistingFavours from "./ExistingFavours";
 import ViewOweFavour from "./ViewOweFavour";
-
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,91 +32,106 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import UpdateFavour from "./UpdateFavour";
 
-toast.configure();
+toast.configure(); // Set up 'toast' for notifications
 
 function App() {
+  // ------------------------------------------------
+  // Load this function when refreshing
+  // ------------------------------------------------
   window.onload = loadMenu;
-
+  // ---------------------------------------------------------------------
+  // Execute 'loadMenu' to remove buttons that user is not authorised for
+  // ---------------------------------------------------------------------
   function loadMenu() {
-    // works only with nav-links that have been 'render' below
-    // loading the screen
-    console.log(istrue);
+    // Works only with nav-links that have 'render' instead of 'component' below in return
     if (istrue) {
+      // Do not show these buttons to unauthorise user
       document.getElementById("edit").children[6].style.display = "none";
       document.getElementById("edit").children[5].style.display = "none";
       document.getElementById("edit").children[4].style.display = "none";
       document.getElementById("edit").children[3].style.display = "none";
-      //document.getElementById("edit").children[2].style.display = "none";
-      //document.getElementById("edit").children[1].style.display = "block";
     }
   }
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [istrue, setIstrue] = useState(true);
-  console.log(isAuthenticated);
+  // ------------------------------------------------
+  // Set up variables for authentication
+  // ------------------------------------------------
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Set user authentication
+  const [istrue, setIstrue] = useState(true); // Set button authentication
+
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
   const setTrue = (boolean) => {
     setIstrue(boolean);
   };
-  console.log(isAuthenticated);
+  // ------------------------------------------------
+  // Handle useEffect to recieve JWT token
+  // ------------------------------------------------
   const checkAuthenticated = async () => {
     try {
       const res = await fetch("http://localhost:5000/auth/verify", {
         method: "POST",
         headers: { jwtToken: localStorage.jwtToken },
       });
-
-      const parseRes = await res.json();
-      parseRes === true ? setIsAuthenticated(true) : setIsAuthenticated(false);
-      setTrue(false);
+      const parseRes = await res.json(); // Recieve back 'true'in header
+      if (parseRes == true) {
+        // Set 'true' if 'true' in header
+        setAuth(true);
+      } else {
+        // Set 'false' if not 'true' in header
+        setAuth(false);
+      }
+      setTrue(false); // Set 'false' if 'true' in header
     } catch (err) {
       console.error(err.message);
     }
-    setTrue(false);
   };
-
+  // ------------------------------------------------
+  // Handle 'logout' button
+  // ------------------------------------------------
   const logout = async (e) => {
     try {
-      //window.location.reload();
-      localStorage.removeItem("jwtToken");
-      setAuth(false);
-      setTrue(true);
-      document.getElementById("edit").children[2].style.display = "block";
+      localStorage.removeItem("jwtToken"); // Remove JWT token to unauthorise user
+      setAuth(false); // Set 'false' to unauthorise user
+      setTrue(true); // Set 'true' to unauthorise user
+      document.getElementById("edit").children[2].style.display = "block"; // Show only unauthorise buttons
       document.getElementById("edit").children[1].style.display = "block";
       document.getElementById("edit").children[6].style.display = "none";
       document.getElementById("edit").children[5].style.display = "none";
       document.getElementById("edit").children[4].style.display = "none";
       document.getElementById("edit").children[3].style.display = "none";
-      toast.success("Logout Successfully!");
+      toast.success("Logout Successfully!"); // Display notification of user Logging out
     } catch (err) {
       console.error(err.message);
     }
   };
-
+  // ---------------------------------------------------------------------------------------
+  // Handle 'handleClick' to display buttons the user is authorised to see when signing in
+  // ---------------------------------------------------------------------------------------
   function handleClick() {
-    //window.location.reload();\
     if (isAuthenticated) {
-      document.getElementById("edit").children[2].style.display = "none";
+      document.getElementById("edit").children[2].style.display = "none"; // Show only authorise buttons
       document.getElementById("edit").children[1].style.display = "none";
       document.getElementById("edit").children[6].style.display = "block";
       document.getElementById("edit").children[5].style.display = "block";
       document.getElementById("edit").children[4].style.display = "block";
       document.getElementById("edit").children[3].style.display = "block";
     }
-
     if (!isAuthenticated) {
       document.getElementById("edit").children[2].style.display = "block";
-      //document.getElementById("edit").children[1].style.display = "block";
       document.getElementById("edit").children[6].style.display = "none";
     }
-  } //onClick={handleClick} {...onlyShow()}
+  }
+  // ------------------------------------------------
+  // Execute 'checkAuthenticated' function
+  // ------------------------------------------------
   useEffect(() => {
     checkAuthenticated();
   }, []);
-
+  // ---------------------------------------------------
+  // Display web page including header, footer and body
+  // ---------------------------------------------------
   return (
     <html lang="en">
       <head>
@@ -176,44 +198,48 @@ function App() {
                       //component={ManageFavours}
                     />
                     <Route
-                      path="/updateowefavour/:id" component={UpdateOweFavour}
+                      path="/updateowefavour/:id"
+                      component={UpdateOweFavour}
                       render={(props) =>
                         isAuthenticated ? (
                           <UpdateOweFavour {...props} setAuth={setAuth} />
                         ) : (
-                          <Redirect to="/login" />   
+                          <Redirect to="/login" />
                         )
                       }
-                      />
+                    />
                     <Route
-                    path="/completefavour/:id" component={CompleteFavour}
-                    render={(props) =>
-                      isAuthenticated ? (
-                        <CompleteFavour {...props} setAuth={setAuth} />
-                      ) : (
-                        <Redirect to="/login" />
-                      )
-                    }
+                      path="/completefavour/:id"
+                      component={CompleteFavour}
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <CompleteFavour {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      }
                     />
-                          <Route
-                    path="/viewowefavour/:id" component={ViewOweFavour}
-                    render={(props) =>
-                      isAuthenticated ? (
-                        <CompleteFavour {...props} setAuth={setAuth} />
-                      ) : (
-                        <Redirect to="/login" />
-                      )
-                    }
+                    <Route
+                      path="/viewowefavour/:id"
+                      component={ViewOweFavour}
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <CompleteFavour {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      }
                     />
-                      <Route
-                    path="/ExistingFavours" component={ExistingFavours}
-                    render={(props) =>
-                      isAuthenticated ? (
-                        <CompleteFavour {...props} setAuth={setAuth} />
-                      ) : (
-                        <Redirect to="/login" />
-                      )
-                    }
+                    <Route
+                      path="/ExistingFavours"
+                      component={ExistingFavours}
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <CompleteFavour {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      }
                     />
                     <Route
                       path="/editaccount"
@@ -223,11 +249,11 @@ function App() {
                         ) : (
                           <Redirect to="/login" />
                         )
-                      } //component={EditAccount}
+                      }
                     />
                     <Route
                       path="/favourhistory"
-                      component={FavourHistory} // cant make this logout into login
+                      component={FavourHistory} // Need to add user authentication in 'favourhistory'
                     />
                     <Route
                       path="/createfavour"
@@ -237,7 +263,7 @@ function App() {
                         ) : (
                           <Redirect to="/login" />
                         )
-                      } //component={SelectForm} />
+                      }
                     />
                     <Route
                       path="/login"
@@ -265,11 +291,17 @@ function App() {
                     />
                     <Route
                       path="/leaderboard"
-                      component={Leaderboard} // cant make this logout into login
+                      render={(props) =>
+                        isAuthenticated ? (
+                          <Leaderboard {...props} setAuth={setAuth} />
+                        ) : (
+                          <Redirect to="/login" />
+                        )
+                      }
                     />
                     <Route
                       path="/manageaccount"
-                      component={ManageAccount} // cant make this logout into login
+                      component={ManageAccount} // Need to add user authentication in 'manageaccount'
                     />
                   </Switch>
                 </ul>
