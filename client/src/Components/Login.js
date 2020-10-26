@@ -1,29 +1,48 @@
+/***************************************************************************************************************
+ *    Title: pern-jwt-tutorial
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/client/src/components/Login.js
+ *
+ ***************************************************************************************************************/
+
 import React, { useState } from "react";
 import SignUp from "./SignUp";
 import { toast } from "react-toastify";
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Route, Link } from "react-router-dom";
 
 const Login = ({ setAuth }) => {
+  // ------------------------------------------------
+  // Set up variables for user input
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const [inputs, setInputs] = useState({
     userName: "",
     password: "",
   });
-
   const { userName, password } = inputs;
 
+  // ------------------------------------------------
+  // Allow for user to change text in the form below
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
-
+  // ------------------------------------------------
+  // Handle 'Login' button
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const onSubmitForm = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Stop refreshing the web page after clicking the button
     try {
+      // Send to sever all of user's input
       const body = { userName, password };
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
@@ -32,13 +51,15 @@ const Login = ({ setAuth }) => {
         },
         body: JSON.stringify(body),
       });
-      const parseRes = await response.json();
+      const parseRes = await response.json(); // Recieve back JWT token in header
 
       if (parseRes.jwtToken) {
+        // Set JWT token if there is a JWT token in header
         localStorage.setItem("jwtToken", parseRes.jwtToken);
         setAuth(true);
         toast.success("Logged in Successfully!");
       } else {
+        // Display error if 'login' has an error
         setAuth(false);
         toast.error(parseRes);
       }
@@ -46,7 +67,12 @@ const Login = ({ setAuth }) => {
       console.error(err.message);
     }
   };
-
+  // ------------------------------------------------
+  // Display Login form and button to Sign up
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   return (
     <html lang="en">
       <head>
@@ -73,7 +99,7 @@ const Login = ({ setAuth }) => {
                   </div>
                   <div class="password">
                     <input
-                      type="text"
+                      type="password"
                       name="password"
                       id="password"
                       placeholder="Password"

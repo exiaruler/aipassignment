@@ -9,15 +9,13 @@ const { query } = require("./db");
 const querystring = require("querystring");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    //console.log("call",file.mimetype); 
-    cb(null, Date.now() + '.jpg') 
-    
-  }
+    //console.log("call",file.mimetype);
+    cb(null, Date.now() + ".jpg");
+  },
 });
- 
 
 //init upload
 const upload = multer({ storage: storage });
@@ -45,9 +43,14 @@ app.post("/todos", async (req, res) => {
     console.error(err.message);
   }
 });
-////////////////////////////////////////////////// user route
-app.use("/auth", require("./routers/Users")); //login, sign up, edit account
+// ------------------------------------------------
+// User route to: 'Users.js'
+// ------------------------------------------------
+app.use("/auth", require("./routers/Users"));
 
+// ------------------------------------------------
+// Start serving
+// ------------------------------------------------
 app.listen(5000, () => {
   console.log("server has started on port 5000");
 });
@@ -58,8 +61,5 @@ app.use("/owe", require("./routers/FavourOwe")); //login, sign up, edit account
 ////////////////////////////////////////////////// favourrequest route
 app.use("/request", require("./routers/FavourRequest"));
 
-
-
 //test post with postman
 //console.log(req.body);
-

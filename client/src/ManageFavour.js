@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import {
-  BrowserRouter
-    as Router, Switch, Route, Link, useParams, BrowserRouter
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  BrowserRouter,
 } from "react-router-dom";
 
 const ManageFavour = ({ setAuth }) => {
@@ -28,13 +32,10 @@ const ManageFavour = ({ setAuth }) => {
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
-
-
       } else {
         //setAuth(false);
       }
       setAllOweFavour(jsonData);
-
     } catch (err) {
       console.error(err.message);
     }
@@ -56,13 +57,10 @@ const ManageFavour = ({ setAuth }) => {
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
-
-
       } else {
         //setAuth(false);
       }
       setAllOweFavourLive(jsonData);
-
     } catch (err) {
       console.error(err.message);
     }
@@ -84,13 +82,10 @@ const ManageFavour = ({ setAuth }) => {
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
-
-
       } else {
         //setAuth(false);
       }
       setAllOweFavourComplete(jsonData);
-
     } catch (err) {
       console.error(err.message);
     }
@@ -98,7 +93,8 @@ const ManageFavour = ({ setAuth }) => {
 
   // delete favours
   const deleteFavour = async (id) => {
-    try { console.log(id)
+    try {
+      console.log(id);
       const deleteFavour = await fetch(
         `http://localhost:5000/owe/deleteowefavour/${id}`,
         {
@@ -107,16 +103,20 @@ const ManageFavour = ({ setAuth }) => {
       );
       toast.success("Favour Owed Deleted");
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
-      setAllOweFavourLive(getallowefavourlive.filter((fav) => fav.favour_id !== id));
-      setAllOweFavourComplete(getallowefavourcomplete.filter((fav) => fav.favour_id !== id));
-
+      setAllOweFavourLive(
+        getallowefavourlive.filter((fav) => fav.favour_id !== id)
+      );
+      setAllOweFavourComplete(
+        getallowefavourcomplete.filter((fav) => fav.favour_id !== id)
+      );
     } catch (err) {
       console.error(err.message);
     }
   };
 
   const deleteFavourRequest = async (id) => {
-    try { console.log(id)
+    try {
+      console.log(id);
       const deleteFavourRequest = await fetch(
         `http://localhost:5000/request/deleteFavourRequest/${id}`,
         {
@@ -124,11 +124,12 @@ const ManageFavour = ({ setAuth }) => {
         }
       );
       toast.success("Favour Request Deleted");
-      setFavourRequest(favourRequest.filter((favour) => favour.favour_id !== id));
+      setFavourRequest(
+        favourRequest.filter((favour) => favour.favour_id !== id)
+      );
     } catch (err) {
       console.error(err.message);
     }
-    
   };
 
   useEffect(() => {
@@ -142,7 +143,6 @@ const ManageFavour = ({ setAuth }) => {
   useEffect(() => {
     getAllFavoursComplete();
   }, []);
-
 
   return (
     <html lang="en">
@@ -178,10 +178,11 @@ const ManageFavour = ({ setAuth }) => {
                   <img src={owe.favour_image} alt="favour image" />
                 </td>
                 <td>
-                  <button
-                    className="btn btn-primary">
-                    <Link to={'/updateowefavour/' + owe.favour_id}> Update </Link>
-                    
+                  <button className="btn btn-primary">
+                    <Link to={"/updateowefavour/" + owe.favour_id}>
+                      {" "}
+                      Update{" "}
+                    </Link>
                   </button>
                 </td>
                 <td>
@@ -194,8 +195,8 @@ const ManageFavour = ({ setAuth }) => {
                 </td>
                 <td>
                   <button>
-                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
-                </button>
+                    <Link to={"/viewowefavour/" + owe.favour_id}>View</Link>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -220,7 +221,6 @@ const ManageFavour = ({ setAuth }) => {
 
           <tbody>
             {getallowefavourlive.map((owed) => (
-
               <tr key={owed.favour_id}>
                 <td>{owed.favour_date}</td>
                 <td>{owed.title}</td>
@@ -234,15 +234,16 @@ const ManageFavour = ({ setAuth }) => {
                 <td>
                   <div>
                     <button>
-                    <Link to={'/ViewOweFavour/' + owed.favour_id}>View</Link>
+                      <Link to={"/ViewOweFavour/" + owed.favour_id}>View</Link>
                     </button>
                   </div>
                 </td>
                 <td>
-                  <button
-                    className="btn btn-primary">
-                    <Link to={'/updateowefavour/' + owed.favour_id}> Update </Link>
-                    
+                  <button className="btn btn-primary">
+                    <Link to={"/updateowefavour/" + owed.favour_id}>
+                      {" "}
+                      Update{" "}
+                    </Link>
                   </button>
                 </td>
               </tr>
@@ -250,8 +251,6 @@ const ManageFavour = ({ setAuth }) => {
           </tbody>
         </table>
 
-        
-      
         <h2>Favours Completed</h2>
         <table class="table table-striped">
           <thead>
@@ -287,22 +286,18 @@ const ManageFavour = ({ setAuth }) => {
                     Delete
                   </button>
                   <td>
-                  <button>
-                <Link to={'/viewowefavour/'+owe.favour_id}>View</Link>
-                </button>
-                </td>
+                    <button>
+                      <Link to={"/viewowefavour/" + owe.favour_id}>View</Link>
+                    </button>
+                  </td>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </body>
-
-
     </html>
-
   );
-
 };
 
 export default ManageFavour;

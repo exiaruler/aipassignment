@@ -1,3 +1,20 @@
+/***************************************************************************************************************
+ *    Title: pern-jwt-tutorial
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-jwt-tutorial/tree/master/server/routes
+ *
+ ***************************************************************************************************************/
+/***************************************************************************************************************
+ *    Title: Find most frequent value in SQL column
+ *    Author: Mihai Stancu
+ *    Date: 2015
+ *    Code version: 1.0
+ *    Availability: https://stackoverflow.com/questions/12235595/find-most-frequent-value-in-sql-column
+ *
+ ***************************************************************************************************************/
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
@@ -7,136 +24,168 @@ const verify = require("../middleware/verify");
 const verifyNewUserEdit = require("../middleware/verifyNewUserEdit");
 const auth = require("../middleware/authoriseUser");
 
-////////////////////////////////////////////////// Sign up route
+// ------------------------------------------------
+// Inserting new user details from 'SignUp.js' page
+// ------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ------------------------------------------------
 router.post("/signup", verify, async (req, res) => {
-  // lily
-  console.log(req.body); // just for testing
-  const role = "user";
-  const { fullName, email, password, userName } = req.body;
+  const role = "user"; // Set new user as a user
+  const { fullName, email, password, userName } = req.body; // Get all information from user input from 'SignUp.js' page
+
   try {
     const existingUser = await pool.query(
+      // Get all information matching 'username'
       "SELECT * FROM userData WHERE user_name = $1",
       [userName]
     );
 
     if (existingUser.rows.length > 0) {
-      // this is a table to see if the database has existing users 'id's'
+      // To see if the database has existing user 'id's'
       return res.status(401).json("User already exist!");
     }
-    const salt = await bcrypt.genSalt(8); // how crypted the passwords is
-    const secretPassword = await bcrypt.hash(password, salt); // hiding password
+    const salt = await bcrypt.genSalt(8); // Set up encryption
+    const secretPassword = await bcrypt.hash(password, salt); // Hide password
 
     const newUser = await pool.query(
+      // Add new user into database
       "INSERT INTO userData (user_fullname, user_email, user_password, user_name, user_role) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [fullName, email, secretPassword, userName, role]
-    ); // add new user
+    );
 
-    const jwtToken = createJWT(newUser.rows[0].user_id); // create token
+    const jwtToken = createJWT(newUser.rows[0].user_id); // Create token
 
-    return res.json({ jwtToken }); // return token to client side
+    return res.json({ jwtToken }); // Return token to client side
   } catch (err) {
-    console.error(err.message); // error
+    // Error occured
+    console.error(err.message);
     res.status(500).send("Server error!");
   }
 });
-////////////////////////////////////////////////// Login route
+// ------------------------------------------------
+// Verify user input for 'Login.js' page
+// ------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ------------------------------------------------
 router.post("/login", verify, async (req, res) => {
-  // lily
-  const { userName, password } = req.body;
+  const { userName, password } = req.body; // Get all information from user input from 'Login.js' page
 
   try {
     const user = await pool.query(
+      // Get all information matching 'username'
       "SELECT * FROM userData WHERE user_name = $1",
       [userName]
     );
 
     if (user.rows.length === 0) {
-      return res.status(401).json("Invalid Credential!");
+      // Send error if user does not exist
+      return res.status(401).json("Invalid Username!");
     }
     const validPassword = await bcrypt.compare(
+      // Compare password and encrypted password
       password,
       user.rows[0].user_password
     );
     if (!validPassword) {
-      return res.status(401).json("Invalid Credential!");
+      // Send error if password is wrong
+      return res.status(401).json("Invalid Password!");
     }
-    const jwtToken = createJWT(user.rows[0].user_id);
-    return res.json({ jwtToken });
+    const jwtToken = createJWT(user.rows[0].user_id); // Create new user JWT token
 
-    // need a password bycryt
+    return res.json({ jwtToken }); // Return token to client side
   } catch (err) {
+    // Error occured
     console.error(err.message);
     res.status(500).send("Server error!");
   }
 });
 
-////////////////////////////////////////////////// edit account route
+// ------------------------------------------------
+// Edit user details for in 'ChangeUserDetails.js'
+// ------------------------------------------------
 router.post("/editaccount", auth, verifyNewUserEdit, async (req, res) => {
-  // lily
-  const { fullName, email, oldPassword, newPassword } = req.body;
-  //console.log(req.body);
-  // need old password to change details
+  const { fullName, email, oldPassword, newPassword } = req.body; // Get all information from user input from 'ChangeUserDetails.js' page
+
   try {
     const userPassword = await pool.query(
+      // Get all information matching 'id' from JWT token
       "SELECT * FROM userData WHERE user_id = $1",
       [req.user.id]
     );
-    console.log("fffff");
 
     const validPassword = await bcrypt.compare(
+      // Compare password and encrypted password
       oldPassword,
       userPassword.rows[0].user_password
     );
-    console.log("wwwwww");
-    if (!validPassword) {
-      return res.status(401).json("Invalid Password!"); // if old password matches with database
-    }
-    console.log("userPassword");
-    const salt = await bcrypt.genSalt(8); // how crypted the passwords is
-    const secretPassword = await bcrypt.hash(newPassword, salt); // hiding password
 
-    // if not null then update
+    if (!validPassword) {
+      // Return error if password does not match
+      return res.status(401).json("Invalid Password!");
+    }
+
+    const salt = await bcrypt.genSalt(8); // Set up encryption
+    const secretPassword = await bcrypt.hash(newPassword, salt); // Hide password
+
     const editUserAccount = await pool.query(
+      // Update user details
       "UPDATE userData SET user_fullname =$1, user_password=$2,  user_email =$3 WHERE user_id =$4",
       [fullName, secretPassword, email, req.user.id]
     );
-    const jwtToken = createJWT(userPassword.rows[0].user_id);
-    return res.json({ jwtToken });
+    const jwtToken = createJWT(userPassword.rows[0].user_id); // Create JWT token
+
+    return res.json({ jwtToken }); // Return token to client side
   } catch (err) {
+    // Error occured
     console.error(err.message);
   }
 });
-////////////////////////////////////////////////// verify user movements
+// ------------------------------------------------
+// Verify user as they refresh page
+// ------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ------------------------------------------------
 router.post("/verify", auth, (req, res) => {
   try {
-    res.json(true);
+    res.json(true); // Return 'true' if users JWT token is valid
   } catch (err) {
+    // Error occured
     console.error(err.message);
     res.status(500).send("Server error!");
   }
 });
-////////////////////////////////////////////////// get user data for edit user details
+// ---------------------------------------------------
+// Get users data to display in 'ChangeUserDetails.js'
+// ---------------------------------------------------
 router.post("/editaccount2", auth, async (req, res) => {
   try {
+    // Get user information to display in 'ChangeUserDetails.js'
     const user = await pool.query("SELECT * FROM userData WHERE user_id = $1", [
       req.user.id,
     ]);
 
-    res.json(user.rows[0]);
+    res.json(user.rows[0]); // Return user details
   } catch (err) {
+    // Error occured
     console.error(err.message);
     res.status(500).send("Server error!");
   }
 });
-////////////////////////////////////////////////// get user data for edit user details
+// ---------------------------------------------------
+// Get top 10 user data to display in 'Leaderboard.js'
+// ---------------------------------------------------
+// Reference :  Find most frequent value in SQL column
+// ---------------------------------------------------
 router.post("/leaderboard", auth, async (req, res) => {
   try {
+    // Get top 10 in uncompleted favour owe's
     const user = await pool.query(
       "SELECT RANK() OVER (ORDER BY COUNT(recieving_username) DESC)AS Rank, recieving_username, COUNT(recieving_username) AS Favours FROM owefavour WHERE complete_image IS NULL GROUP BY recieving_username ORDER BY Favours DESC LIMIT 10"
     );
-    //console.log(user);
-    res.json(user.rows);
+
+    res.json(user.rows); // Return leaderboard table
   } catch (err) {
+    // Error occured
     console.error(err.message);
     res.status(500).send("Server error!");
   }
