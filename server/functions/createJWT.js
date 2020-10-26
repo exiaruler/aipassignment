@@ -6,7 +6,9 @@
  *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/server/utils/jwtGenerator.js
  *
  ***************************************************************************************************************/
-
+// ---------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ---------------------------------------------------
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 

@@ -6,7 +6,9 @@
  *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/server/middleware/authorize.js
  *
  ***************************************************************************************************************/
-
+// ---------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ---------------------------------------------------
 const JWT = require("jsonwebtoken");
 require("dotenv").config();
 

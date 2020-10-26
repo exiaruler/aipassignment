@@ -6,6 +6,14 @@
  *    Availability: https://github.com/l0609890/pern-jwt-tutorial/tree/master/server/routes
  *
  ***************************************************************************************************************/
+/***************************************************************************************************************
+ *    Title: Find most frequent value in SQL column
+ *    Author: Mihai Stancu
+ *    Date: 2015
+ *    Code version: 1.0
+ *    Availability: https://stackoverflow.com/questions/12235595/find-most-frequent-value-in-sql-column
+ *
+ ***************************************************************************************************************/
 
 const express = require("express");
 const router = express.Router();
@@ -18,6 +26,8 @@ const auth = require("../middleware/authoriseUser");
 
 // ------------------------------------------------
 // Inserting new user details from 'SignUp.js' page
+// ------------------------------------------------
+// Reference :  pern-jwt-tutorial
 // ------------------------------------------------
 router.post("/signup", verify, async (req, res) => {
   const role = "user"; // Set new user as a user
@@ -54,6 +64,8 @@ router.post("/signup", verify, async (req, res) => {
 });
 // ------------------------------------------------
 // Verify user input for 'Login.js' page
+// ------------------------------------------------
+// Reference :  pern-jwt-tutorial
 // ------------------------------------------------
 router.post("/login", verify, async (req, res) => {
   const { userName, password } = req.body; // Get all information from user input from 'Login.js' page
@@ -131,6 +143,8 @@ router.post("/editaccount", auth, verifyNewUserEdit, async (req, res) => {
 // ------------------------------------------------
 // Verify user as they refresh page
 // ------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ------------------------------------------------
 router.post("/verify", auth, (req, res) => {
   try {
     res.json(true); // Return 'true' if users JWT token is valid
@@ -159,6 +173,8 @@ router.post("/editaccount2", auth, async (req, res) => {
 });
 // ---------------------------------------------------
 // Get top 10 user data to display in 'Leaderboard.js'
+// ---------------------------------------------------
+// Reference :  Find most frequent value in SQL column
 // ---------------------------------------------------
 router.post("/leaderboard", auth, async (req, res) => {
   try {

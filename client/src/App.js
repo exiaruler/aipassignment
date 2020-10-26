@@ -56,6 +56,9 @@ function App() {
   // ------------------------------------------------
   // Set up variables for authentication
   // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Set user authentication
   const [istrue, setIstrue] = useState(true); // Set button authentication
 
@@ -67,6 +70,9 @@ function App() {
   };
   // ------------------------------------------------
   // Handle useEffect to recieve JWT token
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
   // ------------------------------------------------
   const checkAuthenticated = async () => {
     try {
@@ -89,6 +95,9 @@ function App() {
   };
   // ------------------------------------------------
   // Handle 'logout' button
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
   // ------------------------------------------------
   const logout = async (e) => {
     try {
@@ -132,6 +141,9 @@ function App() {
   // ---------------------------------------------------
   // Display web page including header, footer and body
   // ---------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   return (
     <html lang="en">
       <head>

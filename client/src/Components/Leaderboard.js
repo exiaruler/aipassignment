@@ -1,3 +1,12 @@
+/***************************************************************************************************************
+ *    Title: pern-jwt-tutorial
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/client/src/App.js
+ *
+ ***************************************************************************************************************/
+
 import React, { useEffect, useState } from "react";
 import "../jumbotron-narrow.css";
 import "../bootstrap.css";
@@ -26,6 +35,9 @@ const Leaderboard = ({ setAuth }) => {
   };
   // ------------------------------------------------
   // Handle useEffect to recieve JWT token
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
   // ------------------------------------------------
   const checkAuthenticated = async () => {
     try {

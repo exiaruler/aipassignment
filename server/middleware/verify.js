@@ -6,7 +6,9 @@
  *    Availability: https://github.com/l0609890/pern-jwt-tutorial/blob/master/server/middleware/validInfo.js
  *
  ***************************************************************************************************************/
-
+// ---------------------------------------------------
+// Reference :  pern-jwt-tutorial
+// ---------------------------------------------------
 module.exports = function (req, res, next) {
   const { fullName, email, password, userName } = req.body;
   // ------------------------------------------------

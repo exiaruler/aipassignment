@@ -18,6 +18,9 @@ const SignUp = ({ setAuth }) => {
   // ------------------------------------------------
   // Set up variables for user input
   // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const [inputs, setInputs] = useState({
     fullName: "",
     email: "",
@@ -29,10 +32,16 @@ const SignUp = ({ setAuth }) => {
   // ------------------------------------------------
   // Allow for user to change text in the form below
   // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
+  // ------------------------------------------------
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   // ------------------------------------------------
   // Handle 'Sign up' button
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
   // ------------------------------------------------
   const onSubmitForm = async (e) => {
     e.preventDefault(); // Stop refreshing the web page after clicking the button
@@ -64,6 +73,9 @@ const SignUp = ({ setAuth }) => {
   };
   // ------------------------------------------------
   // Display Sign up form and button to Login
+  // ------------------------------------------------
+  // ------------------------------------------------
+  // Reference :  pern-jwt-tutorial
   // ------------------------------------------------
   return (
     <html lang="en">
