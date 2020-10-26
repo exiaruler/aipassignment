@@ -121,21 +121,10 @@ router.get("/getallowefavour", auth, async (req, res) => {
       "SELECT user_name FROM userData WHERE user_id = $1",
       [req.user.id]
     );
-
     const allOweFavours = await pool.query(
       "SELECT * from owefavour WHERE user_name=$1 ;",
       [username.rows[0].user_name]
     );
-    /*
-    const allOweFavours = await pool.query(
-      "SELECT * from owefavour WHERE recieving_username=$1 ;",
-      [username.rows[0].user_name]
-    );
-    */
-    //allOweFavours.rows[0].favour_image+".jpg";
-
-    //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
-    //res.json(allOweFavours.rows, { jwtToken });
     res.json(allOweFavours.rows);
   } catch (err) {
     console.error(err.message);
@@ -175,12 +164,10 @@ router.get("/getallowedfavour", auth, async (req, res) => {
       "SELECT user_name FROM userData WHERE user_id = $1",
       [req.user.id]
     );
-
     const allOweFavours = await pool.query(
       "SELECT * from owefavour WHERE complete_image IS NULL AND recieving_username=$1 ;",
       [username.rows[0].user_name]
     );
-
     //const jwtToken = createJWT(userPassword.rows[0].user_id); // lily add, to verify the user on client side
     res.json(allOweFavours.rows);
   } catch (err) {
@@ -234,14 +221,12 @@ router.get("/getowefavourid/:id", async (req, res) => {
   }
 });
 
-//update owefavour-Vivian
+// update owefavour-Vivian
+// identifies favour by id
 router.put("/updateowefavour/:id", async (req, res) => {
   try {
-    console.log("here");
     const { id } = req.params;
-    console.log(req.params);
     const { title, description, reward } = req.body;
-    console.log(req.body);
     const updateOweFavour = await pool.query(
       "UPDATE owefavour SET title=$2, favour_description=$3, rewards=$4 WHERE favour_ID =$1",
       [id, title, description, reward]

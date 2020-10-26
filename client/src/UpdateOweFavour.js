@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-//import { json } from "sequelize/types";
-//import {Modal} from 'react-bootstrap';
 import './App.css';
 import './bootstrap.css';
 import ManageFavour from "./ManageFavour";
 
 // update favour
-// favour title, description, rewards
+// update favour title, description and rewards 
 
 const UpdateOweFavour = ({ favour, ...props }) => {
   const [currTitle, setTitle] = useState("");
@@ -43,6 +41,7 @@ const UpdateOweFavour = ({ favour, ...props }) => {
         headers: { jwtToken: localStorage.jwtToken },
       });
       const parseData = await res.json();
+      // set all data collected from specific id
       setID(parseData.favour_id);
       setTitle(parseData.title);
       setType(parseData.favour_type);
@@ -51,8 +50,7 @@ const UpdateOweFavour = ({ favour, ...props }) => {
       setReward(parseData.rewards);
       setRecieveUser(parseData.recieving_username);
       setImage(parseData.favour_image);
-      setDate(parseData.favour_date);
-      //console.log(setID);      
+      setDate(parseData.favour_date);     
     } catch (error) {
       console.error(error.message);
     }
@@ -60,11 +58,9 @@ const UpdateOweFavour = ({ favour, ...props }) => {
 
   // PUT --> update data into database
   const onSubmitForm = async (e) => {
-    // update
     e.preventDefault();
     try {
       const body = { title, description, reward };
-      //console.log(body);
       const response = await fetch(
         "http://localhost:5000/owe/updateowefavour/" + [id],
         {
@@ -86,6 +82,7 @@ const UpdateOweFavour = ({ favour, ...props }) => {
     getOweFavour();
   }, []);
 
+  // html layout for the page
   return (
 
     <html lang="en">
