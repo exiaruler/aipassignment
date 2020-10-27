@@ -43,6 +43,8 @@ const ExistingFavours = ({ setAuth }) => {
 
   return (
     <html lang="en">
+      <br></br>
+      <br></br>
       <div>
         <h1>Existing Owed Favours</h1>
       </div>
@@ -54,7 +56,7 @@ const ExistingFavours = ({ setAuth }) => {
               <th>Date</th>
               <th>From</th>
               <th>Favour Title</th>
-              <td>Favour Type</td>
+              <th>Favour Type</th>
               <th>Favour Description</th>
               <th>Reward</th>
               <th>Favour To Who</th>

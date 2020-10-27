@@ -76,29 +76,35 @@ const OweRequest = () => {
         <div>
 
           <form onSubmit={onSubmitForm} enctype="multipart/form-data" method="POST"  >
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Favour Title</span>
+                </div>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => onChange(e)}
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                ></input>
+           
+            <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Friend Username</span>
+                </div>
+                <input
+                  id="recievinguser"
+                  name="recievinguser"
+                  type="text"
+                  value={recievinguser}
+                  onChange={(e) => onChange(e)}
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                ></input>
+            
             <p>
-              <label>Favour title</label>
-              <input
-                id="title"
-                name="title"
-                type="text"
-                value={title}
-                onChange={(e) => onChange(e)}
-
-              />
-            </p>
-            <p>
-              <label>Friend Username</label>
-              <input
-                id="recievinguser"
-                name="recievinguser"
-                type="text"
-                value={recievinguser}
-                onChange={(e) => onChange(e)}
-              />
-            </p>
-            <p>
-              <label>Select Favour</label>
+              <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Select Favour</span>
+              </div>
               <select name="favourtype" id="favourtype" value={favourtype.value} onChange={(e) => onChange(e)} >
                 <option>Select Options</option>
                 <option name="favourtype" id="favourtype" value="Owe a drink" onChange={(e) => onChange(e)} >Owe a drink</option>
@@ -108,26 +114,38 @@ const OweRequest = () => {
                 <option name="favourtype" id="favourtype" value="custom" onChange={(e) => onChange(e)}>Custom</option>
               </select>
             </p>
+
+
+            <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+                </div>
+                <input
+                  type="text"
+                  value={description}
+                  id="description"
+                  name="description"
+                  onChange={(e) => onChange(e)}
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                ></input>
+
+
+            <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Reward</span>
+                </div>
+                <input
+                  type="text"
+                  id="reward"
+                  name="reward"
+                  onChange={(e) => onChange(e)}
+                  value={reward}
+                  onChange={(e) => onChange(e)}
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                ></input>
+
             <p>
-              <label>Description</label>
-              <input type="text"
-                value={description}
-                id="description"
-                name="description"
-                onChange={(e) => onChange(e)}
-              />
-            </p>
-            <p>
-              <label>Reward</label>
-              <input type="text"
-                id="reward"
-                name="reward"
-                onChange={(e) => onChange(e)}
-                value={reward}
-              />
-            </p>
-            <p>
-              <label>Image</label>
+              <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Image</span>
+                </div>
               <input type="file"
                 accept="image/*"
                 id="image"
@@ -136,8 +154,8 @@ const OweRequest = () => {
 
               />
             </p>
-            <input type="submit" name="Submit"  />
-           
+            <input type="submit" name="Submit"  class="btn btn-success"/>
+           </div>
           </form>
 
         </div>

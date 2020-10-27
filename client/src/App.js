@@ -32,6 +32,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import UpdateFavourRequest from "./UpdateFavourRequest";
 
 toast.configure(); // Set up 'toast' for notifications
 

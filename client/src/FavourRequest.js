@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-//class FavourRequest extends React.Component {
-// constructor(props) {
-//  super(props);
 
 const FavourRequest = () => {
   const [inputs, setInputs] = useState({
@@ -14,6 +11,7 @@ const FavourRequest = () => {
   function submit_form() {
     document.submit.reset();
   }
+  
 
   const { title, favour_description, rewards } = inputs;
 
@@ -24,10 +22,6 @@ const FavourRequest = () => {
     e.preventDefault();
     try {
       const body = { title, favour_description, rewards };
-      //const formData = new FormData()
-      //formData.append('title', title);
-      //formData.append('favour_description', favour_description);
-      //formData.append('rewards', rewards);
       const response = await fetch(
         "http://localhost:5000/request/addFavourRequest",
         {
@@ -39,16 +33,14 @@ const FavourRequest = () => {
           body: JSON.stringify(body),
         }
       );
-
+      toast.success("Favour request added!");
       window.location = "/";
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  //}
-  //render() {
-  return (
+  return (  
     <html lang="en">
       <body>
         <div>
@@ -60,8 +52,10 @@ const FavourRequest = () => {
               enctype="multipart/form-data"
               method="post"
             >
-              <p>
-                <label>Favour title</label>
+                <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Favour Title</span>
+                </div>
                 <input
                   type="text"
                   id="title"
@@ -69,32 +63,42 @@ const FavourRequest = () => {
                   type="text"
                   value={title}
                   onChange={(e) => onChange(e)}
+                  required
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                 ></input>
-              </p>
-              <p>
-                <label>Description</label>
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+                </div>
                 <input
                   type="text"
                   value={favour_description}
                   id="favour_description"
                   name="favour_description"
                   onChange={(e) => onChange(e)}
+                  required
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                 ></input>
-              </p>
-              <p>
-                <label>Reward</label>
+              
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Reward</span>
+                </div>
                 <input
                   type="text"
                   id="rewards"
                   name="rewards"
                   onChange={(e) => onChange(e)}
                   value={rewards}
+                  required
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                 ></input>
-              </p>
+                </div>
 
+              <br></br>
               <input
                 type="submit"
                 name="Submit"
+                class="btn btn-success"
                 onclick="submit_form()"
               ></input>
             </form>
@@ -104,7 +108,5 @@ const FavourRequest = () => {
     </html>
   );
 };
-/*    }
-}*/
 
 export default FavourRequest;
