@@ -56,7 +56,9 @@ router.post("/addFavourRequest", auth, async (req, res) => {
 // get ALL favourRequests
 router.get("/getAllFavourRequest", async (req, res) => {
   try {
-    const allFavourRequests = await pool.query("SELECT * FROM favourRequest;");
+    const allFavourRequests = await pool.query(
+      "SELECT * FROM favourRequest;"
+    );
     res.json(allFavourRequests.rows);
   } catch (err) {
     console.error(err.message);
@@ -75,7 +77,7 @@ router.get("/getFavourRequest/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-router.get("/getallfavourrequests", auth, async (req, res) => {
+router.get("/getallfavourrequests", async (req, res) => {
   try {
     const username = await pool.query(
       "SELECT user_name FROM userData WHERE user_id = $1",
@@ -119,5 +121,7 @@ router.delete("/deleteFavourRequest/:id", async (req, res) => {
     console.error(err.message);
   }
 });
+
+
 
 module.exports = router;

@@ -108,28 +108,33 @@ const ChangeUserDetail = ({ setAuth }) => {
         <div class="container">
           <div class="inner">
             <div class="content">
-              <p>UserName: {userName}</p>
+              <p>Username: {userName}</p>
               <p>Name: {name}</p>
               <p>Email: {userEmail}</p>
               <div>
                 <h2>Change details</h2>
               </div>
-              <p>Please fill in to change details.</p>
+              <label>Please fill in to change details.</label>
 
               <form onSubmit={onSubmitForm}>
-                <div class="fullName">
-                  <label>Full name</label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    id="fullName"
-                    placeholder="Full name"
-                    value={fullName}
-                    onChange={(e) => onChange(e)}
-                  />
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Full Name</span>
                 </div>
-                <div class="email">
-                  <label>Email </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  id="fullName"
+                  placeholder="Full name"
+                  value={fullName}
+                  onChange={(e) => onChange(e)}
+                  class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                ></input>
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                </div>
                   <input
                     type="text"
                     name="email"
@@ -137,10 +142,12 @@ const ChangeUserDetail = ({ setAuth }) => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => onChange(e)}
+                    class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                   />
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">New Password</span>
                 </div>
-                <div class="New password">
-                  <label>New Password</label>
                   <input
                     type="password"
                     name="newPassword"
@@ -148,10 +155,12 @@ const ChangeUserDetail = ({ setAuth }) => {
                     placeholder="New Password"
                     value={newPassword}
                     onChange={(e) => onChange(e)}
+                    class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                   />
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Old Password</span>
                 </div>
-                <div class="Old password">
-                  <label>Old Password</label>
                   <input
                     type="password"
                     name="oldPassword"
@@ -159,15 +168,17 @@ const ChangeUserDetail = ({ setAuth }) => {
                     placeholder="Old Password"
                     value={oldPassword}
                     onChange={(e) => onChange(e)}
+                    class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
                   />
+
                 </div>
-                <label></label>
-                <button>Save changes</button>
+                <br></br>
+                <button class="btn btn-success">Save changes</button>
               </form>
               <div class="cancel">
                 <label> </label>
                 <Link to="/viewrequestfavours">
-                  <button>Cancel</button>
+                  <button class="btn btn-danger">Cancel</button>
                 </Link>
               </div>
             </div>
