@@ -16,7 +16,6 @@ import Login from "./Components/Login";
 import EditAccount from "./Components/ChangeUserDetails";
 import ViewRequestFavours from "./ViewRequestFavours";
 import ManageFavours from "./ManageFavour";
-import FavourHistory from "./FavourHistory";
 import Leaderboard from "./Components/Leaderboard";
 import ManageAccount from "./ManageAccount";
 import CompleteFavour from "./CompleteFavour";
@@ -262,10 +261,6 @@ function App() {
                           <Redirect to="/login" />
                         )
                       }
-                    />
-                    <Route
-                      path="/favourhistory"
-                      component={FavourHistory} // Need to add user authentication in 'favourhistory'
                     />
                     <Route
                       path="/createfavour"

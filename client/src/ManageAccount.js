@@ -3,7 +3,6 @@ import "./jumbotron-narrow.css";
 import "./bootstrap.css";
 import EditAccount from "./Components/ChangeUserDetails";
 import ManageFavours from "./ManageFavour";
-import FavourHistory from "./FavourHistory";
 import ExistingFavours from "./ExistingFavours";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -21,9 +20,6 @@ class ManageAccount extends React.Component {
         <body>
           <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action">
-              <Link to="/favourhistory">Favour History</Link>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
               <Link to="/managefavours">Manage Favours</Link>
             </a>
             <a href="#" class="list-group-item list-group-item-action">
@@ -35,7 +31,6 @@ class ManageAccount extends React.Component {
           </div>
           <Route path="/managefavours" component={ManageFavours} />
           <Route path="/editaccount" component={EditAccount} />
-          <Route path="/favourhistory" component={FavourHistory} />
           <Route path="/existingfavours" component={ExistingFavours} />
         </body>
       </html>

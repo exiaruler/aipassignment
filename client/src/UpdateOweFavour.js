@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import './App.css';
 import './bootstrap.css';
 import ManageFavour from "./ManageFavour";
 
