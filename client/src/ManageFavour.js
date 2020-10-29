@@ -68,25 +68,28 @@ const ManageFavour = ({ setAuth }) => {
     }
   };
 
-  const getFavourRequest = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/request/getAllFavourRequest",
-        {
-          method: "GET",
-          headers: {
-            jwtToken: localStorage.jwtToken,
-          },
+/*
+ * Retrieves ALL favour requests from database
+ */
+const getFavourRequest = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/request/getAllFavourRequest",
+      {
+        method: "GET",
+        headers: {
+          jwtToken: localStorage.jwtToken,
         },
-        
-        );
-      const jsonData = await response.json();
+      },
+      
+      );
+    const jsonData = await response.json();
 
-      setFavourRequest(jsonData);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+    setFavourRequest(jsonData);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
 
   // delete favours
@@ -106,21 +109,23 @@ const ManageFavour = ({ setAuth }) => {
     }
   };
 
-  const deleteFavourRequest = async (id) => {
-    try { console.log(id)
-      const deleteFavourRequest = await fetch(
-        `http://localhost:5000/request/deleteFavourRequest/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      toast.success("Favour Request Deleted");
-      setFavourRequest(favourRequest.filter((favour) => favour.favour_id !== id));
-    } catch (err) {
-      console.error(err.message);
-    }
-    
-  };
+/*
+ * Delete a specific favour request from database
+ */
+const deleteFavourRequest = async (id) => {
+  try { console.log(id)
+    const deleteFavourRequest = await fetch(
+      `http://localhost:5000/request/deleteFavourRequest/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    toast.success("Favour Request Deleted");
+    setFavourRequest(favourRequest.filter((favour) => favour.favour_id !== id));
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
   useEffect(() => {
     getAllFavours();
@@ -134,160 +139,158 @@ const ManageFavour = ({ setAuth }) => {
     getFavourRequest();
   }, []);
 
+/*
+ * Html/CSS elements
+ */
+return (
+  <html lang="en">
+  <br></br>
+  <br></br>
+    <div>
+      <h1>Manage Favour Requests</h1>
+    </div>
+    <body>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Favour Title</th>
+            <th>Favour Type</th>
+            <th>Favour Description</th>
+            <th>Reward</th>
+            <th>Favour To Who</th>
+            <th>Image</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
 
-  return (
-    <html lang="en">
-    <br></br>
-    <br></br>
-      <div>
-        <h1>Manage Favour Requests</h1>
-      </div>
-      <body>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Favour Title</th>
-              <th>Favour Type</th>
-              <th>Favour Description</th>
-              <th>Reward</th>
-              <th>Favour To Who</th>
-              <th>Image</th>
-              <th>Update</th>
-              <th>Delete</th>
+        <tbody>
+          {getallowefavour.map((owe) => (
+            <tr key={owe.favour_id}>
+              <td>{owe.favour_date}</td>
+              <td>{owe.title}</td>
+              <td>{owe.favour_type}</td>
+              <td>{owe.favour_description}</td>
+              <td>{owe.rewards}</td>
+              <td>{owe.recieving_username}</td>
+              <td>
+                <img src={owe.favour_image} alt="favour image" />
+              </td>
+              <td>
+                <button
+                  className="btn btn-primary"> Update
+                  <Link to={'/updateowefavour/' + owe.favour_id}></Link>
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteFavour(owe.favour_id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
+          ))}
+        </tbody>
+      </table>
 
-          <tbody>
-            {getallowefavour.map((owe) => (
-              <tr key={owe.favour_id}>
-                <td>{owe.favour_date}</td>
-                <td>{owe.title}</td>
-                <td>{owe.favour_type}</td>
-                <td>{owe.favour_description}</td>
-                <td>{owe.rewards}</td>
-                <td>{owe.recieving_username}</td>
-                <td>
-                  <img src={owe.favour_image} alt="favour image" />
-                </td>
-                <td>
-                  <button
-                    className="btn btn-primary"> Update
-                    <Link to={'/updateowefavour/' + owe.favour_id}></Link>
+      <h2>Current favours owed</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Favour Title</th>
+            <th>Favour Type</th>
+            <th>Favour Description</th>
+            <th>Reward</th>
+            <th>Favour To Who</th>
+            <th>Image</th>
+            <th>Complete</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {getallowefavourlive.map((owed) => (
+
+            <tr key={owed.favour_id}>
+              <td>{owed.favour_date}</td>
+              <td>{owed.title}</td>
+              <td>{owed.favour_type}</td>
+              <td>{owed.favour_description}</td>
+              <td>{owed.rewards}</td>
+              <td>{owed.recieving_username}</td>
+              <td>
+                <img src={owed.favour_image} alt="favour image" />
+              </td>
+              <td>
+                <div>
+                  <button>
+                  <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
                   </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteFavour(owe.favour_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Current Favour Requests</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Favour</th>
+            <th scope="col">Description</th>
+            <th scope="col">Reward</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {favourRequest.map((favourRequests) => (
+            <tr key={favourRequests.favour_id}>
+              <td>{favourRequests.favourrequest_date}</td>
+              <td>{favourRequests.title}</td>
+              <td>{favourRequests.favour_description}</td>
+              <td>{favourRequests.rewards}</td>
+              <td>
+                <button className="btn btn-primary" > Update
+                <Link to={'/updatefavourrequest/' + favourRequests.favour_id}></Link>                 
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteFavourRequest(favourRequests.favour_id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Favours Completed</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Favour Title</th>
+            <th>Favour Type</th>
+            <th>Favour Description</th>
+            <th>Reward</th>
+            <th>Favour To Who</th>
+            <th>Image</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
         </table>
-
-        <h2>Current favours owed</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Favour Title</th>
-              <th>Favour Type</th>
-              <th>Favour Description</th>
-              <th>Reward</th>
-              <th>Favour To Who</th>
-              <th>Image</th>
-              <th>Complete</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {getallowefavourlive.map((owed) => (
-
-              <tr key={owed.favour_id}>
-                <td>{owed.favour_date}</td>
-                <td>{owed.title}</td>
-                <td>{owed.favour_type}</td>
-                <td>{owed.favour_description}</td>
-                <td>{owed.rewards}</td>
-                <td>{owed.recieving_username}</td>
-                <td>
-                  <img src={owed.favour_image} alt="favour image" />
-                </td>
-                <td>
-                  <div>
-                    <button>
-                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <h2>Current Favour Requests</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Favour</th>
-              <th scope="col">Description</th>
-              <th scope="col">Reward</th>
-              <th scope="col">Update</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {favourRequest.map((favourRequests) => (
-              <tr key={favourRequests.favour_id}>
-                <td>{favourRequests.favourrequest_date}</td>
-                <td>{favourRequests.title}</td>
-                <td>{favourRequests.favour_description}</td>
-                <td>{favourRequests.rewards}</td>
-                <td>
-                  <button className="btn btn-primary" > Update
-                  <Link to={'/updatefavourrequest/' + favourRequests.favour_id}></Link>                 
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => deleteFavourRequest(favourRequests.favour_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <h2>Favours Completed</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Favour Title</th>
-              <th>Favour Type</th>
-              <th>Favour Description</th>
-              <th>Reward</th>
-              <th>Favour To Who</th>
-              <th>Image</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          </table>
-      </body>
-
-
-    </html>
-
+    </body>
+   </html>
   );
-
 };
 
 export default ManageFavour;

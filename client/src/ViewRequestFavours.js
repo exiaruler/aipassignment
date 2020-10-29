@@ -1,33 +1,44 @@
 import React, { useEffect, useState } from "react";
-//class ViewRequestFavours extends React.Component {
 
+/*
+ * Initialise favourRequest state
+ */
 const ViewRequestFavours = () => {
   const [favourRequest, setFavourRequest] = useState([]);
 
-  const getFavourRequest = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/request/getAllFavourRequest",
-        {
-          method: "GET",
-          headers: {
-            jwtToken: localStorage.jwtToken,
-          },
+/*
+ * Retrieves ALL favour requests from database
+ */
+const getFavourRequest = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:5000/request/getAllFavourRequest",
+      {
+        method: "GET",
+        headers: {
+          jwtToken: localStorage.jwtToken,
         },
-      );
-      const jsonData = await response.json();
+      },
+    );
+    const jsonData = await response.json();
 
-      setFavourRequest(jsonData);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+    setFavourRequest(jsonData);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
 
-  useEffect(() => {
-    getFavourRequest();
-  }, []);
+/*
+ * Calls getFavourRequest()
+ */
+useEffect(() => {
+  getFavourRequest();
+}, []);
 
-  return (
+/*
+ * Html/CSS elements
+ */
+return (
     <html lang="en">
       <br></br>
       <br></br>
@@ -44,13 +55,6 @@ const ViewRequestFavours = () => {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-                    <td>14/10/20</td>
-                    <td>Kevin11</td>
-                    <td>Clean fridge</td>
-                    <td>Clean kitchen fridge</td>
-                    <td>Coffee</td>
-                  </tr>*/}
             {favourRequest.map((favourRequests) => (
               <tr>
                 <td>{favourRequests.favourrequest_date}</td>
