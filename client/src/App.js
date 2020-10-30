@@ -18,10 +18,10 @@ import ViewRequestFavours from "./ViewRequestFavours";
 import ManageFavours from "./ManageFavour";
 import Leaderboard from "./Components/Leaderboard";
 import ManageAccount from "./ManageAccount";
-import CompleteFavour from "./CompleteFavour";
-import UpdateOweFavour from "./UpdateOweFavour";
-import ExistingFavours from "./ExistingFavours";
-import ViewOweFavour from "./ViewOweFavour";
+import CompleteFavour from "./Owe_Favour_Components/CompleteFavour";
+import UpdateOweFavour from "./Owe_Favour_Components/UpdateOweFavour";
+import ExistingFavours from "./Owe_Favour_Components/ExistingFavours";
+import ViewOweFavour from "./Owe_Favour_Components/ViewOweFavour";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import {

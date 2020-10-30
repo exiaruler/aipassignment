@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./bootstrap.css";
-import "./jumbotron-narrow.css";
+import "../bootstrap.css";
+import "../jumbotron-narrow.css";
 import {
   BrowserRouter as Router,
   Switch,

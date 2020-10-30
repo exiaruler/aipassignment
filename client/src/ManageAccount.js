@@ -3,7 +3,7 @@ import "./jumbotron-narrow.css";
 import "./bootstrap.css";
 import EditAccount from "./Components/ChangeUserDetails";
 import ManageFavours from "./ManageFavour";
-import ExistingFavours from "./ExistingFavours";
+import ExistingFavours from "./Owe_Favour_Components/ExistingFavours";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class ManageAccount extends React.Component {
