@@ -5,10 +5,10 @@ import {
     as Router, Switch, Route, Link, useParams, BrowserRouter
 } from "react-router-dom";
 const ExistingFavours = ({ setAuth }) => {
+  //init of to get favours
   const [getallowefavourowe, setAllOweFavour] = useState([]);
 
-  //display favours
-
+//diplay favours 
   const getAllFavours = async (e) => {
     //e.preventDefault();
     try {
@@ -26,17 +26,15 @@ const ExistingFavours = ({ setAuth }) => {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
       } else {
-        //setAuth(false);
-      }
-
       
+      }
       setAllOweFavour(jsonData);
     } catch (err) {
       console.error(err.message);
     }
   };
 
-  
+  //set favours into page 
   useEffect(() => {
     getAllFavours();
   }, []);
