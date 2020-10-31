@@ -8,8 +8,8 @@
  ***************************************************************************************************************/
 
 import React, { useState } from "react";
-import "../bootstrap.css";
-import "../jumbotron-narrow.css";
+import "../Styling/bootstrap.css";
+import "../Styling/jumbotron-narrow.css";
 import { toast } from "react-toastify";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import Login from "./Login";

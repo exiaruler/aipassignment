@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from "react";
-import "../bootstrap.css";
+import "../Styling/bootstrap.css";
 import { toast } from "react-toastify";
 import {
   BrowserRouter as Router,

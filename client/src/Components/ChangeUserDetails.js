@@ -9,7 +9,7 @@
 
 import React, { useEffect, useState } from "react";
 import ViewRequestFavours from "../Favour_Request_Components/ViewRequestFavours";
-import "../bootstrap.css";
+import "../Styling/bootstrap.css";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 

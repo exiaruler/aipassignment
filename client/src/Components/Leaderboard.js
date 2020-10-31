@@ -8,8 +8,8 @@
  ***************************************************************************************************************/
 
 import React, { useEffect, useState } from "react";
-import "../jumbotron-narrow.css";
-import "../bootstrap.css";
+import "../Styling/jumbotron-narrow.css";
+import "../Styling/bootstrap.css";
 
 const Leaderboard = ({ setAuth }) => {
   // ------------------------------------------------

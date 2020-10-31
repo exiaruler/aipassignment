@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from "react";
-import "../bootstrap.css";
+import "../Styling/bootstrap.css";
 import {
   BrowserRouter
     as Router, Switch, Route, Link, useParams, BrowserRouter

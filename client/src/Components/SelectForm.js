@@ -1,8 +1,8 @@
 import React from 'react';
 import RequestForm from './Request_favour_components/FavourRequest';
 import OweRequest from './Owe_favour_components/OweRequest';
-import "../jumbotron-narrow.css";
-import "../bootstrap.css";
+import "../Styling/jumbotron-narrow.css";
+import "../Styling/bootstrap.css";
 const REQUEST = 'Request Favour';
 const OWE = 'Record Favour';
 

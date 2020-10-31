@@ -1,6 +1,6 @@
 import React from "react";
-import "./jumbotron-narrow.css";
-import "./bootstrap.css";
+import "./Styling/jumbotron-narrow.css";
+import "./Styling/bootstrap.css";
 import EditAccount from "./Components/ChangeUserDetails";
 import ManageFavours from "./ManageFavour";
 import ExistingFavours from "./Owe_Favour_Components/ExistingFavours";

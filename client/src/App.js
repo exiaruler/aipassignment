@@ -8,8 +8,8 @@
  ***************************************************************************************************************/
 
 import React, { useState, useEffect } from "react";
-import "./jumbotron-narrow.css";
-import "./bootstrap.css";
+import "./Styling/jumbotron-narrow.css";
+import "./Styling/bootstrap.css";
 import SelectForm from "./SelectForm";
 import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
