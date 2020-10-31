@@ -9,7 +9,7 @@ import {
   Link
 } from "react-router-dom";
 const CompleteFavour = ({ setAuth, ...props }) => {
-  //set for text 
+  //set for favour details 
   const [id, setID] = useState("");
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
@@ -25,6 +25,7 @@ const CompleteFavour = ({ setAuth, ...props }) => {
     completeImage: "",
   });
 
+  //field input
   const { completeImage } = inputs;
 
   const onChange = (e) =>
@@ -34,6 +35,7 @@ const CompleteFavour = ({ setAuth, ...props }) => {
 
   console.log(completeImage);
 
+  //form to update favour to complete
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -57,7 +59,7 @@ const CompleteFavour = ({ setAuth, ...props }) => {
     }
   };
 
-
+  //get favour details
   const getFavour = async (e) => {
     //e.preventDefault();
     try {
@@ -86,7 +88,7 @@ const CompleteFavour = ({ setAuth, ...props }) => {
   };
 
 
-
+  //applies getFavour details into page
   useEffect(() => {
     getFavour();
   }, []);
