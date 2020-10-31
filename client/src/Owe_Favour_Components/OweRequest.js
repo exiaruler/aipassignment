@@ -9,6 +9,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { toast } from "react-toastify";
+// init fields 
 const OweRequest = () => {
   const [inputs, setInputs] = useState({
     title: "",
@@ -20,20 +21,20 @@ const OweRequest = () => {
 
   });
 
-
+  // field input
   const { title, recievinguser, favourtype, description, reward, image } = inputs;
 
- 
   const onChange = (e) =>
     setInputs({
       ...inputs, [e.target.name]: e.target.files ? e.target.files[0] : e.target.value
     });
 
-
+    //form submission 
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
       const body = { title, recievinguser, favourtype, description, reward, image };
+      //field data insert 
       const formData = new FormData()
       formData.append('title', title);
       formData.append('recievinguser', recievinguser);
@@ -45,11 +46,14 @@ const OweRequest = () => {
       const response = await fetch("http://localhost:5000/owe/addowefavour", {
         method: "POST",
         headers: {
+          //get jwt token from local storage 
           jwtToken: localStorage.jwtToken,
         },
         body: formData,
       });
+      // notefication when for page when favour added
         toast.success("favour added")
+        //redirect back to home
         window.location = "/";
     } catch (err) {
       console.error(err.message);
@@ -62,7 +66,7 @@ const OweRequest = () => {
 
 
 
-
+    //web page
   return (
     <html lang="en">
       <head>

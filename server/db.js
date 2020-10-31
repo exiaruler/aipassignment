@@ -2,8 +2,8 @@ const Pool=require("pg").Pool;
 
 const pool=new Pool(
     {
-        user:"reynad",
-        password:"reynard28!",
+        user:"postgres",
+        password:"123",
         host:"localhost",
         port:5432,
         database:"aipassignmentdata"
