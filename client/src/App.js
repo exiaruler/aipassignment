@@ -14,7 +14,7 @@ import SelectForm from "./SelectForm";
 import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
 import EditAccount from "./Components/ChangeUserDetails";
-import ViewRequestFavours from "./ViewRequestFavours";
+import ViewRequestFavours from "./Favour_Request_Components/ViewRequestFavours";
 import ManageFavours from "./ManageFavour";
 import Leaderboard from "./Components/Leaderboard";
 import ManageAccount from "./ManageAccount";
@@ -31,7 +31,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import UpdateFavourRequest from "./UpdateFavourRequest";
+import UpdateFavourRequest from "./Favour_Request_Components/UpdateFavourRequest";
 
 toast.configure(); // Set up 'toast' for notifications
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import RequestForm from './FavourRequest';
+import RequestForm from './Favour_Request_Components/FavourRequest';
 import OweRequest from './Owe_Favour_Components/OweRequest';
 import "./jumbotron-narrow.css";
 import "./bootstrap.css";
