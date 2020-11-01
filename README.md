@@ -1,14 +1,17 @@
 ### 31242 Advanced Internet Programming Assignment 2
 
-This project presents a Favour Tracking System that allows users to manage debt or owed favours to other users. 
+This project presents a Favour Tracking System that allows users to manage debt or owed favours to other users. The user can log into an account and request a public favour which can be seen by others. Users can also record an owed favour to them from another user. The other user can complete the favour that they owe. This system allows users to create and complete informal debts to each other. 
 
 ### FEATURES
 
 - Create an account
 - Record an owed favour from another user to yourself
 - Request a favour for all users to see
+- Update account details
 - Update an owed favour
 - Update a requested favour
+- View leaderboard of user with the most owed favour
+- View list of all favour requests 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

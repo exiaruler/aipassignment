@@ -8,16 +8,22 @@ import ManageFavour from "../ManageFavour";
 // update favour title, description and rewards 
 
 const UpdateOweFavour = ({ favour, ...props }) => {
-  const [currTitle, setTitle] = useState("");
+  /*
+  * Set variables used for collecting user data
+  */
   const [type, setType] = useState("");
   const [user, setUser] = useState("");
-  const [currDescription, setDescription] = useState("");
-  const [currReward, setReward] = useState("");
   const [recieveUser, setRecieveUser] = useState("");
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
   const [id, setID] = useState("");
+  const [currTitle, setTitle] = useState("");
+  const [currDescription, setDescription] = useState("");
+  const [currReward, setReward] = useState("");
 
+  /*
+  * Set changable variables to null
+  */
   const [inputs, setInputs] = useState({
     title: "",
     description: "",
@@ -26,11 +32,15 @@ const UpdateOweFavour = ({ favour, ...props }) => {
 
   const { title, description, reward } = inputs;
 
+  /*
+  * Responds to change by user input in form
+  */
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
-  // method: "GET"
-  // get owe favours from favour_id through local storage
+  /*
+  * get owe favours from database
+  */
   const getOweFavour = async () => {
     try {
       const { id } = props.match.params;
@@ -55,7 +65,9 @@ const UpdateOweFavour = ({ favour, ...props }) => {
     }
   };
 
-  // PUT --> update data into database
+  /*
+  * Update user input from form into database
+  */
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -77,11 +89,16 @@ const UpdateOweFavour = ({ favour, ...props }) => {
     }
   };
 
+  /*
+  * Calls getOweFavour()
+  */
   useEffect(() => {
     getOweFavour();
   }, []);
 
-  // html layout for the page
+  /*
+  * HTML layout for the page
+  */
   return (
 
     <html lang="en">
