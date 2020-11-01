@@ -55,7 +55,7 @@ To run on VS code npm install these dependencies.
 ### `npm install bcrypt`
 
 ### Client 
-### `npm install toastify'
+### `npm install toastify`
 ### `npm install -g nodemon`
 
 ### How to use
