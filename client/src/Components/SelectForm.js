@@ -1,6 +1,6 @@
 import React from 'react';
-import RequestForm from './Request_favour_components/FavourRequest';
-import OweRequest from './Owe_favour_components/OweRequest';
+import RequestForm from '../Favour_Request_Components/FavourRequest';
+import OweRequest from '../Owe_Favour_Components/OweRequest';
 import "../Styling/jumbotron-narrow.css";
 import "../Styling/bootstrap.css";
 const REQUEST = 'Request Favour';

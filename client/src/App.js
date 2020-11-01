@@ -10,14 +10,14 @@
 import React, { useState, useEffect } from "react";
 import "./Styling/jumbotron-narrow.css";
 import "./Styling/bootstrap.css";
-import SelectForm from "./SelectForm";
+import SelectForm from "./Components/SelectForm";
 import SignUp from "./Components/SignUp";
 import Login from "./Components/Login";
 import EditAccount from "./Components/ChangeUserDetails";
 import ViewRequestFavours from "./Favour_Request_Components/ViewRequestFavours";
-import ManageFavours from "./ManageFavour";
+import ManageFavours from "./Components/ManageFavour";
 import Leaderboard from "./Components/Leaderboard";
-import ManageAccount from "./ManageAccount";
+import ManageAccount from "./Components/ManageAccount";
 import CompleteFavour from "./Owe_Favour_Components/CompleteFavour";
 import UpdateOweFavour from "./Owe_Favour_Components/UpdateOweFavour";
 import ExistingFavours from "./Owe_Favour_Components/ExistingFavours";

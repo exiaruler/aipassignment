@@ -5,12 +5,12 @@ import {
     as Router, Switch, Route, Link, useParams, BrowserRouter
 } from "react-router-dom";
 const ExistingFavours = ({ setAuth }) => {
-  //init of to get favours
+  //  init of to get favours
   const [getallowefavourowe, setAllOweFavour] = useState([]);
 
-//diplay favours 
+// diplay favours 
   const getAllFavours = async (e) => {
-    //e.preventDefault();
+  
     try {
       const response = await fetch(
         "http://localhost:5000/owe/getallowedfavour",
@@ -34,11 +34,11 @@ const ExistingFavours = ({ setAuth }) => {
     }
   };
 
-  //set favours into page 
+  //  set favours into page 
   useEffect(() => {
     getAllFavours();
   }, []);
-
+  // web page
   return (
     <html lang="en">
       <br></br>

@@ -1,9 +1,9 @@
 import React from "react";
-import "./Styling/jumbotron-narrow.css";
-import "./Styling/bootstrap.css";
-import EditAccount from "./Components/ChangeUserDetails";
+import "../Styling/jumbotron-narrow.css";
+import "../Styling/bootstrap.css";
+import EditAccount from "./ChangeUserDetails";
 import ManageFavours from "./ManageFavour";
-import ExistingFavours from "./Owe_Favour_Components/ExistingFavours";
+import ExistingFavours from "../Owe_Favour_Components/ExistingFavours";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class ManageAccount extends React.Component {
