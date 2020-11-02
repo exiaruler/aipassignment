@@ -6,6 +6,14 @@
  *    Availability: https://github.com/l0609890/pern-jwt-tutorial/tree/master/server/routes
  *
  ***************************************************************************************************************/
+/***************************************************************************************************************
+ *    Title: pern-todo-app
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-todo-app/tree/master/server
+ *
+ ***************************************************************************************************************/
 
 const express = require("express");
 const router = express.Router();
@@ -262,6 +270,7 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
   try {
     //parameter of deleting favour by id
     const { id } = req.params;
+    
     //Find if the owed user has a favour connection to the favour that is about to be deleted
     //find user
     const user = await pool.query(

@@ -16,15 +16,15 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
   const [recieveUser, setRecieveUser] = useState("");
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
-  const [completeimage,setCompleteImage]=useState("");
+  const [completeimage, setCompleteImage] = useState("");
 
-
-  
-
-
+  /*
+  Get favour 
+ */
   const getFavour = async (e) => {
     //e.preventDefault();
     try {
+      // get favour by id from url paramater 
       const { id } = props.match.params;
       console.log('fetch', id);
       const res = await fetch(
@@ -33,7 +33,8 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
           method: "GET",
         }
       );
-      //const jsonData = await response.json();
+      
+      // set json data
       const parseData = await res.json();
       setID(parseData.favour_id);
       setTitle(parseData.title);
@@ -51,12 +52,12 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
   };
 
 
-
+  //set details 
   useEffect(() => {
     getFavour();
   }, []);
 
-
+  // web page
   return (
     <html lang="en">
       <head>
@@ -73,13 +74,13 @@ const ViewOweFavour = ({ setAuth, ...props }) => {
           <p>Reward:{reward}</p>
           <p>Recieving User:{recieveUser}</p>
 
-          <img src={image} alt="favour image"/>
+          <img src={image} alt="favour image" />
           <img src={completeimage} alt="proof" />
         </div>
-        
+
         <button>
-        <Link to="/managefavours">Back</Link>
-                </button>
+          <Link to="/managefavours">Back</Link>
+        </button>
       </body>
     </html>
   );

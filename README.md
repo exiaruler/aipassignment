@@ -19,6 +19,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Javascript 
 - Bootstrap 
 - Postresql 
+- Node.js 
+- React 
 
 ### Dependencies  
 ### Client 
@@ -71,7 +73,7 @@ Open up terminal/powershell on server directory
 - Lily-Implement users,sessions/jwt token,server directory structure and notification
 - Samuel-Implement owe favour,page routing and start of server side. Also layout the inital design of the system.
 - Vivian- Implement favour update
-- Reynard- Implement favour request
+- Reynard- Implement favour request and CSS and boostrap 
 
 ### Credits 
 - server postresql-https://www.youtube.com/watch?v=ldYcgPKEZC8&t=1739s

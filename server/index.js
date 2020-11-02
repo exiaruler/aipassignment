@@ -6,7 +6,14 @@
  *    Availability: https://github.com/benatuts/aipjs/blob/master/chapter08_sql_raw/index.js
  *
  ***************************************************************************************************************/
-
+/***************************************************************************************************************
+ *    Title: pern-todo-app
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-todo-app/tree/master/server
+ *
+ ***************************************************************************************************************/
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -110,5 +117,4 @@ app.use("/owe", require("./routers/FavourOwe"));
 ////////////////////////////////////////////////// favourrequest route
 app.use("/request", require("./routers/FavourRequest"));
 
-//test post with postman
-//console.log(req.body);
+

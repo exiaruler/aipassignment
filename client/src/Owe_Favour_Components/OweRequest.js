@@ -1,3 +1,18 @@
+/***************************************************************************************************************
+ *    Title: pern-todo-app
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-todo-app/blob/master/client/src/components/InputTodo.js
+ *
+ ***************************************************************************************************************/
+
+/***************************************************************************************************************
+ *    Feature: multer insert image
+ *    Tutor/assistant: Le Kang 
+ *    Date: 2020
+ ***************************************************************************************************************/
+
 import React, { useState } from "react";
 import "../Styling/bootstrap.css";
 import "../Styling/jumbotron-narrow.css";
@@ -28,8 +43,9 @@ const OweRequest = () => {
     setInputs({
       ...inputs, [e.target.name]: e.target.files ? e.target.files[0] : e.target.value
     });
-
-    // form submission 
+    /*
+    form submission of adding owe favour
+    */
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -60,9 +76,7 @@ const OweRequest = () => {
     }
   };
 
-  const redirect = () => {
-      return <Redirect to='/login'  />
-    }
+ 
 
 
 

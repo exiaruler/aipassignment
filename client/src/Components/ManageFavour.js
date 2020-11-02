@@ -1,3 +1,12 @@
+/***************************************************************************************************************
+ *    Title: pern-todo-app
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-todo-app/blob/master/client/src/components/ListTodo.js
+ *
+ ***************************************************************************************************************/
+
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,37 +20,44 @@ const ManageFavour = ({ setAuth }) => {
   const [getallowefavourlive, setAllOweFavourLive] = useState([]);
   const [getallowefavourcomplete, setAllOweFavourComplete] = useState([]);
   const [favourRequest, setFavourRequest] = useState([]);
-  //display favours
+  /*
+  Display favours 
+  */
+  /*
+  Favour History of past favours
+  */
   const getAllFavours = async (e) => {
-    //e.preventDefault();
     try {
       const response = await fetch(
         "http://localhost:5000/owe/getallowefavour",
         {
           method: "GET",
+          //get jwt token from storage during query 
           headers: {
             jwtToken: localStorage.jwtToken,
           },
         }
       );
       const jsonData = await response.json();
+      //authenticate if there jwt token
       if (jsonData.jwtToken) {
         localStorage.setItem("jwtToken", jsonData.jwtToken);
         setAuth(true);
 
 
-      } else {
-        //setAuth(false);
       }
+      //set  jsondata 
       setAllOweFavour(jsonData);
 
     } catch (err) {
       console.error(err.message);
     }
   };
-
+  /*
+ Get favours that are currently owed that have not been completed that is requested from the user
+*/
   const getAllFavoursOwed = async (e) => {
-    //e.preventDefault();
+
     try {
       const response = await fetch(
         "http://localhost:5000/owe/getallowedfavour",
@@ -58,8 +74,6 @@ const ManageFavour = ({ setAuth }) => {
         setAuth(true);
 
 
-      } else {
-        //setAuth(false);
       }
       setAllOweFavourLive(jsonData);
 
@@ -67,7 +81,9 @@ const ManageFavour = ({ setAuth }) => {
       console.error(err.message);
     }
   };
-
+  /*
+   Get favours that are requested
+  */
   const getFavourRequest = async () => {
     try {
       const response = await fetch(
@@ -78,8 +94,8 @@ const ManageFavour = ({ setAuth }) => {
             jwtToken: localStorage.jwtToken,
           },
         },
-        
-        );
+
+      );
       const jsonData = await response.json();
 
       setFavourRequest(jsonData);
@@ -89,25 +105,33 @@ const ManageFavour = ({ setAuth }) => {
   };
 
 
-  // delete favours
+  /*
+   Delete owed favour
+  */
   const deleteFavour = async (id) => {
-    try { console.log(id)
+    try {
+      //Delete favour by id by row selected 
       const deleteFavour = await fetch(
         `http://localhost:5000/owe/deleteowefavour/${id}`,
         {
           method: "DELETE",
         }
       );
+      //notification when deleted
       toast.success("Favour Owed Deleted");
+      //refresh json data in web page
       setAllOweFavour(getallowefavour.filter((fav) => fav.favour_id !== id));
       setAllOweFavourLive(getallowefavour.filter((fav) => fav.favour_id !== id));
     } catch (err) {
       console.error(err.message);
     }
   };
-
+  /*
+  Delete request favour
+ */
   const deleteFavourRequest = async (id) => {
-    try { console.log(id)
+    try {
+      console.log(id)
       const deleteFavourRequest = await fetch(
         `http://localhost:5000/request/deleteFavourRequest/${id}`,
         {
@@ -119,9 +143,10 @@ const ManageFavour = ({ setAuth }) => {
     } catch (err) {
       console.error(err.message);
     }
-    
+
   };
 
+  //set effect on webpage
   useEffect(() => {
     getAllFavours();
   }, []);
@@ -134,11 +159,11 @@ const ManageFavour = ({ setAuth }) => {
     getFavourRequest();
   }, []);
 
-
+  //web page
   return (
     <html lang="en">
-    <br></br>
-    <br></br>
+      <br></br>
+      <br></br>
       <div>
         <h1>Manage Favour Requests</h1>
       </div>
@@ -220,7 +245,7 @@ const ManageFavour = ({ setAuth }) => {
                 <td>
                   <div>
                     <button>
-                    <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
+                      <Link to={'/completefavour/' + owed.favour_id}>Complete</Link>
                     </button>
                   </div>
                 </td>
@@ -250,7 +275,7 @@ const ManageFavour = ({ setAuth }) => {
                 <td>{favourRequests.rewards}</td>
                 <td>
                   <button className="btn btn-primary" > Update
-                  <Link to={'/updatefavourrequest/' + favourRequests.favour_id}></Link>                 
+                  <Link to={'/updatefavourrequest/' + favourRequests.favour_id}></Link>
                   </button>
                 </td>
                 <td>
@@ -280,7 +305,7 @@ const ManageFavour = ({ setAuth }) => {
               <th>Delete</th>
             </tr>
           </thead>
-          </table>
+        </table>
       </body>
 
 

@@ -1,3 +1,11 @@
+/***************************************************************************************************************
+ *    Title: pern-todo-app
+ *    Author: Henry (The Stoic Programmer)
+ *    Date: 2020
+ *    Code version: 6.0
+ *    Availability: https://github.com/l0609890/pern-todo-app/blob/master/client/src/components/EditTodo.js
+ *
+ ***************************************************************************************************************/
 import React, { useEffect, useState } from "react";
 import "../Styling/bootstrap.css";
 import { toast } from "react-toastify";
@@ -19,12 +27,16 @@ const CompleteFavour = ({ setAuth, ...props }) => {
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
 
-  //input for image
+  /*
+  input for image 
+ */
   const [inputs, setInputs] = useState({
     completeImage: "",
   });
 
-  //field input
+   /*
+  field input 
+ */
   const { completeImage } = inputs;
 
   const onChange = (e) =>
@@ -32,9 +44,11 @@ const CompleteFavour = ({ setAuth, ...props }) => {
       ...inputs, [e.target.name]: e.target.files ? e.target.files[0] : e.target.value
     });
 
-  console.log(completeImage);
+  
 
-  //form to update favour to complete
+   /*
+  form update to complete image  
+ */
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -58,7 +72,9 @@ const CompleteFavour = ({ setAuth, ...props }) => {
     }
   };
 
-  //get favour details
+   /*
+  get favour details 
+ */
   const getFavour = async (e) => {
     //e.preventDefault();
     try {
@@ -92,7 +108,7 @@ const CompleteFavour = ({ setAuth, ...props }) => {
     getFavour();
   }, []);
 
-
+// web page 
   return (
     <html lang="en">
       <head>

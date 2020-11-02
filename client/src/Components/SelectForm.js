@@ -1,3 +1,12 @@
+/***************************************************************************************************************
+ *    Title: aip2020 week 3
+ *    Author: Benjamin Johnston
+ *    Date: 2020
+ *    Code version: 1.0
+ *    Availability: https://github.com/benatuts/aip2020/tree/master/week03/withclass/src/Selector
+ *
+ ***************************************************************************************************************/
+
 import React from 'react';
 import RequestForm from '../Favour_Request_Components/FavourRequest';
 import OweRequest from '../Owe_Favour_Components/OweRequest';
@@ -6,7 +15,9 @@ import "../Styling/bootstrap.css";
 const REQUEST = 'Request Favour';
 const OWE = 'Record Favour';
 
-
+/*
+Handles favour selection form 
+*/
 class SelectForm extends React.Component {
 
     constructor(props) {
@@ -17,7 +28,7 @@ class SelectForm extends React.Component {
     }
    
     render() {
-       //switch between javascript forms of creating a favour 
+       //switch between files of forms of creating a favour 
         let form;
         if (this.state.show === REQUEST)
             form = <RequestForm/>;
