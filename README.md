@@ -1,4 +1,4 @@
-### 31242 Advanced Internet Programming Assignment 2
+## 31242 Advanced Internet Programming Assignment 2
 
 This project presents a Favour Tracking System that allows users to manage debt or owed favours to other users. The user can log into an account and request a public favour which can be seen by others. Users can also record an owed favour to them from another user. The other user can complete the favour that they owe. This system allows users to create and complete informal debts to each other. 
 
@@ -15,14 +15,14 @@ This project presents a Favour Tracking System that allows users to manage debt 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### Tech/framework used
+### TECH/FRAMEWORKS USED
 - Javascript 
 - Bootstrap 
 - Postresql 
 - Node.js 
 - React 
 
-### Dependencies  
+### DEPENDENCIES  
 ### Client 
 
 - Cors 2.8.5
@@ -49,7 +49,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 
-### Installation 
+### INSTALLATION
 To run on VS code npm install these dependencies.
 
 ### Server 
@@ -60,7 +60,7 @@ To run on VS code npm install these dependencies.
 ### `npm install toastify`
 ### `npm install -g nodemon`
 
-### How to use
+### HOW TO USE
 When running on VS code run these commands in powershell/terminal 
 ### Client 
 Open up terminal/powershell on client directory 
@@ -69,20 +69,21 @@ Open up terminal/powershell on client directory
 Open up terminal/powershell on server directory 
 ### `nodemon index.js`
 
-### Contribute 
+### CONTRIBUTIONS
 - Lily-Implement users,sessions/jwt token,server directory structure and notification
 - Samuel-Implement owe favour,page routing and start of server side. Also layout the inital design of the system.
 - Vivian- Implement favour update
-- Reynard- Implement favour request and CSS and boostrap 
+- Reynard- Implement favour request and Html/CSS layout with boostrap 
 
-### Credits 
+### CREDITS 
 - server postresql-https://www.youtube.com/watch?v=ldYcgPKEZC8&t=1739s
 - sessions jwt token-https://www.youtube.com/watch?v=7UQBMb8ZpuE
 - multer image upload-https://www.npmjs.com/package/multer
 - multer image upload storage- https://stackoverflow.com/questions/31592726/how-to-store-a-file-with-file-extension-with-multer
 - page redirect react router-https://reactrouter.com/
+- Boostrap CSS-https://getbootstrap.com
 
-### License 
+### LICENSE 
 Advance Internet Programming assignment 2 submission University of Technology Sydney 2020 
 
 
