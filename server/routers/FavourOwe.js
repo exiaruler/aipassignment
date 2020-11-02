@@ -271,28 +271,6 @@ router.delete("/deleteowefavour/:id", async (req, res) => {
     //parameter of deleting favour by id
     const { id } = req.params;
     
-    //Find if the owed user has a favour connection to the favour that is about to be deleted
-    //find user
-    const user = await pool.query(
-      "SELECT * FROM owefavour where favour_id=$1",
-      [id]
-    );
-    console.log("user favour user " + "" + user.rows[0].user_name);
-    console.log("user favour user " + "" + user.rows[0].recieving_username);
-    const opposing = user.rows[0].recieving_username;
-
-    //find opposing user
-    const opposingUser = await pool.query(
-      "SELECT * FROM owefavour where recieving_username=$1",
-      [opposing]
-    );
-    console.log("opposing user favour " + "" + opposingUser.rows[0].user_name);
-    console.log(
-      "reciving user favour " + "" + opposingUser.rows[0].recieving_username
-    );
-    console.log(user.rows[0].user_name + "=" + opposingUser.rows[0].user_name);
-    //    if(user.rows[0].user_name==opposingUser.rows[0].user_name){
-    // if(opposingUser.rows[0].complete_image!=null){
     const deleteOweFavour = await pool.query(
       "DELETE FROM owefavour WHERE favour_id=$1",
       [id]
