@@ -84,8 +84,8 @@ Open up terminal/powershell on server directory
 - Boostrap CSS-https://getbootstrap.com
 
 ### LICENSE 
-Advance Internet Programming assignment 2 submission University of Technology Sydney 2020 
-
+Advanced Internet Programming - Assignment 2 submission 
+University of Technology Sydney Spring 2020 
 
 ## Available Scripts
 
