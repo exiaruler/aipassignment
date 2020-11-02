@@ -55,6 +55,8 @@ To run on VS code npm install these dependencies.
 ### Server 
 ### `npm install cors` 
 ### `npm install bcrypt`
+### `npm install jsonwebtoken`
+### `npm install dotenv`
 
 ### Client 
 ### `npm install toastify`
