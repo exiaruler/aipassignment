@@ -57,9 +57,10 @@ To run on VS code npm install these dependencies.
 ### `npm install bcrypt`
 ### `npm install jsonwebtoken`
 ### `npm install dotenv`
+### `npm install --save multer`
 
 ### Client 
-### `npm install toastify`
+### `npm install --save react-toastify`
 ### `npm install -g nodemon`
 
 ### HOW TO USE
@@ -72,10 +73,10 @@ Open up terminal/powershell on server directory
 ### `nodemon index.js`
 
 ### CONTRIBUTIONS
-- Lily-Implement users,sessions/jwt token,server directory structure and notification
+- Lily-Implement users,sessions/jwt token,server, leaderboard, directory structure and notification
 - Samuel-Implement owe favour,page routing and start of server side. Also layout the inital design of the system.
-- Vivian- Implement favour update
-- Reynard- Implement favour request and Html/CSS layout with boostrap 
+- Vivian-Implement favour update
+- Reynard-Implement favour request and Html/CSS layout with boostrap 
 
 ### CREDITS 
 - server postresql-https://www.youtube.com/watch?v=ldYcgPKEZC8&t=1739s
